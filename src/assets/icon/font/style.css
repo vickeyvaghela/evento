@@ -1,0 +1,238 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?m2eaeo');
+  src:  url('fonts/icomoon.eot?m2eaeo#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?m2eaeo') format('truetype'),
+    url('fonts/icomoon.woff?m2eaeo') format('woff'),
+    url('fonts/icomoon.svg?m2eaeo#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-redem:before {
+  content: "\e933";
+}
+.icon-deshbord:before {
+  content: "\e92d";
+}
+.icon-dashboard-1:before {
+  content: "\e92e";
+  color: #20c0e8;
+}
+.icon-Refer:before {
+  content: "\e92f";
+}
+.icon-Gallery:before {
+  content: "\e930";
+}
+.icon-Help:before {
+  content: "\e931";
+}
+.icon-F-E:before {
+  content: "\e932";
+}
+.icon-Subsciption:before {
+  content: "\e934";
+}
+.icon-Invoice:before {
+  content: "\e935";
+}
+.icon-pass:before {
+  content: "\e92b";
+  color: #a6a6a6;
+}
+.icon-language:before {
+  content: "\e92a";
+}
+.icon-view:before {
+  content: "\e92c";
+  color: #a6a6a6;
+}
+.icon-Emoji .path1:before {
+  content: "\e923";
+  color: rgb(255, 217, 59);
+}
+.icon-Emoji .path2:before {
+  content: "\e924";
+  margin-left: -1em;
+  color: rgb(62, 67, 71);
+}
+.icon-Emoji .path3:before {
+  content: "\e925";
+  margin-left: -1em;
+  color: rgb(244, 197, 52);
+}
+.icon-Emoji .path4:before {
+  content: "\e926";
+  margin-left: -1em;
+  color: rgb(62, 67, 71);
+}
+.icon-Emoji .path5:before {
+  content: "\e927";
+  margin-left: -1em;
+  color: rgb(90, 95, 99);
+}
+.icon-Emoji .path6:before {
+  content: "\e928";
+  margin-left: -1em;
+  color: rgb(62, 67, 71);
+}
+.icon-Send:before {
+  content: "\e929";
+  color: #fe4d5f;
+}
+.icon-Rs:before {
+  content: "\e921";
+  color: #a6a6a6;
+}
+.icon-Percentage:before {
+  content: "\e922";
+  color: #fff;
+}
+.icon-coin .path1:before {
+  content: "\e918";
+  color: rgb(226, 166, 59);
+}
+.icon-coin .path2:before {
+  content: "\e919";
+  margin-left: -1em;
+  color: rgb(244, 184, 68);
+}
+.icon-coin .path3:before {
+  content: "\e91a";
+  margin-left: -1em;
+  color: rgb(254, 219, 65);
+}
+.icon-coin .path4:before {
+  content: "\e91b";
+  margin-left: -1em;
+  color: rgb(244, 184, 68);
+}
+.icon-coin .path5:before {
+  content: "\e91c";
+  margin-left: -1em;
+  color: rgb(226, 166, 59);
+}
+.icon-coin .path6:before {
+  content: "\e91d";
+  margin-left: -1em;
+  color: rgb(244, 184, 68);
+}
+.icon-coin .path7:before {
+  content: "\e91e";
+  margin-left: -1em;
+  color: rgb(226, 166, 59);
+}
+.icon-coin .path8:before {
+  content: "\e91f";
+  margin-left: -1em;
+  color: rgb(254, 219, 65);
+}
+.icon-coin .path9:before {
+  content: "\e920";
+  margin-left: -1em;
+  color: rgb(254, 219, 65);
+}
+.icon-Discount:before {
+  content: "\e917";
+  color: #13e1b0;
+}
+.icon-Loction-small:before {
+  content: "\e915";
+  color: #999;
+}
+.icon-location1:before {
+  content: "\e916";
+  color: #9ba0a8;
+}
+.icon-info:before {
+  content: "\e914";
+  color: #a6a6a6;
+}
+.icon-plus:before {
+  content: "\e913";
+  color: #fff;
+}
+.icon-Drop:before {
+  content: "\e912";
+}
+.icon-Delete:before {
+  content: "\e90f";
+  color: #999;
+}
+.icon-Edit:before {
+  content: "\e910";
+  color: #999;
+}
+.icon-Back:before {
+  content: "\e90e";
+}
+.icon-Next:before {
+  content: "\e911";
+}
+.icon-close:before {
+  content: "\e90c";
+}
+.icon-right:before {
+  content: "\e90d";
+  color: #fff;
+}
+.icon-silver-Star:before {
+  content: "\e90b";
+  color: #999;
+}
+.icon-Star:before {
+  content: "\e90a";
+  color: #eca926;
+}
+.icon-search:before {
+  content: "\e909";
+  color: #9ba0a8;
+}
+.icon-time:before {
+  content: "\e900";
+  color: #9ba0a8;
+}
+.icon-date:before {
+  content: "\e901";
+  color: #9ba0a8;
+}
+.icon-bell:before {
+  content: "\e902";
+}
+.icon-comeant:before {
+  content: "\e903";
+}
+.icon-events:before {
+  content: "\e904";
+  color: #fe4d5f;
+}
+.icon-live:before {
+  content: "\e905";
+}
+.icon-location:before {
+  content: "\e906";
+  color: #9ba0a8;
+}
+.icon-offer:before {
+  content: "\e907";
+}
+.icon-share:before {
+  content: "\e908";
+}
