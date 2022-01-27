@@ -4091,7 +4091,7 @@ button.create-btn {
     background: #eeeeee;
     padding: 45px 50px;
     border-radius: 5px;
-    margin-top: 83px;
+    /* margin-top: 83px; */
 }
 .edit-inr-p .price-offer.big-input {
     max-width: 100%;
@@ -11064,7 +11064,7 @@ h2.m_e_l_holder {
     background: #EEEEEE;
     padding: 50px;
     height: fit-content;
-    margin-top: 83px;
+    /* margin-top: 83px; */
     padding-bottom: 70px;
 }
 .w-r-holder {
