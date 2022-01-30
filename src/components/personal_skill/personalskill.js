@@ -249,45 +249,42 @@ function PersonalSkill() {
 	const onSubmit = async (e) => {
 		e.preventDefault()
 		const dataForm = new FormData()
-		if (com_gstfile instanceof Array) {
-
+		if(typeof com_gstfile ==='object'){
 			for (let i = 0; i < com_gstfile.length; i++) {
-
 				dataForm.append("com_gstfile", com_gstfile[i])
 			}
-			return
+			dataForm.append("User", 1)
+			dataForm.append("pro_category", pro_category)
+			dataForm.append("profession", profession)
+			dataForm.append("name", name)
+			dataForm.append("mobile_no", mobile_no)
+			dataForm.append("alt_mobile_no", alt_mobile_no)
+			dataForm.append("email", email)
+			dataForm.append("work_price", work_price)
+			dataForm.append("work_discount", work_discount)
+			dataForm.append("travel_cost", travel_cost === false ? "no" : travel_cost)
+			dataForm.append("accommodation", accommodation === false ? "no" : accommodation)
+			dataForm.append("food", food === false ? "no" : food)
+			dataForm.append("equip_name", equip_name)
+			dataForm.append("equip_price", equip_price)
+			dataForm.append("com_name", com_name)
+			// dataForm.append("com_gstfile",com_gstfile)
+			dataForm.append("com_contact", com_contact)
+			dataForm.append("com_email", com_email)
+			dataForm.append("com_address", com_address)
+			dataForm.append("facebook", facebook)
+			dataForm.append("youtube", youtube)
+			dataForm.append("twitter", twitter)
+			dataForm.append("pinterest", pinterest)
+			dataForm.append("instagram", instagram)
+			dataForm.append("vimeo", vimeo)
+			dataForm.append("equip_ids", EquipmentArray.toString())
+			if (request === "put") {
+				const data = await axios.put(`${API_URL}/personalskill`, dataForm, { headers: { "Content-Type": "application/json", Authorization: token } })
+				return
+			}
+			const data = await axios.post(`${API_URL}/personalskill`, dataForm, { headers: { "Content-Type": "application/json", Authorization: token } })
 		}
-		dataForm.append("User", 1)
-		dataForm.append("pro_category", pro_category)
-		dataForm.append("profession", profession)
-		dataForm.append("name", name)
-		dataForm.append("mobile_no", mobile_no)
-		dataForm.append("alt_mobile_no", alt_mobile_no)
-		dataForm.append("email", email)
-		dataForm.append("work_price", work_price)
-		dataForm.append("work_discount", work_discount)
-		dataForm.append("travel_cost", travel_cost === false ? "no" : travel_cost)
-		dataForm.append("accommodation", accommodation === false ? "no" : accommodation)
-		dataForm.append("food", food === false ? "no" : food)
-		dataForm.append("equip_name", equip_name)
-		dataForm.append("equip_price", equip_price)
-		dataForm.append("com_name", com_name)
-		// dataForm.append("com_gstfile",com_gstfile)
-		dataForm.append("com_contact", com_contact)
-		dataForm.append("com_email", com_email)
-		dataForm.append("com_address", com_address)
-		dataForm.append("facebook", facebook)
-		dataForm.append("youtube", youtube)
-		dataForm.append("twitter", twitter)
-		dataForm.append("pinterest", pinterest)
-		dataForm.append("instagram", instagram)
-		dataForm.append("vimeo", vimeo)
-		dataForm.append("equip_ids", EquipmentArray.toString())
-		if (request === "put") {
-			const data = await axios.put(`${API_URL}/personalskill`, dataForm, { headers: { "Content-Type": "application/json", Authorization: token } })
-			return
-		}
-		const data = await axios.post(`${API_URL}/personalskill`, dataForm, { headers: { "Content-Type": "application/json", Authorization: token } })
 
 	}
 	useEffect(() => {
@@ -307,7 +304,7 @@ function PersonalSkill() {
 		getCategoryMain()
 	}, [])
 	return (
-		!isLoading&&<main>
+		!isLoading && <main>
 			<div className="continent-wrapper">
 				<div className="container">
 					<div className="persk-holder">
@@ -606,7 +603,7 @@ function PersonalSkill() {
 									<h3>Company Video (Upload upto 3 Video max.)</h3>
 									<div className="poster-m">
 										<div className="images-selctor ">
-											<input onChange={(e) => { handleComVideoChange(e, personalSkills.perskillId) }} type="file" className="file-input" name=""  />
+											<input onChange={(e) => { handleComVideoChange(e, personalSkills.perskillId) }} type="file" className="file-input" name="" />
 										</div>
 									</div>
 									<div className="ph-main">
