@@ -17,7 +17,7 @@ var token = `Token ${localStorage.getItem("token")}`;
 	const handleSubmit =async(e)=>{
 		e.preventDefault()
 		// http://143.244.137.15:8000/ps_add_equipment
-		const data = await axios.post(`${API_URL}/ps_add_equipment`,{user:id,equ_name,equ_details,equ_price,equ_price_period},{ headers: { "Content-Type": "application/json", Authorization: token } })
+		const data = await axios.post(`${API_URL}/ps_add_equipment`,{user:1,equ_name,equ_details,equ_price,equ_price_period},{ headers: { "Content-Type": "application/json", Authorization: token } })
 		if(data && data.data && data.data.isSuccess){
 			set_modalState(false)
 		}

@@ -36,9 +36,6 @@ var userId = localStorage.getItem('userId') ? localStorage.getItem('userId') : 0
 
 function PersonalSkill() {
 
-	const [mainCatList, set_mainCatList] = useState([]);
-	const [subCatList, set_subCatList] = useState([]);
-	const [equipmentList, set_equipmentList] = useState([]);
 
 	const [modalState, set_modalState] = useState(false);
 	const [imagePopup, setImagePopUp] = useState(false)
@@ -72,30 +69,6 @@ function PersonalSkill() {
 	}
 
 
-	const [allSkillData, set_allSkillData] = useState({});
-	const [errData, set_errData] = useState({});
-
-	useEffect(() => {
-		(async () => {
-
-			/* #region  get main cat data */
-			try {
-				const response = await axios.get(`${API_URL}/ps_category`, { headers: { "Content-Type": "application/json", Authorization: token } });
-
-				let tmpList = response.data?.data ?? [];
-
-				if (tmpList.length) {
-					set_mainCatList(tmpList)
-				}
-
-			} catch (errCallingEventDataApi) {
-			}
-			/* #endregion  */
-
-
-
-		})();
-	}, []);
 	const [personalSkills, setPersonalSkills] = useState([])
 	const [categoryMain, setCategoryMain] = useState([])
 	const [subCategory, setSubCategory] = useState([])
@@ -104,6 +77,8 @@ function PersonalSkill() {
 	const [images, setImages] = useState([])
 	const [videos, setVideos] = useState([])
 	const [videoUpdate, setVideoUpdate] = useState([])
+	const [request, setRequest] = useState("")
+	const [isLoading, setIsLoading] = useState(true)
 	//formdata
 
 	const [pro_category, setPro_Category] = useState("")
@@ -130,6 +105,7 @@ function PersonalSkill() {
 	const [pinterest, setPinterest] = useState("")
 	const [instagram, setInstagram] = useState("")
 	const [vimeo, setVimeo] = useState("")
+	const [EquipmentArray, setEquipmentArray] = useState([])
 
 	useEffect(() => {
 	}, [])
@@ -143,8 +119,8 @@ function PersonalSkill() {
 		const data = await axios.get(`${API_URL}/personalskill`, { headers: { "Content-Type": "application/json", Authorization: token } })
 		if (data && data.data && data.data.data.length > 0) {
 			setPersonalSkills(data.data.data[0])
-			setPro_Category(data.data.data[0].profession_id)
-			setProfession(data?.data?.data[0]?.profession)
+			setPro_Category(data.data.data[0].pro_category_id)
+			setProfession(data?.data?.data[0]?.profession_id)
 			setName(data?.data?.data[0]?.name)
 			setMobile_no(data?.data?.data[0]?.mobile_no)
 			setAlt_mobile_no(data?.data?.data[0]?.alt_mobile_no)
@@ -167,7 +143,14 @@ function PersonalSkill() {
 			setPinterest(data?.data?.data[0]?.pinterest)
 			setInstagram(data?.data?.data[0]?.instagram)
 			setVimeo(data?.data?.data[0]?.vimeo)
+			setEquipmentArray(data.data.data[0].equip_ids.split(","))
+
+			setRequest("put")
+			setIsLoading(false)
+			return
 		}
+		setRequest("post")
+		setIsLoading(false)
 	}
 	const getSubCategory = async () => {
 
@@ -184,9 +167,17 @@ function PersonalSkill() {
 		}
 	}
 	const handleEquipement = (e, data) => {
-		if (!e.target.checked) {
-			setEquipName(data.equ_name)
-			setEquipPrice(data.equ_price)
+		if (EquipmentArray.indexOf(JSON.stringify(data.Id)) === -1) {
+			setEquipmentArray([...EquipmentArray, JSON.stringify(data.Id)])
+			return
+		}
+		else {
+			let modifiedArr = [...EquipmentArray];
+			let indx = modifiedArr.findIndex(
+				(x) => x === JSON.stringify(data.Id)
+			);
+			modifiedArr.splice(indx, 1);
+			setEquipmentArray(modifiedArr);
 		}
 	}
 	const getImages = async () => {
@@ -212,7 +203,25 @@ function PersonalSkill() {
 			if (form) {
 				const data = await axios.post(`${API_URL}/ps_add_com_photo`, form, { headers: { "Content-Type": "application/json", Authorization: token } })
 				if (data && data.data && data.data.isSuccess) {
-					set_modalState(false)
+					// set_modalState(false)
+					getPersonalSkill()
+				}
+			}
+		}
+	}
+	const handleComVideoChange = async (e, id) => {
+		if (personalSkills.Company_video.length + e.target.files.length <= 3) {
+
+			const form = new FormData()
+			for (let i = 0; i < e.target.files.length; i++) {
+				form.append("c_video_file", e.target.files[i])
+			}
+			form.append("p_skill", parseInt(id))
+			if (form) {
+				const data = await axios.post(`${API_URL}/ps_add_com_video`, form, { headers: { "Content-Type": "application/json", Authorization: token } })
+				if (data && data.data && data.data.isSuccess) {
+					// set_modalState(false)
+					getPersonalSkill()
 				}
 			}
 		}
@@ -227,50 +236,59 @@ function PersonalSkill() {
 		if (form) {
 			const data = await axios.post(`${API_URL}/ps_add_video`, form, { headers: { "Content-Type": "application/json", Authorization: token } })
 			if (data && data.data && data.data.isSuccess) {
-				set_modalState(false)
+				getVideos()
 			}
 		}
 	}
 	const handlePdfChange = async (e) => {
 		// setComGstFile(e.target.files)
 		// const form = new FormData()
-		
+
 		setComGstFile(e.target.files)
 	}
 	const onSubmit = async (e) => {
 		e.preventDefault()
 		const dataForm = new FormData()
-		for (let i = 0; i < com_gstfile.length; i++) {
-		
-			dataForm.append("com_gstfile", com_gstfile[i])
+		if (com_gstfile instanceof Array) {
+
+			for (let i = 0; i < com_gstfile.length; i++) {
+
+				dataForm.append("com_gstfile", com_gstfile[i])
+			}
+			return
 		}
-			dataForm.append("User",1)
-			dataForm.append("pro_category",pro_category)
-			dataForm.append("profession",profession)
-			dataForm.append("name",name)
-			dataForm.append("mobile_no",mobile_no)
-			dataForm.append("alt_mobile_no",alt_mobile_no)
-			dataForm.append("email",email)
-			dataForm.append("work_price",work_price)
-			dataForm.append("work_discount",work_discount)
-			dataForm.append("travel_cost",travel_cost)
-			dataForm.append("accommodation",accommodation)
-			dataForm.append("food",food)
-			dataForm.append("equip_name",equip_name)
-			dataForm.append("equip_price",equip_price)
-			dataForm.append("com_name",com_name)
-			// dataForm.append("com_gstfile",com_gstfile)
-			dataForm.append("com_contact",com_contact)
-			dataForm.append("com_email",com_email)
-			dataForm.append("com_address",com_address)
-			dataForm.append("facebook",facebook)
-			dataForm.append("youtube",youtube)
-			dataForm.append("twitter",twitter)
-			dataForm.append("pinterest",pinterest)
-			dataForm.append("instagram",instagram)
-			dataForm.append("vimeo",vimeo)
-	
+		dataForm.append("User", 1)
+		dataForm.append("pro_category", pro_category)
+		dataForm.append("profession", profession)
+		dataForm.append("name", name)
+		dataForm.append("mobile_no", mobile_no)
+		dataForm.append("alt_mobile_no", alt_mobile_no)
+		dataForm.append("email", email)
+		dataForm.append("work_price", work_price)
+		dataForm.append("work_discount", work_discount)
+		dataForm.append("travel_cost", travel_cost === false ? "no" : travel_cost)
+		dataForm.append("accommodation", accommodation === false ? "no" : accommodation)
+		dataForm.append("food", food === false ? "no" : food)
+		dataForm.append("equip_name", equip_name)
+		dataForm.append("equip_price", equip_price)
+		dataForm.append("com_name", com_name)
+		// dataForm.append("com_gstfile",com_gstfile)
+		dataForm.append("com_contact", com_contact)
+		dataForm.append("com_email", com_email)
+		dataForm.append("com_address", com_address)
+		dataForm.append("facebook", facebook)
+		dataForm.append("youtube", youtube)
+		dataForm.append("twitter", twitter)
+		dataForm.append("pinterest", pinterest)
+		dataForm.append("instagram", instagram)
+		dataForm.append("vimeo", vimeo)
+		dataForm.append("equip_ids", EquipmentArray.toString())
+		if (request === "put") {
+			const data = await axios.put(`${API_URL}/personalskill`, dataForm, { headers: { "Content-Type": "application/json", Authorization: token } })
+			return
+		}
 		const data = await axios.post(`${API_URL}/personalskill`, dataForm, { headers: { "Content-Type": "application/json", Authorization: token } })
+
 	}
 	useEffect(() => {
 		getImages()
@@ -289,385 +307,386 @@ function PersonalSkill() {
 		getCategoryMain()
 	}, [])
 	return (
-		<main>
+		!isLoading&&<main>
 			<div className="continent-wrapper">
 				<div className="container">
 					<div className="persk-holder">
 						<h2>Personal Skill Business</h2>
 					</div>
 					<div className="persk_form_holder">
-						<form onSubmit={onSubmit}>
-							<div className="psb-1">
-								<label for="">Select Option</label>
-								<select name="categorymain" id="categorymain" onChange={(e) => { setPro_Category(e.target.value) }}>
-									{categoryMain.map((data) => (
-										<option selected={personalSkills.pro_category === data.category} value={data.Id}>{data.category}</option>
-									))}
-								</select>
-							</div>
-							<div className="psb-2">
-								<h3>Personal Details</h3>
-								<div className="pd-1">
-									<div className="so-holdr">
-										<label for="">Select Option</label>
-										<select name="Banker" id="Banker" onChange={(e) => { setProfession(e.target.value) }}>
-											{subCategory.map((data) => (
 
-												<option selected={personalSkills.pro_category === data.category} value="Banker">{data.category}</option>
-											))}
-										</select>
-									</div>
-									<div className="so-holdr">
-										<label for="">Full Name (Mr / Mrs / Ms)</label>
-										<input defaultValue={personalSkills.name} onChange={(e) => { setName(e.target.name) }} type="text" />
-									</div>
-								</div>
-								<div className="pd-1 so-hodr">
-									<div className="so-holdr">
-										<div className="mae-holder">
-											<div className="mae-text-holder">
-												<label for="">Mobile Number</label>
-											</div>
-											<div className="mae-checkbox-holder">
-												<input type="checkbox" id="" name="" value="" />
-												<label for="">Hidden</label>
-											</div>
-										</div>
-										<input defaultValue={personalSkills.mobile_no} type="text" id="" name="" />
-									</div>
-									<div className="so-holdr">
-										<div className="mae-holder">
-											<div className="mae-text-holder">
-												<label for="">Alternative Mobile Number</label>
-											</div>
-											<div className="mae-checkbox-holder">
-												<input type="checkbox" id="" name="" value="" />
-												<label for="">Hidden</label>
-											</div>
-										</div>
-										<input onChange={(e) => { setAlt_mobile_no(e.target.value) }} type="text" id="" name="" defaultValue={personalSkills.alt_mobile_no} />
-									</div>
-									<div className="so-holdr">
-										<div className="mae-holder">
-											<div className="mae-text-holder">
-												<label for="">Email Address</label>
-											</div>
-											<div className="mae-checkbox-holder">
-												<input type="checkbox" id="" name="" value="" />
-												<label for="">Hidden</label>
-											</div>
-										</div>
-										<input type="text" id="" name="" defaultValue={personalSkills.email} onChange={(e) => { setEmail(e.target.value) }} />
-									</div>
-								</div>
-							</div>
-							<div className="psb-3">
-								<h3>Work Details</h3>
-								<div className="pd-holder">
-									<div className="prdi-1 ptd-1">
-										<label for="">Price</label>
-										<input type="text" id="" name="" defaultValue={personalSkills.work_price} onChange={(e) => { setWork_Price(e.target.value) }} />
-										<div className="prdi-1_2">
-											<a href="">Per / hr</a>
-											<a href="" className="per_ev">Per / Day</a>
-										</div>
-									</div>
-									<div className="prdi-1 ptd-2">
-										<label for="">Discount</label>
-										<input type="text" id="" name="" defaultValue={personalSkills.work_discount} onChange={(e) => { setWorkDiscount(e.targetvalue) }} />
-										<div className="prdi-1_2">
-											<a href=""><i className="icon-Percentage"></i></a>
-											<a href="" className="per_ev"><i className="icon-Rs"></i></a>
-											<a href="" className="per_ev">Non</a>
-										</div>
-									</div>
-								</div>
-								<div className="pd-holder tsfmain-holdr">
-									<div className="taf-holder">
-										<label for="">Travel Cost</label>
-										<div className="inclued_exclued-holder">
-											<div className="tg-btn-holder">
-												<h3>Include</h3>
-												<Switch defaultChecked={personalSkills.travel_cost === "no"} onChange={(e) => { setTravelCost(e.target.checked) }} />
-												<h3>Exclude</h3>
-											</div>
-											<div className="ie-text">
-												<textarea onChange={(e) => { setTravelCost(e.target.value) }} defaultValue={personalSkills.travel_cost} name="" id="" cols="30" rows="10" placeholder="Enter Details..."></textarea>
-											</div>
-										</div>
-									</div>
-									<div className="taf-holder">
-										<label for="">Accommodation</label>
-										<div className="inclued_exclued-holder">
-											<div className="tg-btn-holder">
-												<h3>Include</h3>
-
-												<Switch defaultChecked={personalSkills.accommodation === "no"} onChange={(e) => { setAccommodation(e.target.checked) }} />
-
-												<h3>Exclude</h3>
-											</div>
-											<div className="ie-text">
-												<textarea onChange={(e) => { setAccommodation(e.target.value) }} name="" id="" cols="30" rows="10" defaultValue={personalSkills.accommodation === "no" ? "" : personalSkills.accommodation} placeholder="Enter Details..."></textarea>
-											</div>
-										</div>
-									</div>
-									<div className="taf-holder">
-										<label for="">Food</label>
-										<div className="inclued_exclued-holder">
-											<div className="tg-btn-holder">
-												<h3>Include</h3>
-												<Switch defaultChecked={personalSkills.food === "no"} onChange={(e) => { setFood(e.target.checked) }} />
-												<h3>Exclude</h3>
-											</div>
-											<div className="ie-text">
-												<textarea onChange={(e) => { setFood(e.target.value) }} name="" id="" cols="30" rows="10" placeholder="Enter Details..." defaultValue={personalSkills.food === "no" ? "" : personalSkills.food}></textarea>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div className="psb-4">
-								<div className="equi-holder">
-									<h3>Equipment</h3>
-									<div onClick={() => { setEquipMentPopUp(true) }}><i className="icon-plus"></i>Add Equipment</div>
-									<Modal title="My Modal" onClose={() => setImagePopUp(false)} show={equipmentPopUp}>
-										<AddEquipment id={personalSkills.perskillId} method="image" uploadImageList={uploadImageList} setUploadImage={setUploadImage} set_modalState={setEquipMentPopUp} />
-									</Modal>
-								</div>
-								{equipment.map((data) => (
-									<div className="cb_mc-holder">
-
-										<div className="cb_mc_text">
-											<div className="cb_text">
-												<h3>{data.equ_name}</h3>
-											</div>
-											<div className="cb_prise">
-												<div className="inr-cb-holder">
-													<span>{`${data.equ_price} INR`}</span>
-												</div>
-												<div className="tg-btn-holder tb-holder">
-													<h3>Include</h3>
-													<Switch  onChange={(e) => { handleEquipement(e, data) }} />
-													<h3>Exclude</h3>
-												</div>
-											</div>
-										</div>
-										<p>{data.equ_details + data.Id}</p>
-									</div>
+						<div className="psb-1">
+							<label for="">Select Option</label>
+							<select name="categorymain" id="categorymain" onChange={(e) => { setPro_Category(e.target.value) }}>
+								{categoryMain.map((data) => (
+									<option selected={personalSkills.pro_category_id === data.Id} value={data.Id}>{data.category}</option>
 								))}
+							</select>
+						</div>
+						<div className="psb-2">
+							<h3>Personal Details</h3>
+							<div className="pd-1">
+								<div className="so-holdr">
+									<label for="">Select Option</label>
+									<select name="Banker" id="Banker" onChange={(e) => { setProfession(e.target.value) }}>
+										{subCategory.map((data) => (
+
+											<option selected={personalSkills.pro_category === data.category} value={data.Id}>{data.category}</option>
+										))}
+									</select>
+								</div>
+								<div className="so-holdr">
+									<label for="">Full Name (Mr / Mrs / Ms)</label>
+									<input defaultValue={personalSkills.name} onChange={(e) => { setName(e.target.value) }} type="text" />
+								</div>
 							</div>
-							<div className="photo-video-holder psb-5">
-								<div className="p-v-main">
-									<h1>Photos Mainnnnn</h1>
-									<div className="poster-m">
-										<div onClick={() => setImagePopUp(true)} className="images-selctor ">
-											<Modal title="My Modal" onClose={() => setImagePopUp(false)} show={imagePopup}>
-												<UploadImage id={personalSkills.perskillId} method="image" uploadImageList={uploadImageList} setUploadImage={setUploadImage} set_modalState={setImagePopUp} />
-											</Modal>
+							<div className="pd-1 so-hodr">
+								<div className="so-holdr">
+									<div className="mae-holder">
+										<div className="mae-text-holder">
+											<label for="">Mobile Number</label>
+										</div>
+										<div className="mae-checkbox-holder">
+											<input type="checkbox" id="" name="" value="" />
+											<label for="">Hidden</label>
+										</div>
+									</div>
+									<input defaultValue={personalSkills.mobile_no} type="text" id="" name="" />
+								</div>
+								<div className="so-holdr">
+									<div className="mae-holder">
+										<div className="mae-text-holder">
+											<label for="">Alternative Mobile Number</label>
+										</div>
+										<div className="mae-checkbox-holder">
+											<input type="checkbox" id="" name="" value="" />
+											<label for="">Hidden</label>
+										</div>
+									</div>
+									<input onChange={(e) => { setAlt_mobile_no(e.target.value) }} type="text" id="" name="" defaultValue={personalSkills.alt_mobile_no} />
+								</div>
+								<div className="so-holdr">
+									<div className="mae-holder">
+										<div className="mae-text-holder">
+											<label for="">Email Address</label>
+										</div>
+										<div className="mae-checkbox-holder">
+											<input type="checkbox" id="" name="" value="" />
+											<label for="">Hidden</label>
+										</div>
+									</div>
+									<input type="text" id="" name="" defaultValue={personalSkills.email} onChange={(e) => { setEmail(e.target.value) }} />
+								</div>
+							</div>
+						</div>
+						<div className="psb-3">
+							<h3>Work Details</h3>
+							<div className="pd-holder">
+								<div className="prdi-1 ptd-1">
+									<label for="">Price</label>
+									<input type="text" id="" name="" defaultValue={personalSkills.work_price} onChange={(e) => { setWork_Price(e.target.value) }} />
+									<div className="prdi-1_2">
+										<a href="">Per / hr</a>
+										<a href="" className="per_ev">Per / Day</a>
+									</div>
+								</div>
+								<div className="prdi-1 ptd-2">
+									<label for="">Discount</label>
+									<input type="text" id="" name="" defaultValue={personalSkills.work_discount} onChange={(e) => { setWorkDiscount(e.targetvalue) }} />
+									<div className="prdi-1_2">
+										<a href=""><i className="icon-Percentage"></i></a>
+										<a href="" className="per_ev"><i className="icon-Rs"></i></a>
+										<a href="" className="per_ev">Non</a>
+									</div>
+								</div>
+							</div>
+							<div className="pd-holder tsfmain-holdr">
+								<div className="taf-holder">
+									<label for="">Travel Cost</label>
+									<div className="inclued_exclued-holder">
+										<div className="tg-btn-holder">
+											<h3>Include</h3>
+											<Switch defaultChecked={personalSkills.travel_cost !== "no" ? false : true} onChange={(e) => { setTravelCost(e.target.checked) }} />
+											<h3>Exclude</h3>
+										</div>
+										<div className="ie-text">
+											<textarea onChange={(e) => { setTravelCost(e.target.value) }} defaultValue={personalSkills.travel_cost === "no" ? "" : personalSkills.travel_cost} name="" id="" cols="30" rows="10" placeholder="Enter Details..."></textarea>
 										</div>
 									</div>
 								</div>
-								<div className="ph-main">
-									<span>Uploaded Photo</span>
-									<div className="img-holder">
-										{images.map((data) => (
-											<div className="photo-box p">
-												<div className="images-selctor ">
-													<img src={`${API_URL}${data.photo_file}`} className="img-fluid" alt="" />
-													<button>Remove</button>
-												</div>
-											</div>
-										))}
+								<div className="taf-holder">
+									<label for="">Accommodation</label>
+									<div className="inclued_exclued-holder">
+										<div className="tg-btn-holder">
+											<h3>Include</h3>
+
+											<Switch defaultChecked={personalSkills.accommodation !== "no" ? false : true} onChange={(e) => { setAccommodation(e.target.checked) }} />
+
+											<h3>Exclude</h3>
+										</div>
+										<div className="ie-text">
+											<textarea onChange={(e) => { setAccommodation(e.target.value) }} name="" id="" cols="30" rows="10" defaultValue={personalSkills.accommodation === "no" ? "" : personalSkills.accommodation} placeholder="Enter Details..."></textarea>
+										</div>
 									</div>
 								</div>
-								<div className="p-v-main video-uploder">
-									<h1>Videos mainnnnnn</h1>
+								<div className="taf-holder">
+									<label for="">Food</label>
+									<div className="inclued_exclued-holder">
+										<div className="tg-btn-holder">
+											<h3>Include</h3>
+											<Switch defaultChecked={personalSkills.food !== "no" ? false : true} onChange={(e) => { setFood(e.target.checked) }} />
+											<h3>Exclude</h3>
+										</div>
+										<div className="ie-text">
+											<textarea onChange={(e) => { setFood(e.target.value) }} name="" id="" cols="30" rows="10" placeholder="Enter Details..." defaultValue={personalSkills.food === "no" ? "" : personalSkills.food}></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="psb-4">
+							<div className="equi-holder">
+								<h3>Equipment</h3>
+								<div onClick={() => { setEquipMentPopUp(true) }}><i className="icon-plus"></i>Add Equipment</div>
+								<Modal title="My Modal" onClose={() => setImagePopUp(false)} show={equipmentPopUp}>
+									<AddEquipment id={personalSkills.perskillId} method="image" uploadImageList={uploadImageList} setUploadImage={setUploadImage} set_modalState={setEquipMentPopUp} />
+								</Modal>
+							</div>
+							{equipment.map((data) => (
+								<div className="cb_mc-holder">
+
+
+									<div className="cb_mc_text">
+										<div className="cb_text">
+											<h3>{data.equ_name}</h3>
+										</div>
+										<div className="cb_prise">
+											<div className="inr-cb-holder">
+												<span>{`${data.equ_price} INR`}</span>
+											</div>
+											<div className="tg-btn-holder tb-holder">
+												<h3>Include</h3>
+												<Switch defaultChecked={EquipmentArray.indexOf(JSON.stringify(data.Id)) !== -1 ? true : false} onChange={(e) => { handleEquipement(e, data) }} />
+												<h3>Exclude</h3>
+											</div>
+										</div>
+									</div>
+									<p>{data.equ_details + data.Id}</p>
+								</div>
+							))}
+						</div>
+						<div className="photo-video-holder psb-5">
+							<div className="p-v-main">
+								<h1>Photos Mainnnnn</h1>
+								<div className="poster-m">
+									<div onClick={() => setImagePopUp(true)} className="images-selctor ">
+										<Modal title="My Modal" onClose={() => setImagePopUp(false)} show={imagePopup}>
+											<UploadImage id={personalSkills.perskillId} method="image" uploadImageList={uploadImageList} setUploadImage={setUploadImage} set_modalState={setImagePopUp} />
+										</Modal>
+									</div>
+								</div>
+							</div>
+							<div className="ph-main">
+								<span>Uploaded Photo</span>
+								<div className="img-holder">
+									{images.map((data) => (
+										<div className="photo-box p">
+											<div className="images-selctor ">
+												<img src={`${API_URL}${data.photo_file}`} className="img-fluid" alt="" />
+												<button>Remove</button>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+							<div className="p-v-main video-uploder">
+								<h1>Videos mainnnnnn</h1>
+								<div className="poster-m">
+									<div className="images-selctor ">
+										<input type="file" className="file-input" name="" value="" accept="video/mp4,video/x-m4v,video/*" onChange={(e) => { handleUploadVideo(e, personalSkills.perskillId) }} />
+									</div>
+								</div>
+							</div>
+							<div className="ph-main">
+								<span>Uploaded Video</span>
+								<div className="img-holder">
+									{videos.map((data) => (
+										<div className="video-main">
+											<div className="vedio-item">
+												<div className="o-video">
+													<video controls width="100%" height="100%" src={`${API_URL}${data.video_file}`}></video>
+												</div>
+												<button>Remove</button>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						</div>
+						<div className="psb-6">
+							<h3>Company Details</h3>
+							<div className="pd-1">
+								<div className="so-holdr">
+									<div className="mae-holder">
+										<div className="mae-text-holder">
+											<label for="">Company Name</label>
+										</div>
+										<div className="mae-checkbox-holder">
+											<input type="checkbox" id="" name="" value="" className="cn_check" />
+											<label for="">Hidden</label>
+										</div>
+									</div>
+									<input type="text" id="" name="" defaultValue={personalSkills.com_name} onChange={(e) => { setComName(e.target.value) }} />
+								</div>
+								<div className="so-holdr">
+									<label for="">Company GST (Optional)</label>
+									<div className="c-p-f">
+										<input id="file-upload" type="file" accept="application/pdf,application/vnd.ms-excel" onChange={(e) => { handlePdfChange(e) }} />
+									</div>
+								</div>
+							</div>
+							<div className="pd-1 so-hodr">
+								<div className="so-holdr">
+									<div className="mae-holder">
+										<div className="mae-text-holder">
+											<label for="">Company Contact No</label>
+										</div>
+										<div className="mae-checkbox-holder">
+											<input type="checkbox" id="" name="" value="" />
+											<label for="">Hidden</label>
+										</div>
+									</div>
+									<input type="text" id="" name="" onChange={(e) => { setComContact(e.target.value) }} defaultValue={personalSkills.com_contact} />
+								</div>
+								<div className="so-holdr">
+									<div className="mae-holder">
+										<div className="mae-text-holder">
+											<label for="">Company Email</label>
+										</div>
+										<div className="mae-checkbox-holder">
+											<input type="checkbox" id="" name="" value="" />
+											<label for="">Hidden</label>
+										</div>
+									</div>
+									<input type="text" id="" name="" defaultValue={personalSkills.com_email} onChange={(e) => { setComEmail(e.target.value) }} />
+								</div>
+							</div>
+							<div className="pd-1 so-hodr">
+								<div className="so-holdr">
+									<label for="">Company Address</label>
+									<textarea defaultValue={personalSkills.com_address} onChange={(e) => { setComAddress(e.target.value) }} name="" id="" cols="30" rows="10" placeholder="Type here Address..."></textarea>
+									<button>Location from Google map</button>
+								</div>
+							</div>
+							<div className="pd-1 so-hodr">
+								<div className="p-v-main">
+									<h3>Compan Photos (Upload upto 10Photos max.)</h3>
 									<div className="poster-m">
 										<div className="images-selctor ">
-											<input type="file" className="file-input" name="" value="" accept="video/mp4,video/x-m4v,video/*" onChange={(e) => { handleUploadVideo(e, personalSkills.perskillId) }} />
+											<input type="file" className="file-input" multiple name="" value="" accept="image/x-png,image/gif,image/jpeg" onChange={(e) => { handleComPhotoChange(e, personalSkills.perskillId) }} />
 										</div>
 									</div>
-								</div>
-								<div className="ph-main">
-									<span>Uploaded Video</span>
-									<div className="img-holder">
-										{videos.map((data) => (
-											<div className="video-main">
-												<div className="vedio-item">
-													<div className="o-video">
-														<video controls width="100%" height="100%" src={`${API_URL}${data.video_file}`}></video>
+									<div className="ph-main">
+										<span>Uploaded Photo</span>
+										<div className="img-holder">
+											{personalSkills?.Company_photo?.map((data) => (
+												<div className="photo-box p">
+													<div className="images-selctor ">
+														<img src={`${API_URL}${data.c_photo_file}`} className="img-fluid" alt="" />
+														<button>Remove</button>
 													</div>
-													<button>Remove</button>
 												</div>
-											</div>
-										))}
+											))}
+										</div>
 									</div>
 								</div>
 							</div>
-							<div className="psb-6">
-								<h3>Company Details</h3>
-								<div className="pd-1">
-									<div className="so-holdr">
-										<div className="mae-holder">
-											<div className="mae-text-holder">
-												<label for="">Company Name</label>
-											</div>
-											<div className="mae-checkbox-holder">
-												<input type="checkbox" id="" name="" value="" className="cn_check" />
-												<label for="">Hidden</label>
-											</div>
-										</div>
-										<input type="text" id="" name="" defaultValue={personalSkills.com_name} onChange={(e) => { setComName(e.target.value) }} />
-									</div>
-									<div className="so-holdr">
-										<label for="">Company GST (Optional)</label>
-										<div className="c-p-f">
-											<input id="file-upload" type="file" accept="application/pdf,application/vnd.ms-excel" onChange={(e) => { handlePdfChange(e) }} />
+							<div className="pd-1 so-hodr">
+								<div className="p-v-main video-uploder">
+									<h3>Company Video (Upload upto 3 Video max.)</h3>
+									<div className="poster-m">
+										<div className="images-selctor ">
+											<input onChange={(e) => { handleComVideoChange(e, personalSkills.perskillId) }} type="file" className="file-input" name=""  />
 										</div>
 									</div>
-								</div>
-								<div className="pd-1 so-hodr">
-									<div className="so-holdr">
-										<div className="mae-holder">
-											<div className="mae-text-holder">
-												<label for="">Company Contact No</label>
-											</div>
-											<div className="mae-checkbox-holder">
-												<input type="checkbox" id="" name="" value="" />
-												<label for="">Hidden</label>
-											</div>
-										</div>
-										<input type="text" id="" name="" onChange={(e) => { setComContact(e.target.value) }} defaultValue={personalSkills.com_contact} />
-									</div>
-									<div className="so-holdr">
-										<div className="mae-holder">
-											<div className="mae-text-holder">
-												<label for="">Company Email</label>
-											</div>
-											<div className="mae-checkbox-holder">
-												<input type="checkbox" id="" name="" value="" />
-												<label for="">Hidden</label>
-											</div>
-										</div>
-										<input type="text" id="" name="" defaultValue={personalSkills.com_email} onChange={(e) => { setComEmail(e.target.value) }} />
-									</div>
-								</div>
-								<div className="pd-1 so-hodr">
-									<div className="so-holdr">
-										<label for="">Company Address</label>
-										<textarea defaultValue={personalSkills.com_address} onChange={(e) => { setComAddress(e.target.value) }} name="" id="" cols="30" rows="10" placeholder="Type here Address..."></textarea>
-										<button>Location from Google map</button>
-									</div>
-								</div>
-								<div className="pd-1 so-hodr">
-									<div className="p-v-main">
-										<h3>Compan Photos (Upload upto 10Photos max.)</h3>
-										<div className="poster-m">
-											<div className="images-selctor ">
-												<input type="file" className="file-input" multiple name="" value="" accept="image/x-png,image/gif,image/jpeg" onChange={(e) => { handleComPhotoChange(e, personalSkills.perskillId) }} />
-											</div>
-										</div>
-										<div className="ph-main">
-											<span>Uploaded Photo</span>
-											<div className="img-holder">
-												{personalSkills?.Company_photo?.map((data) => (
-													<div className="photo-box p">
-														<div className="images-selctor ">
-															<img src={`${API_URL}${data.c_photo_file}`} className="img-fluid" alt="" />
-															<button>Remove</button>
+									<div className="ph-main">
+										<span>Uploaded Video</span>
+										<div className="img-holder">
+											{personalSkills?.Company_video?.map((data) => (
+												<div className="video-main">
+													<div className="vedio-item">
+														<div className="o-video">
+															<video controls width="100%" height="100%" src={`${API_URL}${data.c_video_file}`}></video>
 														</div>
+														<button>Remove</button>
 													</div>
-												))}
-											</div>
-										</div>
-									</div>
-								</div>
-								<div className="pd-1 so-hodr">
-									<div className="p-v-main video-uploder">
-										<h3>Company Video (Upload upto 3 Video max.)</h3>
-										<div className="poster-m">
-											<div className="images-selctor ">
-												<input type="file" className="file-input" name="" value="" accept="image/*" />
-											</div>
-										</div>
-										<div className="ph-main">
-											<span>Uploaded Video</span>
-											<div className="img-holder">
-												{personalSkills?.Company_video?.map((data) => (
-													<div className="video-main">
-														<div className="vedio-item">
-															<div className="o-video">
-																<video controls width="100%" height="100%" src={`${API_URL}${data.c_video_file}`}></video>
-															</div>
-															<button>Remove</button>
-														</div>
-													</div>
+												</div>
 
-												))}
+											))}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="social-media-main psb-7">
+							<h3>Social Media</h3>
+							<div className="s-pletform">
+								<div className="row mx-0 mt-1">
+									<div className="col-md-6 col-12 pl-0 pr-2">
+										<label for="">
+											<div className="s-pleform-icon">
+												<img src={fbIcon} alt="" />
 											</div>
-										</div>
+											<input type="text" onChange={(e) => { setFacebook(e.target.value) }} defaultValue={personalSkills.facebook} placeholder="Enter URL" name="" />
+										</label>
+									</div>
+									<div className="col-md-6 col-12 px-0">
+										<label for="">
+											<div className="s-pleform-icon">
+												<img src={youtubeIcon} alt="" />
+											</div>
+											<input type="text" onChange={(e) => { setYouTube(e.target.value) }} defaultValue={personalSkills.youtube} placeholder="Enter URL" name="" />
+										</label>
+									</div>
+									<div className="col-md-6 col-12 pl-0 mt-2 pr-2">
+										<label for="">
+											<div className="s-pleform-icon">
+												<img src={twitterIcon} alt="" />
+											</div>
+											<input type="text" onChange={(e) => { setTwitter(e.target.value) }} defaultValue={personalSkills.twitter} placeholder="Enter URL" name="" />
+										</label>
+									</div>
+									<div className="col-md-6 col-12 px-0 mt-2">
+										<label for="">
+											<div className="s-pleform-icon">
+												<img src={printrestIcon} alt="" />
+											</div>
+											<input type="text" onChange={(e) => { setPinterest(e.target.value) }} defaultValue={personalSkills.pinterest} placeholder="Enter URL" name="" />
+										</label>
+									</div>
+									<div className="col-md-6 col-12 pl-0 mt-2 pr-2">
+										<label for="">
+											<div className="s-pleform-icon">
+												<img src={instagramIcon} alt="" />
+											</div>
+											<input type="text" onChange={(e) => { setInstagram(e.target.value) }} defaultValue={personalSkills.instagram} placeholder="Enter URL" name="" />
+										</label>
+									</div>
+									<div className="col-md-6 col-12 px-0 mt-2">
+										<label for="">
+											<div className="s-pleform-icon">
+												<img src={vimeoIcon} alt="" />
+											</div>
+											<input type="text" onChange={(e) => { setVimeo(e.target.value) }} defaultValue={personalSkills.vimeo} placeholder="Enter URL" name="" />
+										</label>
 									</div>
 								</div>
 							</div>
-							<div className="social-media-main psb-7">
-								<h3>Social Media</h3>
-								<div className="s-pletform">
-									<div className="row mx-0 mt-1">
-										<div className="col-md-6 col-12 pl-0 pr-2">
-											<label for="">
-												<div className="s-pleform-icon">
-													<img src={fbIcon} alt="" />
-												</div>
-												<input type="text" onChange={(e) => { setFacebook(e.target.value) }} defaultValue={personalSkills.facebook} placeholder="Enter URL" name="" />
-											</label>
-										</div>
-										<div className="col-md-6 col-12 px-0">
-											<label for="">
-												<div className="s-pleform-icon">
-													<img src={youtubeIcon} alt="" />
-												</div>
-												<input type="text" onChange={(e) => { setYouTube(e.target.value) }} defaultValue={personalSkills.youtube} placeholder="Enter URL" name="" />
-											</label>
-										</div>
-										<div className="col-md-6 col-12 pl-0 mt-2 pr-2">
-											<label for="">
-												<div className="s-pleform-icon">
-													<img src={twitterIcon} alt="" />
-												</div>
-												<input type="text" onChange={(e) => { setTwitter(e.target.value) }} defaultValue={personalSkills.twitter} placeholder="Enter URL" name="" />
-											</label>
-										</div>
-										<div className="col-md-6 col-12 px-0 mt-2">
-											<label for="">
-												<div className="s-pleform-icon">
-													<img src={printrestIcon} alt="" />
-												</div>
-												<input type="text" onChange={(e) => { setPinterest(e.target.value) }} defaultValue={personalSkills.pinterest} placeholder="Enter URL" name="" />
-											</label>
-										</div>
-										<div className="col-md-6 col-12 pl-0 mt-2 pr-2">
-											<label for="">
-												<div className="s-pleform-icon">
-													<img src={instagramIcon} alt="" />
-												</div>
-												<input type="text" onChange={(e) => { setInstagram(e.target.value) }} defaultValue={personalSkills.instagram} placeholder="Enter URL" name="" />
-											</label>
-										</div>
-										<div className="col-md-6 col-12 px-0 mt-2">
-											<label for="">
-												<div className="s-pleform-icon">
-													<img src={vimeoIcon} alt="" />
-												</div>
-												<input type="text" onChange={(e) => { setVimeo(e.target.value) }} defaultValue={personalSkills.vimeo} placeholder="Enter URL" name="" />
-											</label>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div className="psb-8">
-								<button>Sumbit</button>
-							</div>
-						</form>
+						</div>
+						<div className="psb-8">
+							<button onClick={onSubmit}>Sumbit</button>
+						</div>
+
 					</div>
 				</div>
 			</div>
