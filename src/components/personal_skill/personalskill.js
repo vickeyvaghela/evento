@@ -241,9 +241,6 @@ function PersonalSkill() {
 		}
 	}
 	const handlePdfChange = async (e) => {
-		// setComGstFile(e.target.files)
-		// const form = new FormData()
-
 		setComGstFile(e.target.files)
 	}
 	const onSubmit = async (e) => {
@@ -253,7 +250,7 @@ function PersonalSkill() {
 			for (let i = 0; i < com_gstfile.length; i++) {
 				dataForm.append("com_gstfile", com_gstfile[i])
 			}
-			dataForm.append("User", 1)
+			dataForm.append("User", userId)
 			dataForm.append("pro_category", pro_category)
 			dataForm.append("profession", profession)
 			dataForm.append("name", name)
