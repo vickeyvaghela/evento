@@ -247,9 +247,15 @@ function PersonalSkill() {
 		e.preventDefault()
 		const dataForm = new FormData()
 		if(typeof com_gstfile ==='object'){
+			console.log("coming here")
 			for (let i = 0; i < com_gstfile.length; i++) {
 				dataForm.append("com_gstfile", com_gstfile[i])
 			}
+		}
+		else{
+
+			dataForm.append("com_gstfile" , com_gstfile)
+		}
 			dataForm.append("User", userId)
 			dataForm.append("pro_category", pro_category)
 			dataForm.append("profession", profession)
@@ -281,7 +287,7 @@ function PersonalSkill() {
 				return
 			}
 			const data = await axios.post(`${API_URL}/personalskill`, dataForm, { headers: { "Content-Type": "application/json", Authorization: token } })
-		}
+		
 
 	}
 	useEffect(() => {

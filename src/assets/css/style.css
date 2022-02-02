@@ -11216,21 +11216,26 @@ h2.m_e_l_holder {
     font-weight: 700;
     text-decoration: none;
     color: #fff;
-    background: #20C0E8;
+    
     padding: 8px 10px;
     border-radius: 3px;
     box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
 }
-
-.pp_pe span {
+.equipement{
     font-size: 14px;
     font-weight: 700;
     text-decoration: none;
-    color: #A6A6A6;
+    
+    cursor: pointer;
     padding: 8px 10px;
     border-radius: 3px;
     box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
 }
+.active_equipement{
+    background: #20C0E8;
+    color: #fff !important;
+}
+
 
 .pp_pe .selected  {
     background: #20C0E8;    
