@@ -17,7 +17,7 @@ const axios = require('axios');
 
 function Login() {
 
-	console.log('API_URL',API_URL);
+	// console.log('API_URL',API_URL);
 
 	const [ userData, setUserData ] = useState({ emailOrPhone: "", password: "" });
 	const [ errMsg, setErrMsg ] = useState("");
@@ -40,6 +40,7 @@ function Login() {
 			localStorage.clear();
 
 			localStorage.setItem("token", response.data.data.token);
+			console.log("token", response.data.data.token);
 
 			if(response && response.data && response.data.data && response.data.data.userId){
 				localStorage.setItem("userId", response.data.data.userId);

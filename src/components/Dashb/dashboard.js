@@ -13,8 +13,12 @@ import Event from "../event_pages/event";
 import PersonalSkill from "../personal_skill/personalskill";
 import PartnerCompney from "../partner_company/PartnerCompany";
 import NavigationBar from "../comman/Navigationbar";
+import { useEffect } from "react";
 
 function Dashboard({ match }) {
+  useEffect(()=>{
+    // console.log(match);
+  })
   return (
     <>
     {/* <NavigationBar/> */}
@@ -46,9 +50,9 @@ function Dashboard({ match }) {
                         <span>Personal skills business</span>
                       </div>
                     </Link>
-                  </div>
+                  </div> 
                   <div className="wiyb-holder">
-                    <Link to={`${match.path}/partnercompany`}>
+                    <Link to={`/PartnerCompany`}>
                       <img src={pc} alt="" />
                       <div className="wiyb-text-holder">
                         <span>Partner Company Business</span>

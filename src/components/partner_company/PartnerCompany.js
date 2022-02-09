@@ -1,9 +1,7 @@
 import React from "react";
-
 import "../../assets/css/style.css";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/icon/font/style.css";
-
 import ps1 from "../../assets/img/ph1.png"
 import ps2 from "../../assets/img/ph2.png"
 import fb from "../../assets/img/fb-1.png"
@@ -13,9 +11,71 @@ import printrest from "../../assets/img/printpest.png"
 import instagram from "../../assets/img/instagram 1.png"
 import vimo from "../../assets/img/vimo.png"
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
+import { API_URL } from "../../constants";
+import { useState } from "react";
 
+var token = `Token ${localStorage.getItem("token")}`;
 
 function PartnerCompany() {
+
+  const [categories, setCategories] = useState([])
+  const [files, setFiles] = useState([])
+  const [imgUrls, setImgUrls] = useState([])
+
+  async function getCategory() {
+    const response = await axios.get(`${API_URL}/pc_category`, { headers: { "Content-Type": "application/json", Authorization: token } })
+    // console.log("categories",response.data.data);
+    if (response.data.data) {
+      setCategories(response.data.data)
+    }
+  }
+
+  function onSubmitHandler(e) {
+    e.preventDefault()
+    console.log(files);
+    //  uploadMultipleImage()
+
+  }
+
+
+  useEffect(() => {
+
+    getCategory()
+  }, [])
+
+  async function uploadMultipleImage() {
+    const form = new FormData()
+    form.append('photo_file', files)
+    form.append('pc', 1)
+
+    const response = await axios.post(`${API_URL}/pc_photo`, form, { headers: { "Content-Type": "application/json", Authorization: token } })
+    if (response.data.isSuccess) {
+      alert(response.data.message)
+    }
+  }
+
+  function filePickerHandler(e) {
+    // console.log(e.target.files.length);
+    console.log(e.target.files);
+    let imageArray = [];
+    let imageUrlArray = [];
+    for (let i = 0; i < e.target.files.length; i++) {
+      imageArray.push(e.target.files[i])
+      imageUrlArray.push(URL.createObjectURL(e.target.files[i]))
+    }
+    setFiles(imageArray);
+    console.log(URL.createObjectURL(imageArray[0]));
+    setImgUrls(imageUrlArray)
+  }
+
+  function imageRemoveHandler(index) {
+    setImgUrls([...imgUrls.slice(0,index),...imgUrls.slice(index+1)])
+    files.splice(index,1)
+  }
+
+  
   return (
     <div className="continent-wrapper">
       <div className="container">
@@ -30,9 +90,9 @@ function PartnerCompany() {
                 <div className="so-holdr">
                   <label for="">Select Option</label>
                   <select name="Banker" id="Banker">
-                    <option value="Banker">Banker</option>
-                    <option value="Banker">Bank</option>
-                    <option value="Banker">Bank</option>
+                    {categories.map((item) =>
+                      <option value={item.Id}>{item.category}</option>
+                    )}
                   </select>
                 </div>
                 <div className="so-holdr">
@@ -197,7 +257,7 @@ function PartnerCompany() {
             <div className="psb-4">
               <div className="equi-holder">
                 <h3>Equipment</h3>
-                <Link to="/pc_add_equpment">
+                <Link to="/PartnerCompany/popups/PcAddEquipment">
                   <i className="icon-plus"></i>Add Equipment
                 </Link>
               </div>
@@ -262,7 +322,9 @@ function PartnerCompany() {
                 <div className="poster-m">
                   <div className="images-selctor ">
                     <input
+                      onChange={filePickerHandler}
                       type="file"
+                      multiple
                       className="file-input"
                       name=""
                       value=""
@@ -274,18 +336,14 @@ function PartnerCompany() {
               <div className="ph-main">
                 <span>Uploaded Photo</span>
                 <div className="img-holder">
-                  <div className="photo-box p">
-                    <div className="images-selctor ">
-                      <img src={ps1} className="img-fluid" alt="" />
-                      <button>Remove</button>
+                  {imgUrls.map((item, index) =>
+                    <div key={index} className="photo-box p">
+                      <div className="images-selctor ">
+                        <img src={item} className="img-fluid" alt="" />
+                        <button onClick={(e)=>{e.preventDefault(); imageRemoveHandler(index)}} >Remove</button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="photo-box p">
-                    <div className="images-selctor ">
-                      <img src={ps2} className="img-fluid" alt="" />
-                      <button>Remove</button>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </div>
               <div className="p-v-main video-uploder">
@@ -486,7 +544,9 @@ function PartnerCompany() {
               </div>
             </div>
             <div className="psb-8">
-             <Link to="/dashboard"><button>Sumbit</button></Link> 
+              {/* <Link to="/dashboard"> */}
+              <button onClick={onSubmitHandler} >Submit</button>
+              {/* </Link>  */}
             </div>
           </form>
         </div>
