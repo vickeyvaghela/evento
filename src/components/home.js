@@ -66,6 +66,7 @@ import AddEquipment from "../components/personal_skill/pspopup/AddEquipment";
 import UploadImage from "../components/personal_skill/pspopup/UploadImage";
 
 import Dashboard from "../components/Dashb/dashboard";
+import GoogleMapPicker from "./partner_company/pc_popup/pc_google_map";
 
 function Home() {
 	return (
@@ -120,6 +121,7 @@ function Home() {
 					<Route path={`/PartnerCompany/popups/PcSelectArtist`} component={PcSelectArtist} />
 					<Route path={`/PartnerCompany/popups/PcSelectDecor`} component={PcSelectDecor} />
 					<Route path={`/PartnerCompany/popups/PcUploadPhoto`} component={PcUploadPhoto} />
+					{/* <Route path={`/PartnerCompany/popups/mapPicker`} component={GoogleMapPicker} /> */}
 					<Route path={`/PartnerCompany`} component={PartnerCompany} />
 
 					<Route path={`/PersonalSkillHome`} component={PersonalSkill} />

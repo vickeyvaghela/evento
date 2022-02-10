@@ -1,28 +1,105 @@
-import React from "react";
+import React, { useRef } from "react";
 import "../../assets/css/style.css";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/icon/font/style.css";
-import ps1 from "../../assets/img/ph1.png"
-import ps2 from "../../assets/img/ph2.png"
 import fb from "../../assets/img/fb-1.png"
 import youtub from "../../assets/img/youtube 1.png"
 import twitter from "../../assets/img/twitter-1.png"
 import printrest from "../../assets/img/printpest.png"
 import instagram from "../../assets/img/instagram 1.png"
 import vimo from "../../assets/img/vimo.png"
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import { useState } from "react";
+import GoogleMapPicker from "./pc_popup/pc_google_map";
+import PhotoUpload from "./photo_upload_component";
+import VideoUpload from "./video_upload_component";
 
 var token = `Token ${localStorage.getItem("token")}`;
+var userId = localStorage.getItem("userId");
 
 function PartnerCompany() {
 
+  // States declaration
   const [categories, setCategories] = useState([])
-  const [files, setFiles] = useState([])
-  const [imgUrls, setImgUrls] = useState([])
+  const [pcid, setPcid] = useState()
+  const [equipments, setEquipments] = useState([])
+  const [openMap, setOpenMap] = useState(false)
+  const [submitCounter, setSubmitCounter] = useState(0)
+  const [formData, setFormData] = useState({
+    User: userId,
+    categoryId: null,
+    name: null,
+    mobile_no: null,
+    alt_mobile_no: null,
+    email_id: null,
+    equip_ids: null,
+    artist: null,
+    artist_price: null,
+    decor: null,
+    decor_price: null,
+    w_price: null,
+    w_discount: null,
+    travel_cost: null,
+    accommodation: null,
+    food: null,
+    com_name: null,
+    com_contact: null,
+    com_email: null,
+    com_address: null,
+    let: null,
+    long: null,
+    facebook: null,
+    youtube: null,
+    twitter: null,
+    pinterest: null,
+    instagram: null,
+    vimeo: null,
+    live: null,
+  })
+
+
+
+  const history = useHistory()
+
+
+
+  useEffect(() => {
+    if (localStorage.getItem("token") === null) { history.push("/Login"); }
+    else {
+      getCategory();
+      getPcId() 
+      getEquipments();
+    }
+
+  }, []) 
+
+
+
+  // Function starts
+
+  const setFormField = (field, value) => {
+    // console.log(field,value);
+
+    setFormData(prevState => {
+      return {
+        ...prevState,
+        [field]: value
+      };
+    });
+    
+  }
+
+  async function getEquipments() {
+    const response = await axios.get(`${API_URL}/pc_equipment`, { headers: { "Content-Type": "application/json", Authorization: token } })
+    // console.log("categories",response.data.data);
+    if (response.data.data) {
+      setEquipments(response.data.data)
+    }
+    console.log(response.data.data);
+  }
 
   async function getCategory() {
     const response = await axios.get(`${API_URL}/pc_category`, { headers: { "Content-Type": "application/json", Authorization: token } })
@@ -32,50 +109,26 @@ function PartnerCompany() {
     }
   }
 
-  function onSubmitHandler(e) {
+  async function onSubmitHandler(e) {
     e.preventDefault()
-    console.log(files);
-    //  uploadMultipleImage()
+    console.log(formData);
+    console.log(submitCounter);
 
+    const response = await axios.post(`${API_URL}/partnercompany`, formData, { headers: { "Content-Type": "application/json", Authorization: token } })
+    console.log(response);
+        if (response.data.isSuccess) {
+            alert(response.data.message)
+        }
+    setSubmitCounter(submitCounter+1)
+  }
+
+  async function getPcId() {
+    const response = await axios.get(`${API_URL}/partnercompany`, { headers: { "Content-Type": "application/json", Authorization: token } })
+    // console.log(response.data.data[0].parcomId);
+    if (response.data.data[0].parcomId) setPcid(response.data.data[0].parcomId);
   }
 
 
-  useEffect(() => {
-
-    getCategory()
-  }, [])
-
-  async function uploadMultipleImage() {
-    const form = new FormData()
-    form.append('photo_file', files)
-    form.append('pc', 1)
-
-    const response = await axios.post(`${API_URL}/pc_photo`, form, { headers: { "Content-Type": "application/json", Authorization: token } })
-    if (response.data.isSuccess) {
-      alert(response.data.message)
-    }
-  }
-
-  function filePickerHandler(e) {
-    // console.log(e.target.files.length);
-    console.log(e.target.files);
-    let imageArray = [];
-    let imageUrlArray = [];
-    for (let i = 0; i < e.target.files.length; i++) {
-      imageArray.push(e.target.files[i])
-      imageUrlArray.push(URL.createObjectURL(e.target.files[i]))
-    }
-    setFiles(imageArray);
-    console.log(URL.createObjectURL(imageArray[0]));
-    setImgUrls(imageUrlArray)
-  }
-
-  function imageRemoveHandler(index) {
-    setImgUrls([...imgUrls.slice(0,index),...imgUrls.slice(index+1)])
-    files.splice(index,1)
-  }
-
-  
   return (
     <div className="continent-wrapper">
       <div className="container">
@@ -89,7 +142,7 @@ function PartnerCompany() {
               <div className="pd-1">
                 <div className="so-holdr">
                   <label for="">Select Option</label>
-                  <select name="Banker" id="Banker">
+                  <select onChange={(e) => setFormField("categoryId", e.target.value)} name="Banker" id="Banker">
                     {categories.map((item) =>
                       <option value={item.Id}>{item.category}</option>
                     )}
@@ -97,7 +150,7 @@ function PartnerCompany() {
                 </div>
                 <div className="so-holdr">
                   <label for="">Full Name (Mr / Mrs / Ms)</label>
-                  <input type="text" />
+                  <input onChange={(e) => setFormField("name", e.target.value)} type="text" />
                 </div>
               </div>
               <div className="pd-1 so-hodr">
@@ -107,11 +160,11 @@ function PartnerCompany() {
                       <label for="">Mobile Number</label>
                     </div>
                     <div className="mae-checkbox-holder">
-                      <input type="checkbox" id="" name="" value="" />
+                      <input type="checkbox" id="" name="" />
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input type="text" id="" name="" value="" />
+                  <input onChange={(e) => setFormField("mobile_no", e.target.value)} type="text" id="" name="" />
                 </div>
                 <div className="so-holdr">
                   <div className="mae-holder">
@@ -119,11 +172,11 @@ function PartnerCompany() {
                       <label for="">Alternative Mobile Number</label>
                     </div>
                     <div className="mae-checkbox-holder">
-                      <input type="checkbox" id="" name="" value="" />
+                      <input type="checkbox" id="" name="" />
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input type="text" id="" name="" value="" />
+                  <input onChange={(e) => setFormField("alt_mobile_no", e.target.value)} type="text" id="" name="" />
                 </div>
                 <div className="so-holdr">
                   <div className="mae-holder">
@@ -131,11 +184,11 @@ function PartnerCompany() {
                       <label for="">Email Address</label>
                     </div>
                     <div className="mae-checkbox-holder">
-                      <input type="checkbox" id="" name="" value="" />
+                      <input type="checkbox" id="" name="" />
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input type="text" id="" name="" value="" />
+                  <input onChange={(e) => setFormField("email_id", e.target.value)} type="text" id="" name="" />
                 </div>
               </div>
             </div>
@@ -161,25 +214,25 @@ function PartnerCompany() {
               <div className="pd-holder">
                 <div className="prdi-1 ptd-1">
                   <label for="">Price</label>
-                  <input type="text" id="" name="" value="" />
+                  <input onChange={(e) => setFormField("w_price", e.target.value)} type="text" id="" name="" />
                   <div className="prdi-1_2">
-                    <a href="">Per / hr</a>
-                    <a href="" className="per_ev">
+                    <a href="javascript:void(0)">Per / hr</a>
+                    <a href="javascript:void(0)" className="per_ev">
                       Per / Day
                     </a>
                   </div>
                 </div>
                 <div className="prdi-1 ptd-2">
                   <label for="">Discount</label>
-                  <input type="text" id="" name="" value="" />
+                  <input onChange={(e) => setFormField("w_discount", e.target.value)} type="text" id="" name="" />
                   <div className="prdi-1_2">
-                    <a href="">
+                    <a href="javascript:void(0)">
                       <i className="icon-Percentage"></i>
                     </a>
-                    <a href="" className="per_ev">
+                    <a href="javascript:void(0)" className="per_ev">
                       <i className="icon-Rs"></i>
                     </a>
-                    <a href="" className="per_ev">
+                    <a href="javascript:void(0)" className="per_ev">
                       Non
                     </a>
                   </div>
@@ -199,6 +252,7 @@ function PartnerCompany() {
                     </div>
                     <div className="ie-text">
                       <textarea
+                        onChange={(e) => setFormField("travel_cost", e.target.value)}
                         name=""
                         id=""
                         cols="30"
@@ -221,6 +275,7 @@ function PartnerCompany() {
                     </div>
                     <div className="ie-text">
                       <textarea
+                        onChange={(e) => setFormField("accommodation", e.target.value)}
                         name=""
                         id=""
                         cols="30"
@@ -243,6 +298,7 @@ function PartnerCompany() {
                     </div>
                     <div className="ie-text">
                       <textarea
+                        onChange={(e) => setFormField("food", e.target.value)}
                         name=""
                         id=""
                         cols="30"
@@ -261,132 +317,37 @@ function PartnerCompany() {
                   <i className="icon-plus"></i>Add Equipment
                 </Link>
               </div>
-              <div className="cb_mc-holder">
-                <div className="cb_mc_text">
-                  <div className="cb_text">
-                    <h3>Cutting board</h3>
-                  </div>
-                  <div className="cb_prise">
-                    <div className="inr-cb-holder">
-                      <span>250 INR</span>
+              {
+                equipments.map((item, index) =>
+                  <div className="cb_mc-holder">
+                    <div className="cb_mc_text">
+                      <div className="cb_text">
+                        <h3>{item.equ_name}</h3>
+                      </div>
+                      <div className="cb_prise">
+                        <div className="inr-cb-holder">
+                          <span>{item.equ_price} INR</span>
+                        </div>
+                        <div className="tg-btn-holder tb-holder">
+                          <h3>Include</h3>
+                          <label className="switch">
+                            <input type="checkbox" />
+                            <span className="slider"></span>
+                          </label>
+                          <h3>Exclude</h3>
+                        </div>
+                      </div>
                     </div>
-                    <div className="tg-btn-holder tb-holder">
-                      <h3>Include</h3>
-                      <label className="switch">
-                        <input type="checkbox" />
-                        <span className="slider"></span>
-                      </label>
-                      <h3>Exclude</h3>
-                    </div>
-                  </div>
-                </div>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
-                </p>
-              </div>
-              <div className="cb_mc-holder">
-                <div className="cb_mc_text">
-                  <div className="cb_text">
-                    <h3>Measuring cups and spoons</h3>
-                  </div>
-                  <div className="cb_prise">
-                    <div className="inr-cb-holder">
-                      <span>300 INR</span>
-                    </div>
-                    <div className="tg-btn-holder tb-holder">
-                      <h3>Include</h3>
-                      <label className="switch">
-                        <input type="checkbox" />
-                        <span className="slider"></span>
-                      </label>
-                      <h3>Exclude</h3>
-                    </div>
-                  </div>
-                </div>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
-                </p>
-              </div>
+                    <p>
+                      {item.equ_details}
+                    </p>
+                  </div>)
+              }
             </div>
+
             <div className="photo-video-holder psb-5">
-              <div className="p-v-main">
-                <h1>Photos</h1>
-                <div className="poster-m">
-                  <div className="images-selctor ">
-                    <input
-                      onChange={filePickerHandler}
-                      type="file"
-                      multiple
-                      className="file-input"
-                      name=""
-                      value=""
-                      accept="image/*"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="ph-main">
-                <span>Uploaded Photo</span>
-                <div className="img-holder">
-                  {imgUrls.map((item, index) =>
-                    <div key={index} className="photo-box p">
-                      <div className="images-selctor ">
-                        <img src={item} className="img-fluid" alt="" />
-                        <button onClick={(e)=>{e.preventDefault(); imageRemoveHandler(index)}} >Remove</button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="p-v-main video-uploder">
-                <h1>Videos</h1>
-                <div className="poster-m">
-                  <div className="images-selctor ">
-                    <input
-                      type="file"
-                      className="file-input"
-                      name=""
-                      value=""
-                      accept="image/*"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="ph-main">
-                <span>Uploaded Video</span>
-                <div className="img-holder">
-                  <div className="video-main">
-                    <div className="vedio-item">
-                      <div className="o-video">
-                        <iframe
-                          src="https://www.youtube.com/embed/Kch8n4tcOZQ"
-                          allowfullscreen
-                        ></iframe>
-                      </div>
-                      <button>Remove</button>
-                    </div>
-                  </div>
-                  <div className="video-main">
-                    <div className="vedio-item">
-                      <div className="o-video">
-                        <iframe
-                          src="https://www.youtube.com/embed/Kch8n4tcOZQ"
-                          allowfullscreen
-                        ></iframe>
-                      </div>
-                      <button>Remove</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <PhotoUpload title="Photos"  pcid={pcid} submitCounter={submitCounter} route="/pc_photo" />
+              <VideoUpload title={"Video"} pcid={pcid} submitCounter={submitCounter} route="/pc_video" />
             </div>
             <div className="psb-6">
               <h3>Company Details</h3>
@@ -398,16 +359,16 @@ function PartnerCompany() {
                     </div>
                     <div className="mae-checkbox-holder">
                       <input
+                        onChange={(e) => setFormField("com_name", e.target.value)}
                         type="checkbox"
                         id=""
                         name=""
-                        value=""
                         className="cn_check"
                       />
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input type="text" id="" name="" value="" />
+                  <input type="text" id="" name="" />
                 </div>
                 <div className="so-holdr">
                   <label for="">Company GST (Optional)</label>
@@ -423,11 +384,11 @@ function PartnerCompany() {
                       <label for="">Company Contact No</label>
                     </div>
                     <div className="mae-checkbox-holder">
-                      <input type="checkbox" id="" name="" value="" />
+                      <input type="checkbox" id="" name="" />
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input type="text" id="" name="" value="" />
+                  <input onChange={(e) => setFormField("com_contact", e.target.value)} type="text" id="" name="" />
                 </div>
                 <div className="so-holdr">
                   <div className="mae-holder">
@@ -435,58 +396,30 @@ function PartnerCompany() {
                       <label for="">Company Email</label>
                     </div>
                     <div className="mae-checkbox-holder">
-                      <input type="checkbox" id="" name="" value="" />
+                      <input  type="checkbox" id="" name="" />
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input type="text" id="" name="" value="" />
+                  <input onChange={(e) => setFormField("com_email", e.target.value)} type="text" id="" name="" />
                 </div>
               </div>
               <div className="pd-1 so-hodr">
                 <div className="so-holdr">
                   <label for="">Company Address</label>
                   <textarea
+                    onChange={(e) => setFormField("com_address", e.target.value)}
                     name=""
                     id=""
                     cols="30"
                     rows="10"
                     placeholder="Type here Address..."
                   ></textarea>
-                  <button>Location from Google map</button>
+                  <button onClick={(e) => { e.preventDefault(); setOpenMap(!openMap) }}  >Location from Google map</button>
                 </div>
               </div>
-              <div className="pd-1 so-hodr">
-                <div className="p-v-main">
-                  <h3>Company Photos (Upload upto 10Photos max.)</h3>
-                  <div className="poster-m">
-                    <div className="images-selctor ">
-                      <input
-                        type="file"
-                        className="file-input"
-                        name=""
-                        value=""
-                        accept="image/*"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="pd-1 so-hodr">
-                <div className="p-v-main video-uploder">
-                  <h3>Company Video (Upload upto 3 Video max.)</h3>
-                  <div className="poster-m">
-                    <div className="images-selctor ">
-                      <input
-                        type="file"
-                        className="file-input"
-                        name=""
-                        value=""
-                        accept="image/*"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {openMap && <GoogleMapPicker setFormField={setFormField} />}
+              <PhotoUpload title="Company Photos (max 10)"  pcid={pcid} submitCounter={submitCounter} route="/pc_photo" />
+              <VideoUpload title={"Company Video (max 3)"} pcid={pcid} submitCounter={submitCounter} route="/pc_video" />
             </div>
             <div className="social-media-main psb-7">
               <h3>Social Media</h3>
@@ -497,7 +430,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={fb} alt="" />
                       </div>
-                      <input type="text" placeholder="Enter URL" name="" />
+                      <input onChange={(e) => setFormField("facebook", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                   <div className="col-md-6 col-12 px-0">
@@ -505,7 +438,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={youtub} alt="" />
                       </div>
-                      <input type="text" placeholder="Enter URL" name="" />
+                      <input onChange={(e) => setFormField("youtube", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                   <div className="col-md-6 col-12 pl-0 mt-2 pr-2">
@@ -513,7 +446,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={twitter} alt="" />
                       </div>
-                      <input type="text" placeholder="Enter URL" name="" />
+                      <input onChange={(e) => setFormField("twitter", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                   <div className="col-md-6 col-12 px-0 mt-2">
@@ -521,7 +454,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={printrest} alt="" />
                       </div>
-                      <input type="text" placeholder="Enter URL" name="" />
+                      <input onChange={(e) => setFormField("pinterest", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                   <div className="col-md-6 col-12 pl-0 mt-2 pr-2">
@@ -529,7 +462,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={instagram} alt="" />
                       </div>
-                      <input type="text" placeholder="Enter URL" name="" />
+                      <input onChange={(e) => setFormField("instagram", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                   <div className="col-md-6 col-12 px-0 mt-2">
@@ -537,7 +470,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={vimo} alt="" />
                       </div>
-                      <input type="text" placeholder="Enter URL" name="" />
+                      <input onChange={(e) => setFormField("vimeo", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                 </div>
