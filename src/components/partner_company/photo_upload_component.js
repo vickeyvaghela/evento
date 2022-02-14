@@ -5,7 +5,7 @@ import { API_URL } from "../../constants";
 
 var token = `Token ${localStorage.getItem("token")}`;
 
-const PhotoUpload=({pcid,submitCounter,route,title}) =>{
+const PhotoUpload=({pcid,submitCounter,route,title,formFieldname}) =>{
     const [files, setFiles] = useState([])
     const [imgUrls, setImgUrls] = useState([])
 
@@ -40,14 +40,14 @@ const PhotoUpload=({pcid,submitCounter,route,title}) =>{
     
     async function uploadMultipleImage() {
         console.log("called from outside");
-        // const form = new FormData()
-        // form.append('photo_file', files)
-        // form.append('pc', pcid)
+        const form = new FormData()
+        form.append(formFieldname, files)
+        form.append('pc', pcid)
 
-        // const response = await axios.post(API_URL+route, form, { headers: { "Content-Type": "application/json", Authorization: token } })
-        // if (response.data.isSuccess) {
-        //     alert(response.data.message)
-        // }
+        const response = await axios.post(API_URL+route, form, { headers: { "Content-Type": "application/json", Authorization: token } })
+        if (response.data.isSuccess) {
+            alert(response.data.message)
+        }
     }
 
     return (

@@ -37,13 +37,12 @@ function PcAddEquipment() {
 
     async function onSubmitHandler(e) {
         e.preventDefault()
-        history.goBack()
-        return ;
 
         try {
             const response = await axios.post(`${API_URL}/pc_equipment`, formData); 
             console.log('response', response);
             if (response && response.data && response.data.isSuccess ) {
+                alert(response.data.message)
                 history.goBack()
             } 
         } catch (error) {

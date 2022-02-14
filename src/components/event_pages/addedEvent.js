@@ -325,6 +325,8 @@ function AddedEvent() {
 
     const handleNext = () => {
 
+        console.log("next");
+
         let tmpStateData = { ...allEventData }
 
         if (tmpStateData.addNewTab.isOpen) {
@@ -390,10 +392,12 @@ function AddedEvent() {
         }
 
         localStorage.setItem('event' + eventID, JSON.stringify(tmpStateData));
+        console.log(tmpStateData);
         set_allEventData(tmpStateData)
     }
 
     const handlePrevious = () => {
+        console.log("previous");
         let tmpStateData = { ...allEventData }
 
         if (tmpStateData.otherTab.isOpen) {
@@ -429,6 +433,7 @@ function AddedEvent() {
         }
 
         localStorage.setItem('event' + eventID, JSON.stringify(tmpStateData));
+        console.log(tmpStateData);
         set_allEventData(tmpStateData)
     }
 
@@ -445,9 +450,6 @@ function AddedEvent() {
 
         tmpStateData[tabName].isOpen = true;
         set_allEventData(tmpStateData)
-
-
-
         
     }
 

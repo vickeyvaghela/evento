@@ -2,7 +2,9 @@ import axios from "axios";
 import { React ,useState,useEffect,ref, useImperativeHandle, forwardRef} from "react";
 import { API_URL } from "../../constants";
 
-function VideoUpload({pcid,submitCounter,title,route}) {
+var token = `Token ${localStorage.getItem("token")}`;
+
+function VideoUpload({pcid,submitCounter,title,route,formFieldname}) {
 
     const [files, setFiles] = useState([])
     const [videoUrls, setVideoUrls] = useState([])
@@ -38,14 +40,14 @@ function VideoUpload({pcid,submitCounter,title,route}) {
     
     async function uploadMultipleVideo() {
         console.log("uploadMultipleVideo called from outside");
-        // const form = new FormData()
-        // form.append('photo_file', files)
-        // form.append('pc', pcid)
+        const form = new FormData()
+        form.append(formFieldname, files)
+        form.append('pc', pcid)
 
-        // const response = await axios.post(API_URL+route, form, { headers: { "Content-Type": "application/json", Authorization: token } })
-        // if (response.data.isSuccess) {
-        //     alert(response.data.message)
-        // }
+        const response = await axios.post(API_URL+route, form, { headers: { "Content-Type": "application/json", Authorization: token } })
+        if (response.data.isSuccess) {
+            alert(response.data.message)
+        }
     }
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 
 import MapPicker from 'react-google-map-picker'
 
@@ -22,14 +22,20 @@ const GoogleMapPicker = ({ setFormField }) => {
         setZoom(newZoom);
     } 
 
-    function handleResetLocation() {
+    function handleResetLocation(e) {
+        e.preventDefault()
         setDefaultLocation({ ...DefaultLocation });
         setZoom(DefaultZoom);
     }
 
+    useEffect(() => {
+        // handleChangeLocation(DefaultLocation.lat,DefaultLocation.lng)
+    }, [])
+    
+
     return (
         <>
-            <button onClick={handleResetLocation}>Reset Location</button>
+            {/* <button onClick={handleResetLocation}>Reset Location</button> */}
             <label>Latitute:</label><input type='text' value={location.lat} disabled />
             <label>Longitute:</label><input type='text' value={location.lng} disabled />
             <label>Zoom:</label><input type='text' value={zoom} disabled />

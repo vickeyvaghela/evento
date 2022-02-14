@@ -121,7 +121,6 @@ function Home() {
 					<Route path={`/PartnerCompany/popups/PcSelectArtist`} component={PcSelectArtist} />
 					<Route path={`/PartnerCompany/popups/PcSelectDecor`} component={PcSelectDecor} />
 					<Route path={`/PartnerCompany/popups/PcUploadPhoto`} component={PcUploadPhoto} />
-					{/* <Route path={`/PartnerCompany/popups/mapPicker`} component={GoogleMapPicker} /> */}
 					<Route path={`/PartnerCompany`} component={PartnerCompany} />
 
 					<Route path={`/PersonalSkillHome`} component={PersonalSkill} />

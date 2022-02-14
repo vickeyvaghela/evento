@@ -27,7 +27,9 @@ function PartnerCompany() {
   const [pcid, setPcid] = useState()
   const [equipments, setEquipments] = useState([])
   const [openMap, setOpenMap] = useState(false)
+  const [eqId, setEqId] = useState("")
   const [submitCounter, setSubmitCounter] = useState(0)
+
   const [formData, setFormData] = useState({
     User: userId,
     categoryId: null,
@@ -49,8 +51,8 @@ function PartnerCompany() {
     com_contact: null,
     com_email: null,
     com_address: null,
-    let: null,
-    long: null,
+    let: 10,
+    long: 106,
     facebook: null,
     youtube: null,
     twitter: null,
@@ -92,6 +94,11 @@ function PartnerCompany() {
     
   }
 
+  function gstpickerHandler(e) {
+    setFormField("com_gstfile",e.target.files[0])
+    // console.log(e.target.files[0]);
+  }
+
   async function getEquipments() {
     const response = await axios.get(`${API_URL}/pc_equipment`, { headers: { "Content-Type": "application/json", Authorization: token } })
     // console.log("categories",response.data.data);
@@ -128,6 +135,19 @@ function PartnerCompany() {
     if (response.data.data[0].parcomId) setPcid(response.data.data[0].parcomId);
   }
 
+  function includeExcludeHandler(equipmentId) {
+    if(eqId.indexOf(equipmentId)===-1){
+    setEqId(eqId+","+equipmentId);
+    setFormField("equip_ids",eqId+","+equipmentId)
+
+    }else{
+      setEqId(eqId.replace(`,${equipmentId}`,""))
+    setFormField("equip_ids",eqId.replace(`,${equipmentId}`,""))
+
+    }
+
+
+  }
 
   return (
     <div className="continent-wrapper">
@@ -331,7 +351,7 @@ function PartnerCompany() {
                         <div className="tg-btn-holder tb-holder">
                           <h3>Include</h3>
                           <label className="switch">
-                            <input type="checkbox" />
+                            <input onChange={()=>includeExcludeHandler(item.Id)} type="checkbox" />
                             <span className="slider"></span>
                           </label>
                           <h3>Exclude</h3>
@@ -346,8 +366,8 @@ function PartnerCompany() {
             </div>
 
             <div className="photo-video-holder psb-5">
-              <PhotoUpload title="Photos"  pcid={pcid} submitCounter={submitCounter} route="/pc_photo" />
-              <VideoUpload title={"Video"} pcid={pcid} submitCounter={submitCounter} route="/pc_video" />
+              <PhotoUpload title="Photos"  pcid={pcid} submitCounter={submitCounter} route="/pc_photo" formFieldname="photo_file"/>
+              <VideoUpload title={"Video"} pcid={pcid} submitCounter={submitCounter} route="/pc_video" formFieldname="video_file"/>
             </div>
             <div className="psb-6">
               <h3>Company Details</h3>
@@ -373,7 +393,7 @@ function PartnerCompany() {
                 <div className="so-holdr">
                   <label for="">Company GST (Optional)</label>
                   <div className="c-p-f">
-                    <input id="file-upload" type="file" />
+                    <input onChange={gstpickerHandler} id="file-upload" type="file" />
                   </div>
                 </div>
               </div>
@@ -418,8 +438,8 @@ function PartnerCompany() {
                 </div>
               </div>
               {openMap && <GoogleMapPicker setFormField={setFormField} />}
-              <PhotoUpload title="Company Photos (max 10)"  pcid={pcid} submitCounter={submitCounter} route="/pc_photo" />
-              <VideoUpload title={"Company Video (max 3)"} pcid={pcid} submitCounter={submitCounter} route="/pc_video" />
+              <PhotoUpload title="Company Photos (max 10)"  pcid={pcid} submitCounter={submitCounter} route="/pc_photo" formFieldname={"c_photo_file"} />
+              <VideoUpload title={"Company Video (max 3)"}  pcid={pcid} submitCounter={submitCounter} route="/pc_video" formFieldname={"c_video_file"}/>
             </div>
             <div className="social-media-main psb-7">
               <h3>Social Media</h3>
