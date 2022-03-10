@@ -19,43 +19,47 @@ function Login() {
 
 	// console.log('API_URL',API_URL);
 
-	const [ userData, setUserData ] = useState({ emailOrPhone: "", password: "" });
-	const [ errMsg, setErrMsg ] = useState("");
+	const [userData, setUserData] = useState({ emailOrPhone: "", password: "" });
+	const [errMsg, setErrMsg] = useState("");
 
 
 	const setFormField = (field, value) => {
-		setUserData({ ...userData, [field]:value })
+		setUserData({ ...userData, [field]: value })
 	}
 
 
 	const handleSubmit = async () => {
 		console.log("handle form submit");
-		console.log('userData',userData);
+		console.log('userData', userData);
 
-		// const response = await axios.post('http://143.244.137.15:8000/login', { username: "kishup713@gmail.com", password: "A" });
-		const response = await axios.post('http://143.244.137.15:8000/login', { username: userData.emailOrPhone, password: userData.password });
-		console.log('response',response);
-		if(response && response.data && response.data.data && response.data.data.token){
+		try {
+			// const response = await axios.post('http://143.244.137.15:8000/login', { username: "kishup713@gmail.com", password: "A" });
+			const response = await axios.post('http://143.244.137.15:8000/login', { username: userData.emailOrPhone, password: userData.password });
+			console.log('response', response);
+			if (response && response.data && response.data.data && response.data.data.token) {
 
-			localStorage.clear();
+				localStorage.clear();
 
-			localStorage.setItem("token", response.data.data.token);
-			console.log("token", response.data.data.token);
+				localStorage.setItem("token", response.data.data.token);
+				console.log("token", response.data.data.token);
 
-			if(response && response.data && response.data.data && response.data.data.userId){
-				localStorage.setItem("userId", response.data.data.userId);
+				if (response && response.data && response.data.data && response.data.data.userId) {
+					localStorage.setItem("userId", response.data.data.userId);
+				}
+
+				window.location.href = "/";
+
+				//alert('login success')
+			} else {
+				//alert('login error')
+				setErrMsg("Username or Password incorrect");
+
 			}
-
-			window.location.href = "/";
-
-			//alert('login success')
-		}else{
-			//alert('login error')
-			setErrMsg("Username or Password incorrect");
-
+		} catch (e) {
+			console.log(e);
 		}
 
-		
+
 	}
 
 	return (
@@ -71,11 +75,11 @@ function Login() {
 							<p>Log in with your data that you entered during your registration</p>
 						</div>
 						<div className="form">
-							{ errMsg && <span style={{color: "red"}}>Username or Password incorrect</span> }
+							{errMsg && <span style={{ color: "red" }}>Username or Password incorrect</span>}
 							<form action="" method="post" >
 								<div className="ps-1">
 									<label for="">Email or Phone number</label>
-									<input type="text" id="" name="" value={userData.emailOrPhone} onChange={(e) => { setFormField('emailOrPhone', e.target.value) }}/>
+									<input type="text" id="" name="" value={userData.emailOrPhone} onChange={(e) => { setFormField('emailOrPhone', e.target.value) }} />
 								</div>
 								<div className="ps-1">
 									<label for="">Password</label>

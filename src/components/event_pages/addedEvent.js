@@ -1,17 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-
-
-
-
 import { Link, useParams } from "react-router-dom";
-
 import Modal from "./../comman/modal/Modal";
 import EditEvent from "./popups/edit_event";
 import AddPlace from "./popups/AddPlace";
 import AddService from "./popups/AddService";
-
 import { API_URL } from "../../constants";
-
 import "../../assets/css/style.css";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/icon/font/style.css";
@@ -188,7 +181,7 @@ function AddedEvent() {
 
             //if(localStoreEvtData.addNewTab)
             tmpEventStateObj.addNewTab = localStoreEvtData.addNewTab ? localStoreEvtData.addNewTab : { isOpen: true, isUpdated: true };
-
+            // tmpEventStateObj.addNewTab = { isOpen: true, isUpdated: true };
 
             if (tmpForWhoList.length) {
 
@@ -536,7 +529,7 @@ function AddedEvent() {
             for (let i = 0; i < e.target.files.length; i++) formData.append("image", e.target.files[i]);
 
             formData.append("image_details", "vivivivivii ");
-            formData.append("event", eventID);
+            formData.append("event", eventID);  
 
             const url = `${API_URL}/image_event`;
             const headers = { "Content-Type": "multipart/form-data", Authorization: token };
@@ -702,6 +695,17 @@ function AddedEvent() {
 
         }
 
+
+    }
+
+    function imageRemoveHandler(e,imageObj) {
+        e.preventDefault()
+        let tempEvent = allEventData
+      let tempArray= tempEvent.photosAndVideosTab.imagesList
+      let index = tempArray.indexOf(imageObj)
+      tempEvent.photosAndVideosTab.imagesList.splice(index,1)
+      console.log("allEventData",allEventData);
+      set_allEventData(tempEvent)
 
     }
 
@@ -902,7 +906,7 @@ function AddedEvent() {
                                             {allEventData.photosAndVideosTab && allEventData.photosAndVideosTab && allEventData.photosAndVideosTab.imagesList && allEventData.photosAndVideosTab.imagesList.map((imageObj) => (
                                                 <div className="photo-box p" key={imageObj.id}>
                                                     <div className="images-selctor ">
-                                                        <img src={`${API_URL}${imageObj.image}`} className="img-fluid" alt={imageObj.image_details} /><button>Remove</button></div>
+                                                        <img src={`${API_URL}${imageObj.image}`} className="img-fluid" alt={imageObj.image_details} /><button onClick={(e)=>imageRemoveHandler(e,imageObj)} >Remove</button></div>
                                                 </div>
                                             ))}
 
@@ -932,7 +936,7 @@ function AddedEvent() {
                                                                     Sorry, your browser doesn't support embedded videos.
                                                                 </video>
                                                             </div>
-                                                            <button>Remove</button>
+                                                            <button onClick={(e)=>e.preventDefault()} >Remove</button>
                                                         </div>
                                                     </div>
                                                 )

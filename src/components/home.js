@@ -67,12 +67,13 @@ import UploadImage from "../components/personal_skill/pspopup/UploadImage";
 
 import Dashboard from "../components/Dashb/dashboard";
 import GoogleMapPicker from "./partner_company/pc_popup/pc_google_map";
+import NotificationContent from "./Notification/notification_content";
 
 function Home() {
 	return (
 		<>
 			<NavigationBar></NavigationBar>
-			<Router>
+			{/* <Router> */}
 				<Switch>
 					{/* <Route path={`/event/Add_event`} component={Add_event} /> */}
 					<Route path={`/event/Event`} component={Event} />
@@ -114,6 +115,8 @@ function Home() {
 					<Route path={`/notification/NSelectPage`} component={NSelectPage} />
 					<Route path={`/notification/SelectBusiness`} component={SelectBusiness} />
 					<Route path={`/notification/SelectUser`} component={SelectUser} />
+					<Route path={`/notification/NotificationContent`} component={NotificationContent} />
+
 
 					<Route path={`/PartnerCompany/popups/PcAddArtist`} component={PcAddArtist} />
 					<Route path={`/PartnerCompany/popups/PcAddDecor`} component={PcAddDecor} />
@@ -129,7 +132,7 @@ function Home() {
 
 					<Route path={`/`} component={Dashboard} />
 				</Switch>
-			</Router>
+			{/* </Router> */}
 		</>
 	);
 }

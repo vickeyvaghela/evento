@@ -5,6 +5,7 @@ import { API_URL } from "../../constants";
 
 var token = `Token ${localStorage.getItem("token")}`;
 
+
 const PhotoUpload=({pcid,submitCounter,route,title,formFieldname}) =>{
     const [files, setFiles] = useState([])
     const [imgUrls, setImgUrls] = useState([])

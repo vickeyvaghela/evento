@@ -1,11 +1,40 @@
-import React from "react";
-import $ from "jquery";
+import React, { useEffect, useState } from "react";
 
 import "../../assets/css/style.css";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/icon/font/style.css";
+import StepperNotification from "./stepper_component";
 
 function NSelectPage() {
+
+   const [formData, setFormData] = useState({});
+
+   const setFormField = (field, value) => {
+
+      setFormData(prevState => {
+         localStorage.setItem("notificationData", JSON.stringify({
+            ...prevState,
+            [field]: value
+         }))
+
+         return {
+            ...prevState,
+            [field]: value
+         };
+      });
+
+   }
+
+   useEffect(() => {
+
+      let notificationData = localStorage.getItem("notificationData")
+     if(notificationData){
+      setFormData(JSON.parse(notificationData))
+     } 
+
+   }, [])
+
+
    return (
       <div className="continent-wrapper">
          <div className="container">
@@ -21,91 +50,20 @@ function NSelectPage() {
                      </a>
                   </div>
                </div>
-               <div className="process-wrapper">
-                  <ul className="Create-Notification">
-                     <li className="process-stap">
-                        <input type="checkbox" id="cb1" hidden className="cb-btn" />
-                        <span>01</span>
-                        <br />
-                        <label className="selact-btn" for="cb1">
-                           Select Page
-                        </label>
-                     </li>
-                     <li className="process-stap">
-                        <input type="checkbox" id="cb2" hidden className="cb-btn" />
-                        <span>02</span>
-                        <br />
-                        <label className="selact-btn" for="cb2">
-                           Select Business
-                        </label>
-                     </li>
-                     <li className="process-stap">
-                        <input type="checkbox" id="cb3" hidden className="cb-btn" />
-                        <span>03</span>
-                        <br />
-                        <label className="selact-btn" for="cb3">
-                           Select User
-                        </label>
-                     </li>
-                     <li className="process-stap">
-                        <input type="checkbox" id="cb3" hidden className="cb-btn" />
-                        <span>04</span>
-                        <br />
-                        <label className="selact-btn" for="cb3">
-                           Notification Mode
-                        </label>
-                     </li>
-                     <li className="process-stap">
-                        <input type="checkbox" id="cb3" hidden className="cb-btn" />
-                        <span>05</span>
-                        <br />
-                        <label className="selact-btn" for="cb3">
-                           Membership & Payment
-                        </label>
-                     </li>
-                  </ul>
-               </div>
+               <StepperNotification />
                <div className="r-btn-group">
                   <div className="cns-titel">
                      <span>Select Page</span>
                   </div>
                   <div className=" d-t">
-                     <div className="radio-btn">
-                        <span>
-                           <i className="icon-right"></i>
-                        </span>
-                        <label for="r-2">Event List</label>
-                     </div>
-                     <div className="radio-btn">
-                        <span>
-                           <i className="icon-right"></i>
-                        </span>
-                        <label for="r-2">Place List</label>
-                     </div>
-                     <div className="radio-btn">
-                        <span>
-                           <i className="icon-right"></i>
-                        </span>
-                        <label for="r-2">Event Details</label>
-                     </div>
-                     <div className="radio-btn">
-                        <span>
-                           <i className="icon-right"></i>
-                        </span>
-                        <label for="r-2">Artist Page</label>
-                     </div>
-                     <div className="radio-btn">
-                        <span>
-                           <i className="icon-right"></i>
-                        </span>
-                        <label for="r-2">Artist Details</label>
-                     </div>
-                     <div className="radio-btn">
-                        <span>
-                           <i className="icon-right"></i>
-                        </span>
-                        <label for="r-2">Decoration Page</label>
-                     </div>
+                     {['Event List', 'Place List', 'Event Details', "Artist Page", 'Artist Details', 'Decoration Page'].map((item, index) =>
+                        <div key={index} onClick={() => { setFormField('selected_page', item); }} className={`radio-btn ${(item === formData.selected_page) ? "active" : ""} `}>
+                           <span >
+                              <i className="icon-right"></i>
+                           </span>
+                           <label for="r-2">{item}</label>
+                        </div>
+                     )}
                   </div>
                </div>
             </div>
@@ -114,15 +72,5 @@ function NSelectPage() {
    );
 }
 
-// $(function () {
-//   $(".radio-btn").click(function (j) {
-//     if ($(this).hasClass("active")) {
-//       $(this).removeClass("active");
-//     } else {
-//       $(".radio-btn").removeClass("active");
-//       $(this).addClass("active");
-//     }
-//   });
-// });
 
 export default NSelectPage;

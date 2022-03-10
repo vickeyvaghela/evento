@@ -188,10 +188,10 @@ function Event_place() {
   );
 }
 
-$(function () {
-  $(".radio-btn").click(function (j) {
-    $(this).toggleClass("active");
-  });
-});
+// $(function () {
+//   $(".radio-btn").click(function (j) {
+//     $(this).toggleClass("active");
+//   });
+// });
 
 export default Event_place;

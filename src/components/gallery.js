@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import $ from 'jquery';
 
 import "../assets/css/style.css";
@@ -6,7 +6,27 @@ import "../assets/css/bootstrap.min.css";
 import "../assets/icon/font/style.css";
 
 
+
 function Gallery() {
+	useEffect(() => {
+
+			$('.content-tap-bar ul.tab-manu li').click(function () {
+				var tab_id = $(this).attr('data-tab');
+
+				$('.content-tap-bar ul.tab-manu li').removeClass('current');
+				$('.event-continer').removeClass('current');
+
+				$(this).addClass('current');
+				$("#" + tab_id).addClass('current');
+			});
+
+			$(".vi-main").click(function () {
+				$('iframe', this)[0].src += "&amp;autoplay=1";
+				$(this).addClass('open');
+			});
+
+	}, [])
+
 	return (
 		<div className="continent-wrapper ">
 			<div className="container">
@@ -205,21 +225,6 @@ function Gallery() {
 	);
 }
 
-$(document).ready(function () {
-	$('.content-tap-bar ul.tab-manu li').click(function () {
-		var tab_id = $(this).attr('data-tab');
 
-		$('.content-tap-bar ul.tab-manu li').removeClass('current');
-		$('.event-continer').removeClass('current');
-
-		$(this).addClass('current');
-		$("#" + tab_id).addClass('current');
-	});
-
-	$(".vi-main").click(function () {
-		$('iframe', this)[0].src += "&amp;autoplay=1";
-		$(this).addClass('open');
-	});
-});
 
 export default Gallery;

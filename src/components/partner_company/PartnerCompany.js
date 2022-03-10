@@ -83,8 +83,6 @@ function PartnerCompany() {
   // Function starts
 
   const setFormField = (field, value) => {
-    // console.log(field,value);
-
     setFormData(prevState => {
       return {
         ...prevState,

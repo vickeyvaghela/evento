@@ -21,7 +21,7 @@ function CreateNotification() {
                      <span>Create an notification as you want!</span>
                      <p>Simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
                 </div>
-                <Link to="/notification_selectPage"><button>Create new</button></Link>
+                <Link to="/notification/NSelectPage"><button>Create new</button></Link>
             </div>
         </div>
     </div>         

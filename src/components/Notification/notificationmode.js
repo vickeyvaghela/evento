@@ -1,10 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import "../../assets/css/style.css";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/icon/font/style.css";
+import StepperNotification from "./stepper_component";
 
 function NotificationMode() {
+
+  const [formData, setFormData] = useState({});
+  const [activeBox, setActiveBox] = useState(new Set([]))
+
+
+  const setFormField = (field, value) => {
+
+    setFormData(prevState => {
+      localStorage.setItem("notificationData", JSON.stringify({
+        ...prevState,
+        [field]: value
+      }))
+
+      return {
+        ...prevState,
+        [field]: value
+      };
+    });
+
+  }
+
+  function checkBoxHandler(value) {
+
+    let tempSet = activeBox;
+    if(tempSet.has(value)){
+      tempSet.delete(value)
+    }else{
+      tempSet.add(value)
+    }
+    setActiveBox(tempSet)
+    setFormField("notification_type",Array.from(tempSet))
+  }
+
+  useEffect(() => {
+
+    let notificationData = JSON.parse(localStorage.getItem("notificationData"))
+    if (notificationData) {
+      setFormData(notificationData)
+      setActiveBox(new Set(notificationData.notification_type) )
+    }
+  }, [])
+
   return (
     <div className="continent-wrapper">
       <div className="container">
@@ -20,71 +63,20 @@ function NotificationMode() {
               </a>
             </div>
           </div>
-          <div className="process-wrapper">
-            <ul className="Create-Notification">
-              <li className="process-stap">
-                <input type="checkbox" id="cb1" hidden className="cb-btn" />
-                <span>01</span>
-                <br />
-                <label className="selact-btn" for="cb1">
-                  Select Page
-                </label>
-              </li>
-              <li className="process-stap">
-                <input type="checkbox" id="cb2" hidden className="cb-btn" />
-                <span>02</span>
-                <br />
-                <label className="selact-btn" for="cb2">
-                  Select Business
-                </label>
-              </li>
-              <li className="process-stap">
-                <input type="checkbox" id="cb3" hidden className="cb-btn" />
-                <span>03</span>
-                <br />
-                <label className="selact-btn" for="cb3">
-                  Select User
-                </label>
-              </li>
-              <li className="process-stap">
-                <input type="checkbox" id="cb3" hidden className="cb-btn" />
-                <span>04</span>
-                <br />
-                <label className="selact-btn" for="cb3">
-                  Notification Mode
-                </label>
-              </li>
-              <li className="process-stap">
-                <input type="checkbox" id="cb3" hidden className="cb-btn" />
-                <span>05</span>
-                <br />
-                <label className="selact-btn" for="cb3">
-                  Membership & Payment
-                </label>
-              </li>
-            </ul>
-          </div>
+          <StepperNotification />
           <div className="r-btn-group">
             <div className="cns-titel">
               <span>Select Page</span>
             </div>
             <div className="d-t">
-              <label for="mode-1">
-                <input type="checkbox" name="" id="mode-1" />
-                <span>SMS</span>
-              </label>
-              <label for="mode-2">
-                <input type="checkbox" name="" id="mode-2" />
-                <span>App</span>
-              </label>
-              <label for="mode-3">
-                <input type="checkbox" name="" id="mode-3" />
-                <span>Notification</span>
-              </label>
-              <label for="mode-4">
-                <input type="checkbox" name="" id="mode-4" />
-                <span>Email</span>
-              </label>
+              {
+                ["SMS", "Notification", "Email"].map((item, index) =>
+                  <label key={index} for={`mode-${index + 1}`}>
+                    <input checked={activeBox.has(index+1)}  onChange={() => checkBoxHandler(index + 1)} type="checkbox" name="" id={`mode-${index + 1}`} />
+                    <span>{item}</span>
+                  </label>
+                )
+              }
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import "../../assets/css/style.css";
 import "../../assets/css/bootstrap.min.css";
@@ -7,8 +7,45 @@ import "../../assets/icon/font/style.css";
 import park from "../../assets/img/park-bro.png";
 import personalskill from "../../assets/img/prosnal skill bussiness.png";
 import partnercompany from "../../assets/img/pranter company business.png";
+import StepperNotification from "./stepper_component";
 
 function SelectBusiness() {
+
+  let activeStyle = { borderColor: "#20C0E8", borderWidth: 2, borderStyle: "solid" }
+  const [activeBox, setActiveBox] = useState()
+
+
+  const [formData, setFormData] = useState({});
+
+  const setFormField = (field, value) => {
+
+     setFormData(prevState => {
+        localStorage.setItem("notificationData", JSON.stringify({
+           ...prevState,
+           [field]: value
+        }))
+
+        return {
+           ...prevState,
+           [field]: value
+        };
+     });
+
+  }
+
+  useEffect(() => {
+
+     let notificationData = JSON.parse(localStorage.getItem("notificationData"))
+    if(notificationData){
+     setFormData(notificationData)
+     setActiveBox(notificationData.selected_business)
+    } 
+
+  }, [])
+
+
+
+
   return (
     <div className="continent-wrapper">
       <div className="container">
@@ -24,68 +61,25 @@ function SelectBusiness() {
               </a>
             </div>
           </div>
-          <div className="process-wrapper">
-            <ul className="Create-Notification">
-              <li className="process-stap">
-                <input type="checkbox" id="cb1" hidden className="cb-btn" />
-                <span>01</span>
-                <br />
-                <label className="selact-btn" for="cb1">
-                  Select Page
-                </label>
-              </li>
-              <li className="process-stap">
-                <input type="checkbox" id="cb2" hidden className="cb-btn" />
-                <span>02</span>
-                <br />
-                <label className="selact-btn" for="cb2">
-                  Select Business
-                </label>
-              </li>
-              <li className="process-stap">
-                <input type="checkbox" id="cb3" hidden className="cb-btn" />
-                <span>03</span>
-                <br />
-                <label className="selact-btn" for="cb3">
-                  Select User
-                </label>
-              </li>
-              <li className="process-stap">
-                <input type="checkbox" id="cb3" hidden className="cb-btn" />
-                <span>04</span>
-                <br />
-                <label className="selact-btn" for="cb3">
-                  Notification Mode
-                </label>
-              </li>
-              <li className="process-stap">
-                <input type="checkbox" id="cb3" hidden className="cb-btn" />
-                <span>05</span>
-                <br />
-                <label className="selact-btn" for="cb3">
-                  Membership & Payment
-                </label>
-              </li>
-            </ul>
-          </div>
+          <StepperNotification />
           <div className="r-btn-group">
             <div className="cns-titel">
               <span>Select Business</span>
             </div>
             <div className="wiyb-box">
-              <div className="wiyb-holder">
+              <div className="wiyb-holder " onClick={() => {setActiveBox(1);setFormField('selected_business', 1); }} style={(activeBox == 1) ? activeStyle : {}}  >
                 <img src={park} alt="" />
                 <div className="wiyb-text-holder">
                   <span>Hve you Places?</span>
                 </div>
               </div>
-              <div className="wiyb-holder">
+              <div className="wiyb-holder" onClick={() => {setActiveBox(2);setFormField('selected_business', 2); }} style={(activeBox == 2) ? activeStyle : {}} >
                 <img src={personalskill} alt="" />
                 <div className="wiyb-text-holder">
                   <span>Personal skills business</span>
                 </div>
               </div>
-              <div className="wiyb-holder">
+              <div className="wiyb-holder"onClick={() => {setActiveBox(3);setFormField('selected_business', 3); }} style={(activeBox == 3) ? activeStyle : {}} >
                 <img src={partnercompany} alt="" />
                 <div className="wiyb-text-holder">
                   <span>Partner Company Business</span>
@@ -97,6 +91,7 @@ function SelectBusiness() {
       </div>
     </div>
   );
+
 }
 
 export default SelectBusiness;
