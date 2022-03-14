@@ -530,7 +530,8 @@ function AddedEvent() {
 
             formData.append("image_details", "vivivivivii ");
             formData.append("event", eventID);  
-
+            console.log('formdata',formData.get("image"));
+            
             const url = `${API_URL}/image_event`;
             const headers = { "Content-Type": "multipart/form-data", Authorization: token };
             const response = await axios.post(url, formData, { headers });
@@ -540,6 +541,7 @@ function AddedEvent() {
                 alert('Images uploaded successfully!!!')
             }
         } catch (errUploadingImages) {
+            alert("error while uploading images.")
             console.log("errUploadingImages", errUploadingImages);
         }
     }
@@ -561,6 +563,7 @@ function AddedEvent() {
                 alert('Videos uploaded successfully!!!')
             }
         } catch (errUploadingVideos) {
+            alert("error while uploading videos.")
             console.log("errUploadingVideos", errUploadingVideos);
         }
     }
@@ -741,7 +744,6 @@ function AddedEvent() {
                                         <i className="icon-plus" aria-hidden="true"></i>Add Service
                                     </button>
                                 }
-
 
 
                                 <Modal title="Add Listing" onClose={() => set_isAddPlacesModalOpen(false)} show={isAddPlacesModalOpen}>

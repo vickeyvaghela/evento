@@ -34,7 +34,7 @@ function Login() {
 
 		try {
 			// const response = await axios.post('http://143.244.137.15:8000/login', { username: "kishup713@gmail.com", password: "A" });
-			const response = await axios.post('http://143.244.137.15:8000/login', { username: userData.emailOrPhone, password: userData.password });
+			const response = await axios.post(API_URL+'/login', { username: userData.emailOrPhone, password: userData.password });
 			console.log('response', response);
 			if (response && response.data && response.data.data && response.data.data.token) {
 

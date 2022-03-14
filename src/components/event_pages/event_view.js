@@ -27,14 +27,13 @@ function EventView() {
 
     useEffect(() => {
         (async () => {
-
-
-
+            
+            
             /* #region  get event data */
             let tmpEventObj = {}
             try {
                 const response = await axios.get(`${API_URL}/events/${eventID}`, { headers: { "Content-Type": "application/json", Authorization: token } });
-
+                console.log('response',response);
                 if (response && response.data && response.data.data && response.data.data && response.data.data.length && response.data.data[0]) {
                     tmpEventObj.display_name = response.data.data[0].display_name || "";
                     tmpEventObj.category = response.data.data[0].category || "";

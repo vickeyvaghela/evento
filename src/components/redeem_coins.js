@@ -8,8 +8,37 @@ import coins from "../assets/img/coins (1) 1.png";
 import reward from "../assets/img/reward 1.png";
 import XMLID from "../assets/img/XMLID 1270.png";
 import Vector from "../assets/img/Vector.png";
+import { API_URL } from "../constants";
+import axios from "axios";
+
+var userId = localStorage.getItem('userId') ? localStorage.getItem('userId') : 0;
+var token = `Token ${localStorage.getItem("token")}`;
 
 function RedeemCoins() {
+
+    async function onRedeemHandler() {
+        let coins = prompt("Enter Number of coins that you want to redeem", 10);
+
+        if(isNaN(coins) || coins===null){
+           return
+        }
+        
+        let upi_id = prompt("Enter UPI ID")
+
+        if (upi_id === null) {
+            return
+        }
+
+        let body ={
+            "user" : userId,
+            "Amount" : coins,
+            "upi_id" :upi_id ,
+            "price": coins*10
+        }
+		const response = await axios.post(API_URL + "/redeem",body, { headers: { "Content-Type": "application/json", Authorization: token } })
+        alert(response.data?.message)
+    }
+
     return (
         <div className="continent-wrapper">
             <div className="container">
@@ -22,6 +51,7 @@ function RedeemCoins() {
                     </div>
                     <div className="youcoins-heding">
                         <h2>You have : <span>250 F-Coins</span></h2>
+                        <button onClick={onRedeemHandler}  className="btn">Redeem Now</button>
                     </div>
                     <div className="coinimg2">
                         <img src={coins} alt="" />

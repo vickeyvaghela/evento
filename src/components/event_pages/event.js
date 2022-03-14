@@ -34,7 +34,7 @@ function Event() {
                 const response = await axios.get(`${API_URL}/events`, { headers: { "Content-Type": "application/json", Authorization: token } });
 
                 if (response && response.data && response.data.data && response.data.data && response.data.data.length) {
-                    console.log("response.data.data.length", response.data.data.length);
+                    console.log("response.data.data", response.data.data);
                     set_eventsAry(response.data.data);
                 }
             } catch (errCallingApi) {
@@ -72,7 +72,7 @@ function Event() {
                         <div className="event-wrapper">
                             {eventsAry.length &&
                                 eventsAry.map((item) => (
-                                    <Link to="/event_view" key={item.eventId}>
+                                    <Link to={`/event/EventView/`+item.eventId} key={item.eventId}>
                                         <div className="booking-holder">
                                             <div className="fs-holder">
                                                 <div className="book-img">

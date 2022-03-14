@@ -54,16 +54,20 @@ function SelectUser() {
 
     function selectAllHandler() {
         let tempSet = new Set();
-        uploadedUsers?.map((item)=>{
-            tempSet.add(item.id)
-        })
-
-        clientList?.map((item)=>{
-            tempSet.add(item[0].userId)
-        })
+        if(activeBox.size == 0){
+            uploadedUsers?.map((item)=>{
+                tempSet.add(item.id)
+            })
+    
+            clientList?.map((item)=>{
+                tempSet.add(item[0].userId)
+            })
+        }else{
+            tempSet.clear()
+        }
 
         setActiveBox(tempSet)
-        console.log(tempSet);
+        // console.log(tempSet);
         setFormField("userIds", Array.from(tempSet))
     }
 

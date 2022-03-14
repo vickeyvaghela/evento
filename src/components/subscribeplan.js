@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 
 import "../assets/css/style.css";
 import "../assets/css/bootstrap.min.css";
@@ -17,50 +17,49 @@ var token = `Token ${localStorage.getItem("token")}`;
 function SubPlans() {
     const Razorpay = useRazorpay();
 
-    async function getOrderId(planId, price) {
-        let body = {
-            planid: planId,
-            total_price: price
-        }
+    async function getOrderId(plan_id, price) {
 
-        const response = await axios.post(API_URL+"/getorderid" , {}, { headers: { "Content-Type": "application/json", Authorization: token } })
-        console.log(response);
-        if (response.data?.id) {
+        if (window.confirm("Are you sure? you want to purchase plan?") == false) {
+            return
+        }
+        let body = {
+            "total_amount": price,
+            "currency": "INR"
+        }
+        
+        const response = await axios.post(API_URL + "/orderidgenerate", body, { headers: { "Content-Type": "application/json", Authorization: token } })
+        // console.log(response);
+        if (response.data.data?.id) {
             // ! hardcoded order id will be replaced by response
-            handlePayment(response.data.id,response.data.amount)
+            handlePayment(response.data.data.id, response.data.data.amount,plan_id)
         }
     }
-    const handlePayment = async (orderId,price) => {
+    const handlePayment = async (orderId, price,plan_id) => {
         let userprefilldata;
         const response = await axios.get(API_URL + "/user", { headers: { "Content-Type": "application/json", Authorization: token } })
-        console.log(response);
         if (!response.data) {
             alert("Unable to fetch user's data")
             return
-        }else{
+        } else {
             userprefilldata = response.data.data[0]
         }
+        // console.log(userprefilldata);
 
         const options = {
-            key: "rzp_test_ONkjQqwBphi9zw", // Enter the Key ID generated from the Dashboard
+            key: process.env.REACT_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
             amount: price, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             currency: "INR",
-            name: "Acme Corp",
-            description: "Test Transaction",
-            image: "https://example.com/your_logo",
+            name: "Festum Evento",
+            description: "Purchase Membership Plan",
+            image: "https://i.ibb.co/tmsJ0v5/logo.jpg",
             order_id: orderId, //This is a sample Order ID. Pass the `id` obtained in the response of createOrder().
-            handler: function (response) {
-                alert(response.razorpay_payment_id);
-                alert(response.razorpay_order_id);
-                alert(response.razorpay_signature);
+            handler:function (response){ 
+                paymentSuccessHandler(response, price,plan_id)
             },
             prefill: {
-                name: "Kartik Jetani",
-                email: "youremail@example.com",
-                contact: "9999999999",
-            },
-            notes: {
-                address: "Scalelot Office",
+                name: userprefilldata.name,
+                email: userprefilldata.email,
+                contact: "+91" + userprefilldata.phone_no,
             },
             theme: {
                 color: "#3399cc",
@@ -69,18 +68,27 @@ function SubPlans() {
 
         const rzp1 = new Razorpay(options);
 
-        rzp1.on("payment.failed", function (response){
+        rzp1.on("payment.failed", function (response) {
             console.log("failed");
-            alert(response.error.code);
             alert(response.error.description);
-            alert(response.error.source);
-            alert(response.error.step);
-            alert(response.error.reason);
-            alert(response.error.metadata.order_id);
-            alert(response.error.metadata.payment_id);
         });
         rzp1.open();
     };
+
+    async function paymentSuccessHandler(successResponse, price,plan_id) {
+        let body = {
+            "planid": plan_id,
+            "total_price": price / 100,
+            "order_id": successResponse.razorpay_order_id
+        }
+        try {
+            const response = await axios.post(API_URL + "/usermembership", body, { headers: { "Content-Type": "application/json", Authorization: token } })
+            console.log('response',response);
+            alert(response.data.message)
+        } catch (error) {
+            alert("error while storing data to database..")
+        }
+    }
 
     return (
         <div className="continent-wrapper ">
@@ -91,7 +99,7 @@ function SubPlans() {
                         <h2>My Subscription</h2>
                     </div>
                     <div className="Subscription-main">
-                        <div onClick={() => getOrderId(1, 3626)} className="Subscription-holder">
+                        <div onClick={() => getOrderId(1, 362600)} className="Subscription-holder">
                             <div className="Subscription-text">
                                 <h2>Local Offer Monthly</h2>
                                 <span>$49.00</span>
@@ -102,7 +110,7 @@ function SubPlans() {
                                 <img src={gift1} className="img-fluid" alt="" />
                             </div>
                         </div>
-                        <div onClick={() => getOrderId(2, 4144)} className="Subscription-holder mt-4">
+                        <div onClick={() => getOrderId(2, 414400)} className="Subscription-holder mt-4">
                             <div className="Subscription-text">
                                 <h2>Event Subscription</h2>
                                 <span>$56.00</span>
@@ -112,7 +120,7 @@ function SubPlans() {
                                 <img src={gift2} className="img-fluid" alt="" />
                             </div>
                         </div>
-                        <div onClick={() => getOrderId(3, 8880)} className="Subscription-holder mt-4">
+                        <div onClick={() => getOrderId(3, 888000)} className="Subscription-holder mt-4">
                             <div className="Subscription-text">
                                 <h2>Live Stream Subscription</h2>
                                 <span>$120.00</span>
