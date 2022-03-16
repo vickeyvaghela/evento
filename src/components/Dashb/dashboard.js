@@ -14,11 +14,18 @@ import PersonalSkill from "../personal_skill/personalskill";
 import PartnerCompney from "../partner_company/PartnerCompany";
 import NavigationBar from "../comman/Navigationbar";
 import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 function Dashboard({ match }) {
+
+  const history = useHistory()
+
   useEffect(()=>{
-    // console.log(match);
+  var token = localStorage.getItem("token")
+  if(token == null)  history.push("/login")
+
   })
+  
   return (
     <>
     {/* <NavigationBar/> */}

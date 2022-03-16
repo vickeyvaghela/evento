@@ -26,7 +26,9 @@ function NavigationBar({ match }) {
             <Link to="/Chatbot" ><a href="javascript:void(0)" ><i  class="icon-comeant" aria-hidden="true"></i></a></Link>
             <Link to="/notification/CreateNotification" ><a href="javascript:void(0)" ><i  class="icon-bell" aria-hidden="true"></i></a></Link>
             <div class="uder-info">
+            <Link to="/login" >
               <a href="javascript:void(0)" class="user-img"><img src={user} class="img-fluid" alt=""/></a>
+            </Link>
             </div>
           </div>
         </div>
