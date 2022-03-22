@@ -1,7 +1,5 @@
 import React from "react";
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFont, faBold, faItalic, faUnderline, faAlignLeft, faAlignCenter, faAlignRight, faAlignJustify, faListUl ,faListOl } from "@fortawesome/free-solid-svg-icons";
@@ -16,6 +14,8 @@ import { Link } from "react-router-dom";
 
 function TermsAndConditions() {
   return (
+      <main>
+          
     <div className="continent-wrapper">
                    <div className="container">
                        <div className="row">
@@ -162,6 +162,8 @@ function TermsAndConditions() {
                         <Link to="/event" className="next">Next<i className="icon-Next"></i></Link>
                   </div>
               </div>
+      </main>
+
   );
 }
 

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import park from "../../assets/img/park-bro.png";
 import personalskill from "../../assets/img/prosnal skill bussiness.png";
@@ -47,6 +45,8 @@ function SelectBusiness() {
 
 
   return (
+    <main>
+      
     <div className="continent-wrapper">
       <div className="container">
         <div className="row">
@@ -90,6 +90,9 @@ function SelectBusiness() {
         </div>
       </div>
     </div>
+
+    </main>
+
   );
 
 }

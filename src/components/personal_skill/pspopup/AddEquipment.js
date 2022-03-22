@@ -47,7 +47,7 @@ function AddEquipment({ id, set_modalState }) {
 	// }
 	return (
 		// <div className="w_r_p_holder">
-		<div className="" style={{ height: "100%" }}>
+		<div className="w_r_p_holder">
 			<div className="write-reivew-popup_holder">
 				<div className="w-r-holder ro_hd">
 					<h2>Add Equipment</h2>

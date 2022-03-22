@@ -34,6 +34,8 @@ function Gallery() {
 	}, [])
 
 	return (
+		<main>
+			
 		<div className="continent-wrapper ">
 			<div className="container">
 				<div className="row">
@@ -67,18 +69,21 @@ function Gallery() {
 									</div>
 								</div>}
 
-							{(activeTab === "videos") && <div className="masonry">
-								{
-									fetchedVideos?.map((item, index) =>
-										<div key={index} className="vi-main">
-											<div className="brick">
-												<video style={{ height: "100%", width: "100%" }} src={API_URL + item.video} />
-												<div className="bt-play"></div>
-											</div>
-										</div>
-									)
-								}
-							</div>
+							{(activeTab === "videos") && 
+							<div className="event-continer gallry-m current" id="offer-3">
+									<div className="masonry ">
+										{
+											fetchedVideos?.map((item, index) =>
+												<div key={index} className="vi-main">
+													<div className="brick">
+														<video style={{ height: "100%", width: "100%" }} src={API_URL + item.video} />
+														<div className="bt-play"></div>
+													</div>
+												</div>
+											)
+										}
+									</div>
+								</div>
 							}
 						</div>
 
@@ -86,6 +91,8 @@ function Gallery() {
 				</div>
 			</div>
 		</div >
+		</main>
+
 
 	);
 }

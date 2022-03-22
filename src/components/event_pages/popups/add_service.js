@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 function AddService() {
   return (
+      <main>
+          
     <div className="w_r_p_holder">
     <div className="write-reivew-popup_holder">
         <div className="w-r-holder ro_hd">
@@ -34,7 +36,9 @@ function AddService() {
            </form>
         </div>    
     </div>  
-</div>    
+</div>  
+</main>
+
   );
 }
 

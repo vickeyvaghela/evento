@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import NavigationBar from "./comman/Navigationbar";
@@ -10,8 +10,8 @@ import ForgatePassword from "./forget_password";
 import NewPassword from "./new_password";
 import Otp from "./otp";
 
-import LanguageChange from "../components/language"; 
-import RedeemCoins from "../components/redeem_coins"; 
+import LanguageChange from "../components/language";
+import RedeemCoins from "../components/redeem_coins";
 import FAQ from "../components/faq";
 import Chatbot from "../components/chatbot";
 import Gallery from "../components/gallery";
@@ -68,73 +68,139 @@ import UploadImage from "../components/personal_skill/pspopup/UploadImage";
 import Dashboard from "../components/Dashb/dashboard";
 import GoogleMapPicker from "./partner_company/pc_popup/pc_google_map";
 import NotificationContent from "./Notification/notification_content";
+import { useLocation } from "react-router-dom";
+import LandingPage from "./landingpage";
+import { isUserLoggedIn } from "../utils";
 
 function Home() {
-	return (
-		<>
-			<NavigationBar></NavigationBar>
-			{/* <Router> */}
-				<Switch>
-					{/* <Route path={`/event/Add_event`} component={Add_event} /> */}
-					<Route path={`/event/Event`} component={Event} />
-					<Route path={`/event/addedEvent/:eventID`} component={AddedEvent} />
-					<Route path={`/event/EventView/:eventID`} component={EventView} />
+  const location = useLocation();
+  const pathsWithoutNavbar = [
+    "/errorpage",
+    "/forgatepassword",
+    "/login",
+    "/newpassword",
+    "/otp",
+    "/register",
+    "/event/eventpreview",
+    "/"
+  ];
 
+  useEffect(() => {
+    
+   if (pathsWithoutNavbar.indexOf(location.pathname.toLowerCase()) == -1) isUserLoggedIn()
+  
+  }, [])
+  
 
-					<Route path={`/event/Event_for`} component={Event_for} />
-					<Route path={`/event/EventLive`} component={EventLive} />
-					<Route path={`/event/Event_place`} component={Event_place} />
-					<Route path={`/event/EventPreview`} component={EventPreview} />
-					<Route path={`/event/PersonCapacity`} component={PersonCapacity} />
-					<Route path={`/event/Photo_video`} component={Photo_video} />
-					<Route path={`/event/PriceOfLocation`} component={PriceOfLocation} />
-					<Route path={`/event/TermsAndConditions`} component={TermsAndConditions} />
-					<Route path={`/event/popups/Add_event_place`} component={Add_event_place} />
-					<Route path={`/event/popups/add_service`} component={AddService} />
-					<Route path={`/event/popups/create_event`} component={Eventcreate} />
-					<Route path={`/event/popups/liveevent`} component={LiveEventPopup} />
-					<Route path={`/event/popups/upload_img`} component={Upload_img} />
+  return (
+    <>
+      {pathsWithoutNavbar.indexOf(location.pathname.toLowerCase()) == -1 && (
+        <NavigationBar></NavigationBar>
+      )}
+      {/* <Router> */}
+      <Switch>
+        <Route path={`/`} exact component={LandingPage} />
 
-					<Route path={`/ErrorPage`} component={ErrorPage} />
-					<Route path={`/ForgatePassword`} component={ForgatePassword} />
-					<Route path={`/Login`} component={Login} />
-					<Route path={`/NewPassword`} component={NewPassword} />
-					<Route path={`/Otp`} component={Otp} />
-					<Route path={`/Register`} component={Register} />
-					<Route path={`/language`} component={LanguageChange} />
-					<Route path={`/RedeemCoins`} component={RedeemCoins} />
-					<Route path={`/FAQ`} component={FAQ} />
-					<Route path={`/Chatbot`} component={Chatbot} />
-					<Route path={`/Gallery`} component={Gallery} />
-					<Route path={`/ReferAndEarn`} component={ReferAndEarn} />
-					<Route path={`/SubPlans`} component={SubPlans} />
+        {/* <Route path={`/event/Add_event`} component={Add_event} /> */}
+        <Route path={`/event/Event`} component={Event} />
+        <Route path={`/event/addedEvent/:eventID`} component={AddedEvent} />
+        <Route path={`/event/EventView/:eventID`} component={EventView} />
 
-					<Route path={`/notification/CreateNotification`} component={CreateNotification} />
-					<Route path={`/notification/NMembership`} component={NMembership} />
-					<Route path={`/notification/NotificationMode`} component={NotificationMode} />
-					<Route path={`/notification/NSelectPage`} component={NSelectPage} />
-					<Route path={`/notification/SelectBusiness`} component={SelectBusiness} />
-					<Route path={`/notification/SelectUser`} component={SelectUser} />
-					<Route path={`/notification/NotificationContent`} component={NotificationContent} />
+        <Route path={`/event/Event_for`} component={Event_for} />
+        <Route path={`/event/EventLive`} component={EventLive} />
+        <Route path={`/event/Event_place`} component={Event_place} />
+        <Route path={`/event/EventPreview`} component={EventPreview} />
+        <Route path={`/event/PersonCapacity`} component={PersonCapacity} />
+        <Route path={`/event/Photo_video`} component={Photo_video} />
+        <Route path={`/event/PriceOfLocation`} component={PriceOfLocation} />
+        <Route
+          path={`/event/TermsAndConditions`}
+          component={TermsAndConditions}
+        />
+        <Route
+          path={`/event/popups/Add_event_place`}
+          component={Add_event_place}
+        />
+        <Route path={`/event/popups/add_service`} component={AddService} />
+        <Route path={`/event/popups/create_event`} component={Eventcreate} />
+        <Route path={`/event/popups/liveevent`} component={LiveEventPopup} />
+        <Route path={`/event/popups/upload_img`} component={Upload_img} />
 
+        <Route path={`/ErrorPage`} component={ErrorPage} />
+        <Route path={`/ForgatePassword`} component={ForgatePassword} />
+        <Route path={`/Login`} component={Login} />
+        <Route path={`/NewPassword`} component={NewPassword} />
+        <Route path={`/Otp`} component={Otp} />
+        <Route path={`/Register`} component={Register} />
+        <Route path={`/language`} component={LanguageChange} />
+        <Route path={`/RedeemCoins`} component={RedeemCoins} />
+        <Route path={`/FAQ`} component={FAQ} />
+        <Route path={`/Chatbot`} component={Chatbot} />
+        <Route path={`/Gallery`} component={Gallery} />
+        <Route path={`/ReferAndEarn`} component={ReferAndEarn} />
+        <Route path={`/SubPlans`} component={SubPlans} />
 
-					<Route path={`/PartnerCompany/popups/PcAddArtist`} component={PcAddArtist} />
-					<Route path={`/PartnerCompany/popups/PcAddDecor`} component={PcAddDecor} />
-					<Route path={`/PartnerCompany/popups/PcAddEquipment`} component={PcAddEquipment} />
-					<Route path={`/PartnerCompany/popups/PcSelectArtist`} component={PcSelectArtist} />
-					<Route path={`/PartnerCompany/popups/PcSelectDecor`} component={PcSelectDecor} />
-					<Route path={`/PartnerCompany/popups/PcUploadPhoto`} component={PcUploadPhoto} />
-					<Route path={`/PartnerCompany`} component={PartnerCompany} />
+        <Route
+          path={`/notification/CreateNotification`}
+          component={CreateNotification}
+        />
+        <Route path={`/notification/NMembership`} component={NMembership} />
+        <Route
+          path={`/notification/NotificationMode`}
+          component={NotificationMode}
+        />
+        <Route path={`/notification/NSelectPage`} component={NSelectPage} />
+        <Route
+          path={`/notification/SelectBusiness`}
+          component={SelectBusiness}
+        />
+        <Route path={`/notification/SelectUser`} component={SelectUser} />
+        <Route
+          path={`/notification/NotificationContent`}
+          component={NotificationContent}
+        />
 
-					<Route path={`/PersonalSkillHome`} component={PersonalSkill} />
-					<Route path={`/PersonalSkill/popups/AddEquipment`} component={AddEquipment} />
-					<Route path={`/PersonalSkill/popups/UploadImage`} component={UploadImage} />
+        <Route
+          path={`/PartnerCompany/popups/PcAddArtist`}
+          component={PcAddArtist}
+        />
+        <Route
+          path={`/PartnerCompany/popups/PcAddDecor`}
+          component={PcAddDecor}
+        />
+        <Route
+          path={`/PartnerCompany/popups/PcAddEquipment`}
+          component={PcAddEquipment}
+        />
+        <Route
+          path={`/PartnerCompany/popups/PcSelectArtist`}
+          component={PcSelectArtist}
+        />
+        <Route
+          path={`/PartnerCompany/popups/PcSelectDecor`}
+          component={PcSelectDecor}
+        />
+        <Route
+          path={`/PartnerCompany/popups/PcUploadPhoto`}
+          component={PcUploadPhoto}
+        />
+        <Route path={`/PartnerCompany`} component={PartnerCompany} />
 
-					<Route path={`/`} component={Dashboard} />
-				</Switch>
-			{/* </Router> */}
-		</>
-	);
+        <Route path={`/PersonalSkillHome`} component={PersonalSkill} />
+        <Route
+          path={`/PersonalSkill/popups/AddEquipment`}
+          component={AddEquipment}
+        />
+        <Route
+          path={`/PersonalSkill/popups/UploadImage`}
+          component={UploadImage}
+        />
+
+        <Route path={`/dashboard`} component={Dashboard} />
+      </Switch>
+      {/* </Router> */}
+    </>
+  );
 }
 
 export default Home;

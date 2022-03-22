@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import $ from 'jquery';
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import gift1 from "../../assets/img/gift-box 1.png";
 import gift2 from "../../assets/img/gift-box 2.png";
@@ -41,6 +39,8 @@ function NMembership() {
   }, [])
 
   return (
+    <main>
+      
     <div className="continent-wrapper">
       <div className="container">
         <div className="row">
@@ -112,6 +112,9 @@ function NMembership() {
         </div>
       </div>
     </div>
+
+    </main>
+
   );
 }
 

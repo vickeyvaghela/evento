@@ -47,7 +47,7 @@ function Login() {
 					localStorage.setItem("userId", response.data.data.userId);
 				}
 
-				window.location.href = "/";
+				window.location.href = "/dashboard";
 
 				//alert('login success')
 			} else {

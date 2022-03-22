@@ -1,14 +1,14 @@
 import React from "react";
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import notif from "../../assets/img/notification.png"
 import { Link } from "react-router-dom";
 
 function CreateNotification() {
   return (
+      <main>
+          
     <div className="continent-wrapper">
     <div className="container">
         <div className="persk-holder">
@@ -26,6 +26,8 @@ function CreateNotification() {
         </div>
     </div>         
 </div>  
+</main>
+
   );
 }
 

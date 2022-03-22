@@ -64,6 +64,8 @@ function NotificationContent() {
     }, [])
 
     return (
+        <main>
+            
         <div className="continent-wrapper">
             <div className="container">
                 <div className="row">
@@ -85,21 +87,23 @@ function NotificationContent() {
                         </div>
                         <div className="event-wrapper ">
                             <form action="" method="POST">
-                                <div className="ps-1_1">
-                                    <label for="">Title of notification</label>
-                                    <input onChange={(e) => setFormField("notification_title", e.target.value)}
-                                        value={formData.notification_title}
-                                        type="text" id="" name="" />
-                                </div>
-                                <div className="ps-1_1">
-                                    <label for="">Notification Description</label>
-                                    <input onChange={(e) => setFormField("notification_text", e.target.value)}
-                                        value={formData.notification_text}
-                                        type="text" id="" name="" />
+                                <div className='pd-1'>
+                                    <div className="so-holdr">
+                                        <label for="">Title of notification</label>
+                                        <input onChange={(e) => setFormField("notification_title", e.target.value)}
+                                            value={formData.notification_title}
+                                            type="text" id="" name="" />
+                                    </div>
+                                    <div className="so-holdr">
+                                        <label for="">Notification Description</label>
+                                        <input onChange={(e) => setFormField("notification_text", e.target.value)}
+                                            value={formData.notification_text}
+                                            type="text" id="" name="" />
+                                    </div>
                                 </div>
                                 <div className="input-holder-p epos">
                                     <label for="">Select Photo</label>
-                                    <div className="p-v-main">
+                                    <div className="p-v-main img-pi">
                                         <div className="poster-m">
                                             <div className="images-selctor ">
                                                 <input
@@ -110,16 +114,19 @@ function NotificationContent() {
                                                     accept="image/*"
                                                 />
                                             </div>
-                                            <div className="photo-box p">
+                                            <div className="photo-box p ">
                                                 {/* <div className="images-selctor "> */}
                                                 <img src={formData.notification_img} className="img-fluid" alt="" />
-                                                <button onClick={(e) => { e.preventDefault(); setFormField("notification_img", null) }} >Remove</button>
+                                                <button onClick={(e) => { e.preventDefault(); setFormField("notification_img", null) }} className='close-img'>x</button>
                                                 {/* </div> */}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <button onClick={handleSubmit} >Submit</button>
+                                <div className='notif-btn'>
+                                     <button onClick={handleSubmit}>Submit</button>
+                                </div>
+                                
                             </form>
                         </div>
                     </div>
@@ -127,6 +134,8 @@ function NotificationContent() {
                 </div>
             </div>
         </div>
+        </main>
+
     )
 }
 

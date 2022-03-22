@@ -9,13 +9,10 @@ import AddEvent from "./popups/add_event";
 
 import { API_URL } from "../../constants";
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
-
 import event1 from "../../assets/img/evant1.png";
 import event2 from "../../assets/img/evant2.png";
 import event3 from "../../assets/img/evant3.png";
+import { isUserLoggedIn } from "../../utils";
 
 const axios = require("axios");
 
@@ -103,9 +100,9 @@ function Event() {
                                                             </div>
                                                             <h3>{item.display_name}</h3>
                                                         </div>
-                                                        <div className="">
+                                                        <div className="prdi-1_2 i-btn">
                                                             {/* <button type="button" style={{"z-index":"5000"}}>Edit Event</button> */}
-                                                            <Link to={`/event/addedEvent/${item.eventId}`} style={{"z-index":"5000"}}>Edit Event</Link>
+                                                            <Link to={`/event/addedEvent/${item.eventId}`} className='per_ev' style={{"z-index":"5000"}}>Edit Event</Link>
                                                         </div>
                                                         <div className="material-switch m-titel">
                                                             <h3>{item.price} INR</h3>

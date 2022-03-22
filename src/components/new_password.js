@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import "../assets/css/style.css";
 import "../assets/css/bootstrap.min.css";
@@ -8,6 +8,12 @@ import logo from "../assets/img/logo.jpg"
 import { Link } from "react-router-dom";
 
 function NewPassword() {
+
+	useEffect(() => {
+		
+	}, [])
+	
+
 	return (
 		<div class="main">
 			<div class="login-page">

@@ -1,9 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link, NavLink } from "react-router-dom";
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import place from "../../assets/img/park-bro.png";
 import ps from "../../assets/img/prosnal skill bussiness.png";
@@ -14,17 +12,10 @@ import PersonalSkill from "../personal_skill/personalskill";
 import PartnerCompney from "../partner_company/PartnerCompany";
 import NavigationBar from "../comman/Navigationbar";
 import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { isUserLoggedIn } from "../../utils";
 
 function Dashboard({ match }) {
 
-  const history = useHistory()
-
-  useEffect(()=>{
-  var token = localStorage.getItem("token")
-  if(token == null)  history.push("/login")
-
-  })
   
   return (
     <>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 import StepperNotification from "./stepper_component";
 
 function NotificationMode() {
@@ -49,6 +47,8 @@ function NotificationMode() {
   }, [])
 
   return (
+    <main>
+      
     <div className="continent-wrapper">
       <div className="container">
         <div className="row">
@@ -82,6 +82,8 @@ function NotificationMode() {
         </div>
       </div>
     </div>
+    </main>
+
   );
 }
 

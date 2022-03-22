@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import user1 from "../../assets/img/user-1.png"
 // import user2 from "../../assets/img/user-2.png"
@@ -110,6 +108,8 @@ function SelectUser() {
         }
     }
     return (
+        <main>
+            
         <div className="continent-wrapper">
             <div className="container">
                 <div className="row">
@@ -143,16 +143,16 @@ function SelectUser() {
                                         </label>
                                     )
                                 }
-
-                                {
+                                
+                                {clientList.length!=0 && 
                                     clientList?.map((item) =>
-                                        <label for={`select-${item[0].userId}`}>
-                                            <input checked={activeBox.has(item.id)} onChange={() => checkBoxHandler(item.id)} type="checkbox" name="" id={`select-${item[0].userId}`} />
+                                        <label key={item.userId} for={`select-${item.userId}`}>
+                                            <input checked={activeBox.has(item.id)} onChange={() => checkBoxHandler(item.id)} type="checkbox" name="" id={`select-${item.userId}`} />
                                             <div className="user-img">
-                                                <img style={{ height: 40, width: 40, borderRadius: 100 }} src={API_URL + item[0].profile_img} alt="" />
+                                                <img style={{ height: 40, width: 40, borderRadius: 100 }} src={API_URL + item.profile_img} alt="" />
                                             </div>
-                                            <span>{item[0].name} </span>
-                                            <small>&nbsp;{item[0].email.slice(0,15)}</small>
+                                            <span>{item.name} </span>
+                                            <small>&nbsp;{item.email.slice(0,15)}</small>
                                         </label>
                                     )
                                 }
@@ -176,6 +176,9 @@ function SelectUser() {
             </div>
 
         </div>
+
+        </main>
+
     );
 }
 

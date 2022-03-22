@@ -1,12 +1,12 @@
 import React from "react";
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 import $ from "jquery";
 import { Link } from "react-router-dom";
 
 function PriceOfLocation() {
   return (
+    <main>
+      
     <div className="continent-wrapper">
       <div className="container">
         <div className="row">
@@ -293,6 +293,8 @@ function PriceOfLocation() {
         </Link>
       </div>
     </div>
+    </main>
+
   );
 }
 

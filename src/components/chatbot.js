@@ -55,7 +55,8 @@ function Chatbot() {
     // console.log(message);
 
     if (!activeUser) return alert("No User available for chat..");
-
+    if(message=="") return;
+    
     chatSocket.send(
       JSON.stringify({
         room: roomName,
@@ -107,6 +108,8 @@ function Chatbot() {
   }, []);
 
   return (
+    <main>
+      
     <div className="continent-wrapper ">
       <div className="container">
         <div className="row">
@@ -212,6 +215,8 @@ function Chatbot() {
         </div>
       </div>
     </div>
+    </main>
+
   );
 }
 

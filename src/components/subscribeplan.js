@@ -91,6 +91,8 @@ function SubPlans() {
     }
 
     return (
+        <main>
+            
         <div className="continent-wrapper ">
             <div className="container">
                 <div className="row">
@@ -135,6 +137,9 @@ function SubPlans() {
                 </div>
             </div>
         </div>
+
+        </main>
+
     );
 }
 

@@ -8,6 +8,8 @@ import "../assets/icon/font/style.css";
 
 function FAQ() {
 	return (
+		<main>
+			
 		<div className="continent-wrapper">
 			<div className="container">
 				<div className="row">
@@ -49,27 +51,29 @@ function FAQ() {
 				</div>
 			</div>
 		</div>
+		</main>
+
 	);
 }
 
-// $(function () {
-//   $('.acc__panel2').slideUp();
-//   $('.acc__title2.active').next().slideDown();
-//   $('.acc__title2').click(function (j) {
+$(function () {
+  $('.acc__panel2').slideUp();
+  $('.acc__title2.active').next().slideDown();
+  $('.acc__title2').click(function (j) {
 
 
-//     if ($(this).hasClass('active')) {
-//       $(this).removeClass('active');
-//       $(this).next().slideUp();
-//     }
-//     else {
-//       $('.acc__title2').removeClass('active');
-//       $('.acc__panel2').slideUp();
-//       $(this).addClass('active');
-//       $(this).next().slideDown();
-//     }
+    if ($(this).hasClass('active')) {
+      $(this).removeClass('active');
+      $(this).next().slideUp();
+    }
+    else {
+      $('.acc__title2').removeClass('active');
+      $('.acc__panel2').slideUp();
+      $(this).addClass('active');
+      $(this).next().slideDown();
+    }
 
-//   });
-// });
+  });
+});
 
 export default FAQ;

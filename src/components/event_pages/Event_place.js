@@ -1,13 +1,13 @@
 import React from "react";
 import $ from "jquery";
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 import { Link } from "react-router-dom";
 
 function Event_place() {
   return (
+    <main>
+      
     <div className="continent-wrapper">
       <div className="container">
         <div className="row">
@@ -185,6 +185,8 @@ function Event_place() {
         </Link>
       </div>
     </div>
+    </main>
+
   );
 }
 

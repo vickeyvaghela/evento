@@ -1,7 +1,5 @@
 import React from "react";
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import event1 from "../../assets/img/evant1.png"
 import event2 from "../../assets/img/evant2.png"
@@ -9,6 +7,8 @@ import event3 from "../../assets/img/evant3.png"
 
 function EventLive() {
   return (
+      <main>
+    
     <div className="continent-wrapper">
     <div className="container">
         <div className="row">
@@ -183,6 +183,8 @@ function EventLive() {
      <a href="" className="next">Go to Dashboard<i className="icon-Next"></i></a>
 </div>
 </div>
+      
+</main>
   );
 }
 

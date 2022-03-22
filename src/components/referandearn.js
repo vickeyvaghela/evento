@@ -43,6 +43,8 @@ function ReferAndEarn() {
  You will get 100 coins bonus in your account when after successfully registration with the app.`
 
     return (
+        <main>
+            
         <div className="continent-wrapper">
             <div className="container">
                 <div className="refer-heading">
@@ -129,6 +131,8 @@ function ReferAndEarn() {
                 </div>
             </div>
         </div>
+        </main>
+
     );
 }
 

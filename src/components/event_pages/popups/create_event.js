@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 function Eventcreate() {
   return (
 
-    <div className="lightbox-wrapper">
+    <div className="w_r_p_holder">
     <div className="popup-main">
         <div className="popup-titel">
             <h2>Create Event</h2>

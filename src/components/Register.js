@@ -16,6 +16,7 @@ function Register() {
 
     const [errMsgObj, setErrMsgObj] = useState({});
     const [formData, setFormData] = useState({ name: "", email: "", phone_no: "", password: "", password2: "", refer_code: "", user_type: 2 });
+    const [passVisible, setPassVisible] = useState(false)
 
     const setFormField = (field, value) => {
         setFormData({ ...formData, [field]: value })
@@ -140,8 +141,8 @@ function Register() {
                                     <div class="sm-1">
                                         <label for="">Password</label>
                                         <div class="c-pass">
-                                            <input type="password" value={formData.password} onChange={(e) => { setFormField('password', e.target.value) }} />
-                                            <i class="icon-view"></i>
+                                            <input  type={(passVisible)?"text":"password"}  value={formData.password} onChange={(e) => { setFormField('password', e.target.value) }} />
+                                            <i onClick={()=>setPassVisible(!passVisible)} class="icon-view"></i>
 
                                         </div>
                                         {errMsgObj.password && <span style={{ color: "red" }}>{errMsgObj.password}</span>}
@@ -149,8 +150,8 @@ function Register() {
                                     <div class="sm-1">
                                         <label for="">Confirm Password</label>
                                         <div class="c-pass">
-                                            <input type="password" value={formData.password2} onChange={(e) => { setFormField('password2', e.target.value) }} />
-                                            <i class="icon-view"></i>
+                                            <input type={(passVisible)?"text":"password"} value={formData.password2} onChange={(e) => { setFormField('password2', e.target.value) }} />
+                                            <i onClick={()=>setPassVisible(!passVisible)} class="icon-view"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +179,7 @@ function Register() {
                             </a>
                         </div>
                         <div class="botm-t">
-                            <p>Are you Already User?<Link to="/">Login Now</Link></p>
+                            <p>Are you Already User?<Link to="/login">Login Now</Link></p>
                         </div>
                     </div>
                 </div>

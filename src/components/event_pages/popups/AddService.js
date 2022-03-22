@@ -79,7 +79,7 @@ function AddService({ set_isAddServicesModalOpen }) {
 
     return (
 
-        <div className="lightbox-wrapper">
+        <div className="w_r_p_holder">
             <div className="popup-main">
                 <div className="popup-titel">
                     <h2>Add Service</h2>

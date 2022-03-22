@@ -1,7 +1,5 @@
 import React, { useRef } from "react";
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 import fb from "../../assets/img/fb-1.png"
 import youtub from "../../assets/img/youtube 1.png"
 import twitter from "../../assets/img/twitter-1.png"
@@ -148,6 +146,7 @@ function PartnerCompany() {
   }
 
   return (
+    <main>
     <div className="continent-wrapper">
       <div className="container">
         <div className="persk-holder">
@@ -503,6 +502,7 @@ function PartnerCompany() {
         </div>
       </div>
     </div>
+    </main>
   );
 }
 

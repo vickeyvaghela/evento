@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 import StepperNotification from "./stepper_component";
 
 function NSelectPage() {
@@ -36,6 +34,8 @@ function NSelectPage() {
 
 
    return (
+      <main>
+         
       <div className="continent-wrapper">
          <div className="container">
             <div className="row">
@@ -69,6 +69,9 @@ function NSelectPage() {
             </div>
          </div>
       </div>
+
+      </main>
+
    );
 }
 

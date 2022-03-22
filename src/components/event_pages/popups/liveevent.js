@@ -8,7 +8,7 @@ import event_pic from "../../../assets/img/Events-pana 1.png"
 
 function LiveEventPopup() {
   return (
-    <div class="live-evant-wrapper">
+    <div class="live-evant-wrapper w_r_p_holder">
     <div class="event-popup">
         <div class="heading-text">
             <h2>Live This Event?</h2>

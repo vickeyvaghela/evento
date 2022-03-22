@@ -40,6 +40,8 @@ function RedeemCoins() {
     }
 
     return (
+        <main>
+            
         <div className="continent-wrapper">
             <div className="container">
                 <div className="redeemcoin-heading">
@@ -104,6 +106,8 @@ function RedeemCoins() {
                 </div>
             </div>
         </div>
+        </main>
+
     );
 }
 

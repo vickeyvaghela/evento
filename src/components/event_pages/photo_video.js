@@ -1,8 +1,6 @@
 import React from "react";
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import ph1 from "../../assets/img/ph1.png"
 import ph2 from "../../assets/img/ph2.png"
@@ -10,6 +8,8 @@ import { Link } from "react-router-dom";
 
 function Photo_video() {
   return (
+    <main>
+      
     <div class="continent-wrapper">
       <div class="container">
         <div class="row">
@@ -143,6 +143,8 @@ function Photo_video() {
         </Link>
       </div>
     </div>
+    </main>
+
   );
 }
 

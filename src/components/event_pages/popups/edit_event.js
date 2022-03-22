@@ -70,7 +70,7 @@ function EditEvent({ setShow, eventID, display_name ,categoryId, fetchEventDataA
 
     return (
 
-        <div className="lightbox-wrapper">
+        <div className="w_r_p_holder">
             <div className="popup-main">
                 <div className="popup-titel">
                     <h2>Edit Event</h2>

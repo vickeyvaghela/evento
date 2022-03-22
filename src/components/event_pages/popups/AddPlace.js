@@ -69,7 +69,7 @@ function AddPlace({ set_isAddPlacesModalOpen }) {
 
     return (
 
-        <div className="lightbox-wrapper">
+        <div className="w_r_p_holder">
             <div className="popup-main">
                 <div className="popup-titel">
                     <h2>Add Place</h2>

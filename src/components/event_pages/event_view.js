@@ -6,9 +6,7 @@ import { API_URL } from "../../constants";
 
 
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import $ from 'jquery'
 
@@ -70,6 +68,8 @@ function EventView() {
     }, [eventID]);
 
     return (
+        <main>
+  
         <div className="continent-wrapper">
             <div className="event-overview-bg">
                 <img src={poster} className="img-fluid" alt="img" />
@@ -252,6 +252,8 @@ function EventView() {
                 </div>
             </div>
         </div>
+                  
+        </main>
     );
 }
 $(document).ready(function () {

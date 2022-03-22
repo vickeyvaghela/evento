@@ -1,7 +1,5 @@
 import React from "react";
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import slider_logo from "../../assets/img/slider-logo.png";
 import user from "../../assets/img/user-i.png";
@@ -12,6 +10,10 @@ import { useHistory } from "react-router-dom";
 
 function NavigationBar({ match }) {
 
+  function logoutHandler() {
+    localStorage.clear()
+    window.location.href ="/login"
+  }
 
   return (
     <>
@@ -26,10 +28,16 @@ function NavigationBar({ match }) {
             <Link to="/Chatbot" ><a href="javascript:void(0)" ><i  class="icon-comeant" aria-hidden="true"></i></a></Link>
             <Link to="/notification/CreateNotification" ><a href="javascript:void(0)" ><i  class="icon-bell" aria-hidden="true"></i></a></Link>
             <div class="uder-info">
-            <Link to="/login" >
+            {/* <Link to="/login" > */}
               <a href="javascript:void(0)" class="user-img"><img src={user} class="img-fluid" alt=""/></a>
-            </Link>
+              
+            {/* </Link> */}
             </div>
+            <a href="" > 
+            <div onClick={logoutHandler} style={{margin:10}}  >
+               Logout
+              </div>
+               </a>
           </div>
         </div>
       </header>
@@ -40,7 +48,7 @@ function NavigationBar({ match }) {
         <div class="side-nev">
           {/* <!-- <span>main</span> --> */}
           <ul>
-          <Link to="/">
+          <Link to="/dashboard">
             <li>
               <a href="javascript:void(0)">
                 <i class="icon-deshbord" aria-hidden="true"></i>

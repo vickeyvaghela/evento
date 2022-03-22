@@ -5,9 +5,7 @@ import EditEvent from "./popups/edit_event";
 import AddPlace from "./popups/AddPlace";
 import AddService from "./popups/AddService";
 import { API_URL } from "../../constants";
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

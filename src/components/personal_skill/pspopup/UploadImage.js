@@ -35,7 +35,7 @@ function UploadImage({ set_modalState, setUploadImage, uploadImageList, id }) {
     }
   }
   return (
-    <div className="uplodephoto">
+    <div className="w_r_p_holder">
       <div className="edit-holder-p">
         <div className="edit-offer-p">
           <div className="popup-titel ro_hd">

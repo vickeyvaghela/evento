@@ -3,9 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { API_URL } from "../../constants";
 
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 
 import ps1 from "../../assets/img/ph1.png"
 import ps2 from "../../assets/img/ph2.png"
@@ -385,7 +383,7 @@ function PersonalSkill() {
 								<div className="prdi-1 ptd-1">
 									<label for="">Price</label>
 									<input type="text" id="" name="" defaultValue={personalSkills.work_price} onChange={(e) => { setWork_Price(e.target.value) }} />
-									<div className="prdi-1_2">
+									<div className="prdi-1_2 pt">
 										<a href="">Per / hr</a>
 										<a href="" className="per_ev">Per / Day</a>
 									</div>
@@ -393,7 +391,7 @@ function PersonalSkill() {
 								<div className="prdi-1 ptd-2">
 									<label for="">Discount</label>
 									<input type="text" id="" name="" defaultValue={personalSkills.work_discount} onChange={(e) => { setWorkDiscount(e.targetvalue) }} />
-									<div className="prdi-1_2">
+									<div className="prdi-1_2 pt">
 										<a href=""><i className="icon-Percentage"></i></a>
 										<a href="" className="per_ev"><i className="icon-Rs"></i></a>
 										<a href="" className="per_ev">Non</a>

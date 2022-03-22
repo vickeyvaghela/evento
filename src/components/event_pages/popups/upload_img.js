@@ -6,7 +6,7 @@ import "../../../assets/icon/font/style.css";
 function Upload_img() {
   return (
 
-    <div className="uplodephoto">
+    <div className="w_r_p_holder">
     <div className="edit-holder-p">
       <div className="edit-offer-p">
         <div className="popup-titel ro_hd">

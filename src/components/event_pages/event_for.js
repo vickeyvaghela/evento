@@ -1,13 +1,14 @@
 import React from "react";
 
 
-import "../../assets/css/style.css";
-import "../../assets/css/bootstrap.min.css";
-import "../../assets/icon/font/style.css";
+
 import { Link } from "react-router-dom";
 
 function Event_for() {
   return (
+    <main>
+      
+
     <div class="continent-wrapper">
       <div class="container">
         <div class="row">
@@ -83,6 +84,7 @@ function Event_for() {
         <button to="/event_place" class="next">Next<i class="icon-Next"></i></button>
       </div>
     </div>
+    </main>
   );
 }
 

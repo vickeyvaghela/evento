@@ -5,3 +5,12 @@
 5.gallery image and video done
 6.refer and earn done
 7.redeem done
+
+17 March
+
+1.Event Preview Fix
+2.User Page not loading - done
+3.redirect to landing Page  - done
+4.otp api integration (void-0 )
+5.route authentication - done
+6.favicon - done
