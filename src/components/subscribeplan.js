@@ -101,7 +101,7 @@ function SubPlans() {
                         <h2>My Subscription</h2>
                     </div>
                     <div className="Subscription-main">
-                        <div onClick={() => getOrderId(1, 362600)} className="Subscription-holder">
+                        <div style={{cursor:"pointer"}} onClick={() => getOrderId(1, 362600)} className="Subscription-holder">
                             <div className="Subscription-text">
                                 <h2>Local Offer Monthly</h2>
                                 <span>$49.00</span>
@@ -112,7 +112,7 @@ function SubPlans() {
                                 <img src={gift1} className="img-fluid" alt="" />
                             </div>
                         </div>
-                        <div onClick={() => getOrderId(2, 414400)} className="Subscription-holder mt-4">
+                        <div style={{cursor:"pointer"}} onClick={() => getOrderId(2, 414400)} className="Subscription-holder mt-4">
                             <div className="Subscription-text">
                                 <h2>Event Subscription</h2>
                                 <span>$56.00</span>
@@ -122,7 +122,7 @@ function SubPlans() {
                                 <img src={gift2} className="img-fluid" alt="" />
                             </div>
                         </div>
-                        <div onClick={() => getOrderId(3, 888000)} className="Subscription-holder mt-4">
+                        <div style={{cursor:"pointer"}} onClick={() => getOrderId(3, 888000)} className="Subscription-holder mt-4">
                             <div className="Subscription-text">
                                 <h2>Live Stream Subscription</h2>
                                 <span>$120.00</span>

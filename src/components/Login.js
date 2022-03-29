@@ -90,7 +90,7 @@ function Login() {
 								<button type="button" onClick={handleSubmit}>LOGIN NOW</button>
 							</form>
 						</div>
-						<div className="btn-hr">
+						{/* <div className="btn-hr">
 							<p>or</p>
 						</div>
 						<div className="social-holder">
@@ -102,7 +102,7 @@ function Login() {
 								<img src={facebooklogo} alt="facebooklogo" />
 								<p>Facebook</p>
 							</a>
-						</div>
+						</div> */}
 						<div className="botm-t">
 							<p>
 								Are You new? <Link to="/register">Registrater Now</Link>

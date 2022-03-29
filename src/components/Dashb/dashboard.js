@@ -7,15 +7,14 @@ import place from "../../assets/img/park-bro.png";
 import ps from "../../assets/img/prosnal skill bussiness.png";
 import pc from "../../assets/img/pranter company business.png";
 
-import Event from "../event_pages/event";
-import PersonalSkill from "../personal_skill/personalskill";
-import PartnerCompney from "../partner_company/PartnerCompany";
-import NavigationBar from "../comman/Navigationbar";
 import { useEffect } from "react";
 import { isUserLoggedIn } from "../../utils";
 
 function Dashboard({ match }) {
 
+  useEffect(() => {
+    isUserLoggedIn()
+  }, [])
   
   return (
     <>

@@ -8,9 +8,9 @@
 
 17 March
 
-1.Event Preview Fix
+1.Event Preview Fix - done
 2.User Page not loading - done
 3.redirect to landing Page  - done
-4.otp api integration (void-0 )
+4.otp api integration (void-0 ) - done
 5.route authentication - done
 6.favicon - done

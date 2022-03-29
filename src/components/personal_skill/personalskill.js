@@ -180,6 +180,7 @@ function PersonalSkill() {
 	}
 	const getImages = async () => {
 		const data = await axios.get(`${API_URL}/ps_add_photo`, { headers: { "Content-Type": "application/json", Authorization: token } })
+		console.log('getImages',data);
 		if (data && data.data && data.data.data.length > 0) {
 			setImages(data.data.data)
 		}
@@ -208,8 +209,9 @@ function PersonalSkill() {
 		}
 	}
 	const handleComVideoChange = async (e, id) => {
-		if (personalSkills.Company_video.length + e.target.files.length <= 3) {
-
+		console.log('e.target.files.length', e.target.files.length );
+		// if (personalSkills.Company_video.length + e.target.files.length <= 3) {
+		if ( e.target.files.length <= 3) {
 			const form = new FormData()
 			for (let i = 0; i < e.target.files.length; i++) {
 				form.append("c_video_file", e.target.files[i])
@@ -217,6 +219,7 @@ function PersonalSkill() {
 			form.append("p_skill", parseInt(id))
 			if (form) {
 				const data = await axios.post(`${API_URL}/ps_add_com_video`, form, { headers: { "Content-Type": "application/json", Authorization: token } })
+				console.log('videoUpload',data);
 				if (data && data.data && data.data.isSuccess) {
 					// set_modalState(false)
 					getPersonalSkill()
@@ -475,7 +478,7 @@ function PersonalSkill() {
 						</div>
 						<div className="photo-video-holder psb-5">
 							<div className="p-v-main">
-								<h1>Photos Mainnnnn</h1>
+								<h1>Photos </h1>
 								<div className="poster-m">
 									<div onClick={() => setImagePopUp(true)} className="images-selctor ">
 										<Modal title="My Modal" onClose={() => setImagePopUp(false)} show={imagePopup}>
@@ -490,7 +493,7 @@ function PersonalSkill() {
 									{images.map((data) => (
 										<div className="photo-box p">
 											<div className="images-selctor ">
-												<img src={`${API_URL}${data.photo_file}`} className="img-fluid" alt="" />
+												<img src={`${"http://eventopackage.com"}${data.photo_file}`} className="img-fluid" alt="" />
 												<button>Remove</button>
 											</div>
 										</div>
@@ -498,7 +501,7 @@ function PersonalSkill() {
 								</div>
 							</div>
 							<div className="p-v-main video-uploder">
-								<h1>Videos mainnnnnn</h1>
+								<h1>Videos </h1>
 								<div className="poster-m">
 									<div className="images-selctor ">
 										<input type="file" className="file-input" name="" value="" accept="video/mp4,video/x-m4v,video/*" onChange={(e) => { handleUploadVideo(e, personalSkills.perskillId) }} />
@@ -512,7 +515,7 @@ function PersonalSkill() {
 										<div className="video-main">
 											<div className="vedio-item">
 												<div className="o-video">
-													<video controls width="100%" height="100%" src={`${API_URL}${data.video_file}`}></video>
+													<video controls width="100%" height="100%" src={`${"http://eventopackage.com"}${data.video_file}`}></video>
 												</div>
 												<button>Remove</button>
 											</div>
@@ -578,7 +581,7 @@ function PersonalSkill() {
 							</div>
 							<div className="pd-1 so-hodr">
 								<div className="p-v-main">
-									<h3>Compan Photos (Upload upto 10Photos max.)</h3>
+									<h3>Company Photos (Upload upto 10Photos max.)</h3>
 									<div className="poster-m">
 										<div className="images-selctor ">
 											<input type="file" className="file-input" multiple name="" value="" accept="image/x-png,image/gif,image/jpeg" onChange={(e) => { handleComPhotoChange(e, personalSkills.perskillId) }} />
@@ -590,7 +593,7 @@ function PersonalSkill() {
 											{personalSkills?.Company_photo?.map((data) => (
 												<div className="photo-box p">
 													<div className="images-selctor ">
-														<img src={`${API_URL}${data.c_photo_file}`} className="img-fluid" alt="" />
+														<img src={`${"http://eventopackage.com"}${data.c_photo_file}`} className="img-fluid" alt="" />
 														<button>Remove</button>
 													</div>
 												</div>
@@ -614,7 +617,7 @@ function PersonalSkill() {
 												<div className="video-main">
 													<div className="vedio-item">
 														<div className="o-video">
-															<video controls width="100%" height="100%" src={`${API_URL}${data.c_video_file}`}></video>
+															<video controls width="100%" height="100%" src={`${"http://eventopackage.com"}${data.c_video_file}`}></video>
 														</div>
 														<button>Remove</button>
 													</div>

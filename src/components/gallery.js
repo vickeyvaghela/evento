@@ -63,7 +63,7 @@ function Gallery() {
 									<div className="masonry">
 										{fetchedImages.map((item, index) =>
 											<div key={index} className="brick">
-												<img src={API_URL + item.image} />
+												<img src={"http://eventopackage.com" + item.image} />
 											</div>
 										)}
 									</div>
@@ -75,10 +75,12 @@ function Gallery() {
 										{
 											fetchedVideos?.map((item, index) =>
 												<div key={index} className="vi-main">
-													<div className="brick">
-														<video style={{ height: "100%", width: "100%" }} src={API_URL + item.video} />
+													<a href={"http://eventopackage.com" + item.video} target="_blank">
+													<div  className="brick">
+														<video style={{ height: "100%", width: "100%" }} src={"http://eventopackage.com" + item.video} />
 														<div className="bt-play"></div>
 													</div>
+													</a>
 												</div>
 											)
 										}

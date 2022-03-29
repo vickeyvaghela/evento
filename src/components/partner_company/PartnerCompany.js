@@ -128,7 +128,7 @@ function PartnerCompany() {
   async function getPcId() {
     const response = await axios.get(`${API_URL}/partnercompany`, { headers: { "Content-Type": "application/json", Authorization: token } })
     // console.log(response.data.data[0].parcomId);
-    if (response.data.data[0].parcomId) setPcid(response.data.data[0].parcomId);
+    if (response.data?.data[0]?.parcomId) setPcid(response.data?.data[0].parcomId);
   }
 
   function includeExcludeHandler(equipmentId) {

@@ -4,13 +4,10 @@ import { useParams } from "react-router-dom";
 
 import { API_URL } from "../../constants";
 
-
-
-
-
 import $ from 'jquery'
 
 import poster from "../../assets/img/e-poster.png"
+import { useHistory } from "react-router-dom";
 
 
 const token = `Token ${localStorage.getItem("token")}`;
@@ -22,6 +19,7 @@ function EventView() {
 
     const { eventID } = useParams();
     const [allEventData, set_allEventData] = useState({});
+    const history = useHistory()
 
     useEffect(() => {
         (async () => {
@@ -39,7 +37,7 @@ function EventView() {
                     tmpEventObj.video = response.data.data[0].video || [];
                     tmpEventObj.image = response.data.data[0].image || [];
                     tmpEventObj.EventTickets = response.data.data[0].EventTickets || [];
-
+                    
                     tmpEventObj.live = response.data.data[0].live || false;
 
                     tmpEventObj.parking_capacity = response.data.data[0].event?.[0]?.parking_capacity ?? "";
@@ -66,6 +64,14 @@ function EventView() {
 
         })();
     }, [eventID]);
+
+    function eventPreviewHandler() {
+
+        // imageData which will send to /event/EventPreview page
+        history.push("/event/EventPreview",{
+            imageData:allEventData.image
+        })
+    }
 
     return (
         <main>
@@ -114,7 +120,7 @@ function EventView() {
 
                                 <div className="gallery">
                                     <h6>Photos</h6>
-                                    <div className="img">
+                                    <div onClick={eventPreviewHandler} style={{cursor:"pointer"}}  className="img">
 
                                         {(allEventData.image && allEventData.image.length) && allEventData.image.map((imageObj, i) => (
 

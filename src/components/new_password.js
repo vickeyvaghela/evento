@@ -1,18 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import "../assets/css/style.css";
 import "../assets/css/bootstrap.min.css";
 import "../assets/icon/font/style.css";
 
 import logo from "../assets/img/logo.jpg"
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+import { API_URL } from "../constants";
 
 function NewPassword() {
+	const location = useLocation()
+
+	const [pass, setPass] = useState("")
+	const [cpass, setCpass] = useState("")
+	const [isVisible, setIsVisible] = useState(false)
 
 	useEffect(() => {
-		
+		// console.log(location.state);
+
 	}, [])
-	
+
+	async function onSubmitHandler(e){
+		e.preventDefault();
+		let body = {
+			email:"abc@example.com",
+			password:pass,
+			password2:cpass
+		}
+		if (cpass!==pass) {
+			alert("confirm password and password is not matching")
+			return
+		}
+
+		 try {
+		   
+			 const response = await axios.put(`${API_URL}/forgotpassApi`,body, { headers: { "Content-Type": "application/json",} });
+			// console.log(response);
+			 if (response && response.data.data) {
+				alert(response.data.message)
+			 }
+		 } catch (errCallingApi) {
+			 alert("Error while resetting password")
+			 console.log("errCallingApi", errCallingApi);
+		 }
+	 }
 
 	return (
 		<div class="main">
@@ -27,25 +59,25 @@ function NewPassword() {
 							<p>Please enter a new password</p>
 						</div>
 						<div class="form f1">
-							<form action="" method="post">
+							<form>
 								<div class="new-ps-holder">
 									<div class="sm-1 new-ps-1">
 										<label for="">Password</label>
 										<div class="c-pass">
-											<input type="password" id="" name="" value="" />
-											<i class="icon-view"></i>
+											<input onChange={(e)=>setPass(e.target.value)} type={isVisible?"text":"password"} id="" name=""  />
+											<i onClick={()=>setIsVisible(!isVisible)} class="icon-view"></i>
 										</div>
 									</div>
 									<div class="sm-1 new-ps-1">
 										<label for="">Confirm Password</label>
 										<div class="c-pass">
-											<input type="password" id="" name="" value="" />
-											<i class="icon-view"></i>
+											<input onChange={(e)=>setCpass(e.target.value)}   type={isVisible?"text":"password"} id="" name=""  />
+											<i  onClick={()=>setIsVisible(!isVisible)} class="icon-view"></i>
 										</div>
 									</div>
 								</div>
 
-								<Link to="/"><button class="form-btn1">SUBMIT A NEW PASSWORD</button></Link>
+								<button type="submit" onClick={onSubmitHandler} class="form-btn1">SUBMIT A NEW PASSWORD</button>
 							</form>
 						</div>
 					</div>

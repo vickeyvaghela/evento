@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
+// same screen is used for both forgot pass OTP and Mobile verify 
+
 function Otp() {
   const location = useLocation();
   const [otpValue, setOtpValue] = useState(["0", "0", "0", "0"]);
@@ -17,7 +19,7 @@ function Otp() {
   const history = useHistory()
 
   useEffect(() => {
-    if (!location.state?.otp || !location.state?.email) {
+    if (!location.state?.otp ) {
         history.goBack()
     }
   
@@ -28,9 +30,12 @@ function Otp() {
       e.preventDefault()
       let fullOtp = otpValue[0] + otpValue[1] + otpValue[2] + otpValue[3]
       if (fullOtp == location.state.otp) {
-          history.push("/newpassword")
+        // if phone then redirect to register page else redirect to newpassword page
+          history.push(location.state?.phone?"/register":"/newpassword",{
+            email : location.state?.email,
+            phone : location.state?.phone
+          })
           alert("Success")
-        //   newpassword
       }else{
           alert("wrong otp")
       }
@@ -72,7 +77,7 @@ function Otp() {
               <p>Please enter the 4 Digit code sent to</p>
             </div>
             <div className="name-change">
-              <p>{location.state?.email}</p>
+              <p>{location.state?.email || location.state?.phone}</p>
               <Link to="/forgatepassword">Change?</Link>
             </div>
             <div className="form">

@@ -12,7 +12,6 @@ import { API_URL } from "../../constants";
 import event1 from "../../assets/img/evant1.png";
 import event2 from "../../assets/img/evant2.png";
 import event3 from "../../assets/img/evant3.png";
-import { isUserLoggedIn } from "../../utils";
 
 const axios = require("axios");
 
@@ -75,7 +74,7 @@ function Event() {
                                                 <div className="book-img">
                                                     {item.image && item.image[0] && item.image[0].image && (
                                                         <img
-                                                            src={`${API_URL + item.image[0].image}`}
+                                                            src={`${"http://eventopackage.com" + item.image[0].image}`}
                                                             height={169}
                                                             width={335}
                                                             className=""

@@ -6,8 +6,7 @@ import "../assets/icon/font/style.css";
 
 import ReconnectingWebSocket from "../assets/js/reconnecting-websocket";
 import "../assets/js/main";
-import profile from "../assets/img/chat-profile.png";
-import profile2 from "../assets/img/chat-profile2.png";
+import profile from "../assets/img/user-i.png";
 import Emoji from "../assets/img/Emoji.png";
 import { API_URL } from "../constants";
 import axios from "axios";
@@ -198,7 +197,7 @@ function Chatbot() {
                     {usersList.map((item, index) => (
                       <li key={index} onClick={() => setActiveUser(item)}>
                         <div className="user-profile-img">
-                          <img src={profile2} className="img-fluid" alt="" />
+                          <img src={profile} className="img-fluid" alt="" />
                         </div>
                         <div className="user-name-chat">
                           <p>{item?.name}</p>

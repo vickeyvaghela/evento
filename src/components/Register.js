@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import "../assets/css/style.css";
 import "../assets/css/bootstrap.min.css";
@@ -10,13 +10,25 @@ import facebooklogo from "../assets/img/facebook.png";
 import { Link } from "react-router-dom";
 
 import { API_URL } from "../constants";
+import { useHistory ,useLocation } from 'react-router-dom';
 
 const axios = require('axios');
 function Register() {
 
+  const location = useLocation();
+
     const [errMsgObj, setErrMsgObj] = useState({});
     const [formData, setFormData] = useState({ name: "", email: "", phone_no: "", password: "", password2: "", refer_code: "", user_type: 2 });
     const [passVisible, setPassVisible] = useState(false)
+
+    const history = useHistory()
+
+    useEffect(() => {
+      if (location.state?.phone) {
+        setFormField('phone_no', location.state?.phone)
+      }
+    }, [])
+    
 
     const setFormField = (field, value) => {
         setFormData({ ...formData, [field]: value })
@@ -106,6 +118,28 @@ function Register() {
 
         }
     }
+
+    async function verifyHandler() {
+        try {
+            const response = await axios.post(`${API_URL}/sms`, {
+                "phone" : "+91" + formData.phone_no
+            }); 
+            console.log('response', response);
+
+            if (response.data.data) {
+                alert(response.data.message)
+                history.push("/otp",{
+                    phone:response.data.data.phone,
+                    otp:response.data.data.OTP
+                })
+            } else {
+                alert("Error in sending OTP")
+            }
+        } catch (errorInApi) {
+            console.log('errorInApi',errorInApi);
+        }
+       
+    }
     return (
         <div class="main">
             <div class="login-page">
@@ -132,8 +166,10 @@ function Register() {
                                 <div class="ps-1">
                                     <label for="">Phone Number</label>
                                     <div class="verify-holder">
-                                        <input type="text" value={formData.phone_no} onChange={(e) => { setFormField('phone_no', e.target.value) }} />
-                                        <a href="javascript-void(0)">Verify</a>
+                                        <input disabled={(location.state?.phone)?true:false} type="text" value={formData.phone_no} onChange={(e) => { setFormField('phone_no', e.target.value) }} />
+                                     {!(location.state?.phone)?  <a style={{cursor:"pointer"}} onClick={verifyHandler}>Verify</a> :
+                                       <a style={{color:"green",fontSize:20}} > <span  >&#10003;</span></a>}
+                                        {!(location.state?.phone) && formData.phone_no.length == 10 && <span style={{ color: "red" }}>Please verify your number before continue</span>}
                                         {errMsgObj.phone_no && <span style={{ color: "red" }}>{errMsgObj.phone_no}</span>}
                                     </div>
                                 </div>
@@ -160,24 +196,12 @@ function Register() {
                                     <input type="text" value={formData.refer_code} onChange={(e) => { setFormField('refer_code', e.target.value) }} />
                                 </div>
 
-                                <button class="form-btn" type="button" onClick={handleSubmit}>REGISTER NOW</button>
+                                <button disabled={(location.state?.phone)?false:true}  class="form-btn" type="button" onClick={handleSubmit}>REGISTER NOW</button>
                                 {/* {JSON.stringify(errMsgObj)} */}
 
                             </form>
                         </div>
-                        <div class="btn-hr">
-                            <p>or</p>
-                        </div>
-                        <div class="social-holder">
-                            <a href="https://www.google.com/" class="social-btn btn1">
-                                <img src={googlelogo} alt="goooglelogo" />
-                                <p>Google</p>
-                            </a>
-                            <a href="https://www.google.com/" class="social-btn btn2">
-                                <img src={facebooklogo} alt="facebooklogo" />
-                                <p>Facebook</p>
-                            </a>
-                        </div>
+                       
                         <div class="botm-t">
                             <p>Are you Already User?<Link to="/login">Login Now</Link></p>
                         </div>
@@ -189,3 +213,17 @@ function Register() {
 }
 
 export default Register;
+
+// <div class="btn-hr">
+// <p>or</p>
+// </div>
+// <div class="social-holder">
+// <a href="https://www.google.com/" class="social-btn btn1">
+//     <img src={googlelogo} alt="goooglelogo" />
+//     <p>Google</p>
+// </a>
+// <a href="https://www.google.com/" class="social-btn btn2">
+//     <img src={facebooklogo} alt="facebooklogo" />
+//     <p>Facebook</p>
+// </a>
+// </div>

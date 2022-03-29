@@ -10,15 +10,19 @@ import India from "../assets/img/india.png";
 import Germany from "../assets/img/germany.png";
 import China from "../assets/img/china.png";
 import Thailand from "../assets/img/thailand.png";
+import { useHistory } from "react-router-dom";
 
 function LanguageChange() {
+
+    const history = useHistory()
+
   return (
     <div className="p-main">
     <div className="notification-holder">
         <div className="notif-title">
             <h2>Language</h2>
-            <a href="">
-                <i className="icon-close"></i>
+            <a >
+                <i onClick={()=>history.goBack()} className="icon-close"></i>
             </a>
         </div>
         <div className="notification-box">
