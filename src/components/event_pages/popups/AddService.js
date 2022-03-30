@@ -99,7 +99,7 @@ function AddService({ set_isAddServicesModalOpen }) {
                         </div>
                     </div>
                     <div className="ps-1_1 ps-2_2 serce-hholr">
-                        <label for="">Price</label>
+                        <label for="">Description</label>
                         <textarea rows="10" onChange={(e) => setFormField('service_desc', e.target.value)}></textarea>
                     </div>
                     <button type="submit" class="">Submit</button>

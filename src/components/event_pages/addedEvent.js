@@ -39,13 +39,13 @@ var userData = localStorage.getItem("userData" + userId)
   : {};
 
 var allTabCloseObj = {
-  addNew: { isOpen: false, isUpdated: false },
-  for_who_Id: { isOpen: false, isUpdated: false },
-  placeProvider: { isOpen: false, isUpdated: false },
-  photosAndVideos: { isOpen: false, isUpdated: false },
-  priceOfLocation: { isOpen: false, isUpdated: false },
-  personParking: { isOpen: false, isUpdated: false },
-  other: { isOpen: false, isUpdated: false },
+  addNewTab: { isOpen: false, isUpdated: false },
+  forWhoTab: { isOpen: false, isUpdated: false },
+  placeProviderTab: { isOpen: false, isUpdated: false },
+  photosAndVideosTab: { isOpen: false, isUpdated: false },
+  priceOfLocationTab: { isOpen: false, isUpdated: false },
+  personParkingTab: { isOpen: false, isUpdated: false },
+  otherTab: { isOpen: false, isUpdated: false },
 };
 
 function AddedEvent() {
@@ -54,22 +54,22 @@ function AddedEvent() {
   let history = useHistory();
 
   if (userData && userData["event" + eventID]) {
-    if (userData["event" + eventID]["for_who_Id"]) {
-      allTabCloseObj.for_who_Id = userData["event" + eventID]["for_who_Id"];
+    if (userData["event" + eventID]["forWhoTab"]) {
+      allTabCloseObj.forWhoTab = userData["event" + eventID]["forWhoTab"];
     }
 
-    if (userData["event" + eventID]["placeProvider"]) {
-      allTabCloseObj.placeProvider =
-        userData["event" + eventID]["placeProvider"];
+    if (userData["event" + eventID]["placeProviderTab"]) {
+      allTabCloseObj.placeProviderTab =
+        userData["event" + eventID]["placeProviderTab"];
     }
 
-    if (userData["event" + eventID]["photosAndVideos"]) {
-      allTabCloseObj.photosAndVideos =
-        userData["event" + eventID]["photosAndVideos"];
+    if (userData["event" + eventID]["photosAndVideosTab"]) {
+      allTabCloseObj.photosAndVideosTab =
+        userData["event" + eventID]["photosAndVideosTab"];
     }
-    allTabCloseObj.addNew = { isOpen: false, isUpdated: true };
+    allTabCloseObj.addNewTab = { isOpen: false, isUpdated: true };
   } else {
-    allTabCloseObj.addNew = { isOpen: true, isUpdated: true };
+    allTabCloseObj.addNewTab = { isOpen: true, isUpdated: true };
   }
 
   const [show, setShow] = useState(false);
@@ -77,7 +77,6 @@ function AddedEvent() {
   const [isAddPlacesModalOpen, set_isAddPlacesModalOpen] = useState(false);
   const [isAddServicesModalOpen, set_isAddServicesModalOpen] = useState(false);
   const [isImageUploadModalOpen, set_isImageUploadModalOpen] = useState(false);
-
 
   const [eventObj, set_eventObj] = useState({});
 
@@ -87,7 +86,7 @@ function AddedEvent() {
   const [servicesAry, set_servicesAry] = useState([]);
 
   //const [eventForWhoAry, set_eventForWhoAry] = useState([]);
-  //const [forWhoFilter, set_forWhoFilter] = useState(1);
+  const [forWhoFilter, set_forWhoFilter] = useState(1);
 
   const [isPutRequest, set_isPutRequest] = useState(false);
   const [eventCategoryID, set_eventCategoryID] = useState(0);
@@ -239,16 +238,18 @@ function AddedEvent() {
           tmpEventData.event &&
           tmpEventData.event[0] &&
           tmpEventData.event[0] &&
-          tmpEventData.event[0]["for_who_Id"]
+          tmpEventData.event[0]["forWhoTab"]
         ) {
           tmpEventStateObj.forWhoTab.selectedForWhoID =
-            tmpEventData.event[0]["for_who_Id"];
+            tmpEventData.event[0]["forWhoTab"];
         }
 
         if (localStoreEvtData.forWhoTab) {
           tmpEventStateObj.forWhoTab = localStoreEvtData.forWhoTab;
         }
       }
+
+      console.log("tmpEventStateObj", tmpEventStateObj);
 
       if (tmpPlacesList.length) {
         tmpEventStateObj.placeProviderTab = { placesList: tmpPlacesList };
@@ -273,7 +274,10 @@ function AddedEvent() {
         }
       }
 
-      tmpEventStateObj.photosAndVideosTab = { isOpen: false, isUpdated: false };
+      tmpEventStateObj["photosAndVideosTab"] = {
+        isOpen: false,
+        isUpdated: false,
+      };
       if (tmpEventData && tmpEventData.image && tmpEventData.image.length) {
         tmpEventStateObj.photosAndVideosTab.imagesList = tmpEventData.image;
       }
@@ -433,18 +437,19 @@ function AddedEvent() {
     })();
   }, []);
 
-  // const toggleForWho = () => {
-  //     if (parseInt(forWhoFilter) === 1) {
-  //         set_forWhoFilter(2)
-  //     } else {
-  //         set_forWhoFilter(1)
-  //     }
-  // }
+  const toggleForWho = () => {
+    console.log("forWhoFilter", forWhoFilter);
+    if (parseInt(forWhoFilter) === 1) {
+      set_forWhoFilter(2);
+    } else {
+      set_forWhoFilter(1);
+    }
+  };
 
   const handleNext = () => {
     console.log("next");
 
-    let tmpStateData = { ...allEventData };
+    let tmpStateData = { ...allTabCloseObj, ...allEventData };
 
     if (tmpStateData.addNewTab.isOpen) {
       tmpStateData.addNewTab.isOpen = false;
@@ -508,7 +513,7 @@ function AddedEvent() {
 
   const handlePrevious = () => {
     console.log("previous");
-    let tmpStateData = { ...allEventData };
+    let tmpStateData = { ...allTabCloseObj, ...allEventData };
 
     if (tmpStateData.otherTab.isOpen) {
       tmpStateData.otherTab.isOpen = false;
@@ -532,12 +537,14 @@ function AddedEvent() {
     }
 
     localStorage.setItem("event" + eventID, JSON.stringify(tmpStateData));
-    console.log(tmpStateData);
+    // console.log(tmpStateData);
     set_allEventData(tmpStateData);
   };
 
   const handleDirectTabClick = (tabName) => {
-    let tmpStateData = { ...allEventData };
+    let tmpStateData = { ...allTabCloseObj, ...allEventData };
+
+    console.log(tabName);
     tmpStateData.addNewTab.isOpen = false;
     tmpStateData.forWhoTab.isOpen = false;
     tmpStateData.placeProviderTab.isOpen = false;
@@ -547,6 +554,8 @@ function AddedEvent() {
     tmpStateData.otherTab.isOpen = false;
 
     tmpStateData[tabName].isOpen = true;
+    // console.log(tmpStateData);
+
     set_allEventData(tmpStateData);
   };
 
@@ -646,14 +655,14 @@ function AddedEvent() {
     setShow(true);
   };
 
-  const [selectedImage, setSelectedImage] = useState([])
-  const [imageDetails, setImageDetails] = useState("")
+  const [selectedImage, setSelectedImage] = useState([]);
+  const [imageDetails, setImageDetails] = useState("");
 
-  const imageUploaded = async (e,isSubmit = false) => {
-     e.preventDefault()
+  const imageUploaded = async (e, isSubmit = false) => {
+    e.preventDefault();
     if (!isSubmit) {
-        setSelectedImage(e.target.files)
-        return
+      setSelectedImage(e.target.files);
+      return;
     }
 
     try {
@@ -675,18 +684,16 @@ function AddedEvent() {
 
       if (response && response.data && response.data.isSuccess) {
         fetchEventDataAgainForFileUpload();
-        set_isImageUploadModalOpen(false)
+        set_isImageUploadModalOpen(false);
         alert("Images uploaded successfully!!!");
       }
     } catch (errUploadingImages) {
       alert("error while uploading images.");
       console.log("errUploadingImages", errUploadingImages);
-    }finally{
-        setImageDetails([])
+    } finally {
+      setImageDetails([]);
     }
-
   };
-
 
   const videoUploaded = async (e) => {
     try {
@@ -873,7 +880,7 @@ function AddedEvent() {
     let tempArray = tempEvent.photosAndVideosTab.imagesList;
     let index = tempArray.indexOf(imageObj);
     tempEvent.photosAndVideosTab.imagesList.splice(index, 1);
-    console.log("allEventData", allEventData);
+    // console.log("allEventData", allEventData);
     set_allEventData(tempEvent);
   }
 
@@ -953,7 +960,7 @@ function AddedEvent() {
                       <div className="input-holder-p">
                         <label for="">Select Photo</label>
                         <div className="c-p-f">
-                        <input
+                          <input
                             type="file"
                             className="file-input"
                             name="image[]"
@@ -964,14 +971,20 @@ function AddedEvent() {
                       </div>
                       <div className="input-holder-p">
                         <label for="">Details</label>
-                        <textarea onChange={(e)=>setImageDetails(e.target.value)} name="" id="" cols="30" rows="10"></textarea>
+                        <textarea
+                          onChange={(e) => setImageDetails(e.target.value)}
+                          name=""
+                          id=""
+                          cols="30"
+                          rows="10"
+                        ></textarea>
                       </div>
                     </div>
-                    <button onClick={(e)=>imageUploaded(e,true)} >Submit</button>
+                    <button onClick={(e) => imageUploaded(e, true)}>
+                      Submit
+                    </button>
                   </div>
                 </Modal>
-
-             
               </div>
             </div>
 
@@ -1160,13 +1173,19 @@ function AddedEvent() {
                       <div className="s-product">
                         <div className="material-switch center-btn">
                           <span>For All</span>
-                          {/* <input onChange={() => toggleForWho()} id="someSwitchOptionDefault2" name="someSwitchOption001" type="checkbox" data-toggle-switch /> */}
                           <input
+                            onChange={() => toggleForWho()}
                             id="someSwitchOptionDefault2"
                             name="someSwitchOption001"
                             type="checkbox"
                             data-toggle-switch
                           />
+                          {/* <input
+                            id="someSwitchOptionDefault2"
+                            name="someSwitchOption001"
+                            type="checkbox"
+                            data-toggle-switch
+                          /> */}
                           <label
                             for="someSwitchOptionDefault2"
                             className="label-default1"
@@ -1180,31 +1199,38 @@ function AddedEvent() {
                         allEventData.forWhoTab.forWhoList &&
                         allEventData.forWhoTab.forWhoList.length &&
                         allEventData.forWhoTab.forWhoList.map(
-                          (eventForWhoObj) => (
-                            <div className="radio-btn" key={eventForWhoObj.Id}>
-                              <input
-                                checked={
-                                  allEventData.forWhoTab &&
-                                  allEventData.forWhoTab.selectedForWhoID &&
-                                  parseInt(
-                                    allEventData.forWhoTab.selectedForWhoID
-                                  ) === parseInt(eventForWhoObj.Id)
-                                    ? true
-                                    : false
-                                }
-                                onChange={(e) =>
-                                  setForWhoValue(parseInt(e.target.value))
-                                }
-                                value={`${eventForWhoObj.Id}`}
-                                id={`place${eventForWhoObj.Id}`}
-                                type="radio"
-                                name="placeProvider"
-                              />
-                              <label for={`place${eventForWhoObj.Id}`}>
-                                {eventForWhoObj.plan_name}
-                              </label>
-                            </div>
-                          )
+                          (eventForWhoObj) => {
+                            if (forWhoFilter - 1 == eventForWhoObj.for_who) {
+                              return (
+                                <div
+                                  className="radio-btn"
+                                  key={eventForWhoObj.Id}
+                                >
+                                  <input
+                                    checked={
+                                      allEventData.forWhoTab &&
+                                      allEventData.forWhoTab.selectedForWhoID &&
+                                      parseInt(
+                                        allEventData.forWhoTab.selectedForWhoID
+                                      ) === parseInt(eventForWhoObj.Id)
+                                        ? true
+                                        : false
+                                    }
+                                    onChange={(e) =>
+                                      setForWhoValue(parseInt(e.target.value))
+                                    }
+                                    value={`${eventForWhoObj.Id}`}
+                                    id={`place${eventForWhoObj.Id}`}
+                                    type="radio"
+                                    name="placeProvider"
+                                  />
+                                  <label for={`place${eventForWhoObj.Id}`}>
+                                    {eventForWhoObj.plan_name}
+                                  </label>
+                                </div>
+                              );
+                            }
+                          }
                         )}
                     </div>
                   </div>
@@ -1272,9 +1298,7 @@ function AddedEvent() {
                         <div
                           className="images-selctor "
                           onClick={() => set_isImageUploadModalOpen(true)}
-                        >
-                          
-                        </div>
+                        ></div>
                       </div>
                     </div>
                     <div className="ph-main">
@@ -1289,7 +1313,9 @@ function AddedEvent() {
                               <div className="photo-box p" key={imageObj.id}>
                                 <div className="images-selctor ">
                                   <img
-                                    src={`${"http://eventopackage.com"}${imageObj.image}`}
+                                    src={`${"http://eventopackage.com"}${
+                                      imageObj.image
+                                    }`}
                                     className="img-fluid"
                                     alt={imageObj.image_details}
                                   />
