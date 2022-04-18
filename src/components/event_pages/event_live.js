@@ -13,10 +13,10 @@ function EventLive() {
     <div className="container">
         <div className="row">
              <div className="col-12 col-md-12 col-lg-12 evant-titel event-add">                            
-                 <a href="" className="back-btnt"><i className="icon-Back" aria-hidden="true"></i></a>                               
+                 <a   className="back-btnt"><i className="icon-Back" aria-hidden="true"></i></a>                               
                  <h2>Create new event</h2>
                  <div className="e-btn">
-                     <a href="" className="new-btn-creat"><i className="icon-plus" aria-hidden="true"></i>Add event</a>
+                     <a   className="new-btn-creat"><i className="icon-plus" aria-hidden="true"></i>Add</a>
                  </div>                              
              </div> 
             <div className="process-wrapper">
@@ -24,7 +24,7 @@ function EventLive() {
                  <li className="process-stap">
                      <input type="checkbox" id="cb1" hidden className="cb-btn"/>
                      <span>01</span><br/>
-                     <label className="selact-btn" for="cb1">Add Event</label>
+                     <label className="selact-btn" for="cb1">Add</label>
                  </li>
                  <li className="process-stap">
                     <input type="checkbox" id="cb2" hidden className="cb-btn"/>
@@ -87,7 +87,7 @@ function EventLive() {
                          <div className="event-info">
                              <ul>
                                  <li>
-                                     <a href=""><i className="icon-location"></i>Dallas, Texas</a>
+                                     <a  ><i className="icon-location"></i>Dallas, Texas</a>
                                  </li>
                                  <li className="live-event-ad">Available</li>
                                  <li className="share-bt"><i className="icon-share"></i></li>
@@ -124,7 +124,7 @@ function EventLive() {
                          <div className="event-info">
                              <ul>
                                  <li>
-                                     <a href=""><i className="icon-location"></i>Dallas, Texas</a>
+                                     <a  ><i className="icon-location"></i>Dallas, Texas</a>
                                  </li>
                                  <li className="live-event-ad">Available</li>
                                  <li className="share-bt"><i className="icon-share"></i></li>
@@ -164,7 +164,7 @@ function EventLive() {
                          <div className="event-info">
                              <ul>
                                  <li>
-                                     <a href=""><i className="icon-location"></i>Dallas, Texas</a>
+                                     <a  ><i className="icon-location"></i>Dallas, Texas</a>
                                  </li>
                                  <li className="live-event-ad">Available</li>
                                  <li className="share-bt"><i className="icon-share"></i></li>
@@ -179,8 +179,8 @@ function EventLive() {
         </div>
     </div>
     <div className="next-prw-holder ">
-     <a href="" className="prew"><i className="icon-Back"></i>Back</a>
-     <a href="" className="next">Go to Dashboard<i className="icon-Next"></i></a>
+     <a   className="prew"><i className="icon-Back"></i>Back</a>
+     <a   className="next">Go to Dashboard<i className="icon-Next"></i></a>
 </div>
 </div>
       

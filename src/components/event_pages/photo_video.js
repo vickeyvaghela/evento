@@ -20,7 +20,7 @@ function Photo_video() {
             <h2>Create New</h2>
             <div class="e-btn">
               <Link to="/event" class="new-btn-creat">
-                <i class="icon-plus" aria-hidden="true"></i> Add event
+                <i class="icon-plus" aria-hidden="true"></i> Add
               </Link>
             </div>
           </div>
@@ -31,7 +31,7 @@ function Photo_video() {
                 <span>01</span>
                 <br />
                 <label class="selact-btn" for="cb1">
-                  Add Event
+                  Add
                 </label>
               </li>
               <li class="process-stap">

@@ -45,13 +45,13 @@ function NMembership() {
       <div className="container">
         <div className="row">
           <div className="col-12 col-md-12 col-lg-12 evant-titel event-add">
-            <a href="" className="back-btnt">
+            <a   className="back-btnt">
               <i className="icon-Back" aria-hidden="true"></i>
             </a>
             <h2>Create New Notification</h2>
             <div className="e-btn">
-              <a href="" className="new-btn-creat">
-                <i className="icon-plus" aria-hidden="true"></i> Add event
+              <a   className="new-btn-creat">
+                <i className="icon-plus" aria-hidden="true"></i> Add
               </a>
             </div>
           </div>

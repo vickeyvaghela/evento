@@ -4,19 +4,29 @@ import { API_URL } from "../../constants";
 
 var token = `Token ${localStorage.getItem("token")}`;
 
-function VideoUpload({pcid,submitCounter,title,route,formFieldname}) {
+function VideoUpload({pcid,submitCounter,title,route,formFieldname,uploadedVideo}) {
 
     const [files, setFiles] = useState([])
     const [videoUrls, setVideoUrls] = useState([])
+    const [uploadedVideoUrls, setUploadedVideoUrls] = useState([])
 
 
     useEffect(() => {
         if (submitCounter>0) {
             uploadMultipleVideo()
         }
+        getUploadedVideos()
+    }, [submitCounter,uploadedVideo])
     
-    }, [submitCounter])
-    
+     
+    function getUploadedVideos() {
+         
+        let temp = [] 
+        uploadedVideo?.map(videoObj=>{
+            temp.push("http://eventopackage.com"+videoObj.video_file)
+        })
+        setUploadedVideoUrls(temp)
+    }
 
     function filePickerHandler(e) {
         // console.log(e.target.files.length);
@@ -39,7 +49,6 @@ function VideoUpload({pcid,submitCounter,title,route,formFieldname}) {
 
     
     async function uploadMultipleVideo() {
-        console.log("uploadMultipleVideo called from outside");
         const form = new FormData()
         form.append(formFieldname, files)
         form.append('pc', pcid)
@@ -71,6 +80,23 @@ function VideoUpload({pcid,submitCounter,title,route,formFieldname}) {
             <div className="ph-main">
                 <span>Uploaded Video</span>
                 <div className="img-holder">
+                {
+                        uploadedVideoUrls.map((item,index)=>
+                        <div className="video-main">
+                        <div className="vedio-item">
+                            <div className="o-video">
+                                <video
+                                    style={{height:"100%",width:"100%"}}
+                                    controls
+                                    src={item}
+                                    allowfullscreen
+                                ></video>
+                            </div>
+                            <button disabled onClick={(e) => { e.preventDefault(); videoRemoveHandler(index) }} >Remove</button>
+                        </div>
+                    </div>
+                        )
+                    }
                     {
                         videoUrls.map((item,index)=>
                         <div className="video-main">

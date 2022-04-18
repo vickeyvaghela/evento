@@ -7,8 +7,6 @@ import { Link } from "react-router-dom";
 function Event_for() {
   return (
     <main>
-      
-
     <div class="continent-wrapper">
       <div class="container">
         <div class="row">
@@ -19,7 +17,7 @@ function Event_for() {
             <h2>Create New</h2>
             <div class="e-btn">
               <Link to="/event" class="new-btn-creat">
-                <i class="icon-plus" aria-hidden="true"></i> Add event
+                <i class="icon-plus" aria-hidden="true"></i> Add
               </Link>
             </div>
           </div>

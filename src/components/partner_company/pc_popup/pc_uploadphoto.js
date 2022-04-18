@@ -11,7 +11,7 @@ function PcUploadPhoto() {
       <div className="edit-offer-p">
         <div className="popup-titel ro_hd">
           <h2>Upload Photo</h2>
-          <a href="">
+          <a  >
             <i className="icon-close"></i>
           </a>
         </div>
@@ -25,8 +25,8 @@ function PcUploadPhoto() {
           <label for="">Price</label>
           <input type="text" id="" name="" value="" />
           <div className="pp_pe pe-1">
-            <a href="">Per / Person</a>
-            <a href="" className="per_ev">
+            <a  >Per / Person</a>
+            <a   className="per_ev">
               Per / Event
             </a>
           </div>

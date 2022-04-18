@@ -12,7 +12,7 @@ function AddService() {
     <div className="write-reivew-popup_holder">
         <div className="w-r-holder ro_hd">
             <h2>Add Service</h2>
-            <a href=""><i className="icon-close"></i></a> 
+            <a  ><i className="icon-close"></i></a> 
         </div>  
         <div className="w-r-form-holder">
            <form action="" method="POST">
@@ -24,8 +24,8 @@ function AddService() {
                     <label for="">Price</label>
                     <input type="text" id="" name="" value=""/>
                     <div className="pp_pe asevc-holder">
-                    <a href="">Per / Person</a>
-                    <a href="" className="per_ev">Per / Event</a>
+                    <a  >Per / Person</a>
+                    <a   className="per_ev">Per / Event</a>
                     </div>
                 </div>
                 <div className="ps-1_1">

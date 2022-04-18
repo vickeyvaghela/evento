@@ -10,7 +10,7 @@ function PcSelectArtist() {
     <div className="write-reivew-popup_holder">
         <div className="w-r-holder sd-holder ro_hd">
             <h2>Artist</h2>
-            <a href=""><i className="icon-close"></i></a> 
+            <a  ><i className="icon-close"></i></a> 
         </div>  
         <div className="w-r-form-holder">
            <form action="" method="POST">
@@ -53,7 +53,7 @@ function PcSelectArtist() {
                     <label for="">Other</label>
                     <input type="text" id="" name="" value=""/>
                 </div>
-                <a href="" className="artise-add-holder"><i className="icon-plus"></i>Add New</a>
+                <a   className="artise-add-holder"><i className="icon-plus"></i>Add New</a>
            </form>
         </div>    
     </div>  

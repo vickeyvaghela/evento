@@ -13,7 +13,7 @@ function PersonCapacity() {
                  <Link to="/price_fo_location" class="back-btnt"><i class="icon-Back" aria-hidden="true"></i></Link>                               
                  <h2>Create New</h2>
                  <div class="e-btn">
-                     <Link to="/event" class="new-btn-creat"><i class="icon-plus" aria-hidden="true"></i>Add event</Link>
+                     <Link to="/event" class="new-btn-creat"><i class="icon-plus" aria-hidden="true"></i>Add</Link>
                  </div>                              
              </div> 
             <div class="process-wrapper">
@@ -21,7 +21,7 @@ function PersonCapacity() {
                  <li class="process-stap">
                      <input type="checkbox" id="cb1" hidden class="cb-btn"/>
                      <span>01</span><br/>
-                     <label class="selact-btn" for="cb1">Add Event</label>
+                     <label class="selact-btn" for="cb1">Add</label>
                  </li>
                  <li class="process-stap">
                     <input type="checkbox" id="cb2" hidden class="cb-btn"/>

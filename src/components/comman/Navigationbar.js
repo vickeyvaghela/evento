@@ -33,7 +33,7 @@ function NavigationBar({ match }) {
               
             {/* </Link> */}
             </div>
-            <a href="" > 
+            <a   > 
             <div onClick={logoutHandler} style={{margin:10}}  >
                Logout
               </div>

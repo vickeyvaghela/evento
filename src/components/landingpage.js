@@ -360,16 +360,17 @@ function LandingPage() {
                 <img src={multidevice} class="img-fluid" alt="" />
               </div> */}
               <div className="landing-bg-img">
-                <p>{t("Are You Creater, Artist or your Field")}</p>
+                <p>{t("Explore Us")}</p>
                 <h2>
-                  {t("Most")} <br />{" "}
-                  {t("Powerful platform for create, Artist & Field")}
+                  {t("Get Ready ")} <br />{" "}
+                  {t("For Mindblowing Public and Private Events  ")}
                 </h2>
               </div>
             </div>
           </div>
           <div className="intro" id="feature">
-            <h1>{t("Who are you?")}</h1>
+            {/* <h1>{t("Who are we?")}</h1> */}
+            <h1>{t(" ")}</h1>
             <div className="intro-holder">
               <div className="intro-text">
                 <div className="owner-icon">
@@ -377,11 +378,11 @@ function LandingPage() {
                 </div>
                 <div className="owner-text-main">
                   <h2>
-                    {t("Are you a creator, an artist, or an event planner?")}
+                    {t("Are you a Creator, Event planner, or Artist?")}
                   </h2>
                   <p>
                     {t(
-                      "If you are a creator, an artist, or an event manager, you can organize an event on Evento Package. You can create an event at your preferred time and place and mention it on the website. Evento Package makes organizing events quite simpler and seamless for all the creators and artists out there. The website is a platform to help budding artists and creators."
+                      "If you wish you join as an event planner and try your career in this field if you are an artist and want to support us with your creativity to make the event stunning, and if you think this is the right field for you, Join us and learn about event management."
                     )}
                   </p>
                   {/* <span>{t("Click for Orgenaizer app download")}</span> */}
@@ -400,10 +401,10 @@ function LandingPage() {
                   <img src={user} className="img-fluid" alt="" />
                 </div>
                 <div className="owner-text-main">
-                  <h2>{t("Are you a user?")}</h2>
+                  <h2>{t("What do users get?")}</h2>
                   <p>
                     {t(
-                      "If you are a user and looking for a platform to book events quickly, you can do it on our mobile app. There are many events on the website, and the users can choose the event they are interested in through the mobile app. With this app, the users can book any event they are interested in with just a few quick steps."
+                      "Evento Package is not only the best platform for the artists and event managers, but users also get the best solutions in this event management company. Users use this platform to book events without any hassle. Here users can easily select the event as per their requirements. The steps mentioned in the event booking management app are extremely easy and simple to follow.Users can easily book the package via mobile applications. All package details are included with photos, and videos along with the event list."
                     )}
                   </p>
                   <span>{t("Click for User app download")}</span>
@@ -1049,12 +1050,12 @@ function LandingPage() {
             <h2>{t("Who we are?")}</h2>
             <p>
               {t(
-                "We are one of a kind event creation company that aims to provide the creators and artists a safe space to create events on the website to reach the interested people online. With the help of this website, the artists can earn a reasonable sum and generate income for their talent."
+                "Evento Package emerges as a great solution for the artists, creators, and event managers. Do you want to work as an event manager and want to organize an event on an advanced package? We confirm the best solution for you. "
               )}
             </p>
             <p>
               {t(
-                "On the other hand, this website is quite helpful for the creators as they don’t have to create the event traditionally but online with a few clicks. All in all, it is a win-win situation for all the creators who want to make their online presence."
+                "The package is simple and designed with an updated version that helps artists and creators to get the best solution."
               )}
             </p>
           </div>

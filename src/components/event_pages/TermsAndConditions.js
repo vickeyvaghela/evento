@@ -23,7 +23,7 @@ function TermsAndConditions() {
                                 <Link to="/capacity" className="back-btnt"><i className="icon-Back" aria-hidden="true"></i></Link>                               
                                 <h2>Create New</h2>
                                 <div className="e-btn">
-                                    <Link to="/event" className="new-btn-creat"><i className="icon-plus" aria-hidden="true"></i>Add event</Link>
+                                    <Link to="/event" className="new-btn-creat"><i className="icon-plus" aria-hidden="true"></i>Add</Link>
                                 </div>                              
                             </div> 
                            <div className="process-wrapper">
@@ -31,7 +31,7 @@ function TermsAndConditions() {
                                 <li className="process-stap">
                                     <input type="checkbox" id="cb1" hidden className="cb-btn"/>
                                     <span>01</span><br/>
-                                    <label className="selact-btn" for="cb1">Add Event</label>
+                                    <label className="selact-btn" for="cb1">Add</label>
                                 </li>
                                 <li className="process-stap">
                                    <input type="checkbox" id="cb2" hidden className="cb-btn"/>

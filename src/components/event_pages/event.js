@@ -23,22 +23,23 @@ function Event() {
   const [eventsAry, set_eventsAry] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCat, setSelectedCat] = useState("");
-    const [totalPrice, setTotalPrice] = useState({})
+  const [totalPrice, setTotalPrice] = useState({});
 
-function calculateTotalPrice() {
-    eventsAry.map((eventData)=>{
-        let sum=0
-        eventData.event.map((eventItem)=>{
-            sum+=eventItem.place_price
-            eventItem.service.map((serviceItem)=>{
-                sum+=serviceItem.service_price
-            })
-        })
-        setTotalPrice((prevState)=>{
-            return {...prevState,[eventData.eventId]:sum}
-        })
-    })
-}
+  function calculateTotalPrice(eventsArray) {
+    eventsArray.map((eventData) => {
+      let sum = 0;
+      eventData.event.map((eventItem) => {
+        sum += eventItem.place_price;
+        eventItem.service.map((serviceItem) => {
+          sum += serviceItem.service_price;
+        });
+      });
+      setTotalPrice((prevState) => {
+        return { ...prevState, [eventData.eventId]: sum };
+      });
+    });
+
+  }
 
   useEffect(() => {
     (async () => {
@@ -55,10 +56,9 @@ function calculateTotalPrice() {
           response.data.data &&
           response.data.data.length
         ) {
-          console.log("response.data.data", response.data.data);
-          set_eventsAry(response.data.data);
-    calculateTotalPrice()
-
+          // console.log("/events response.data.data", response.data.data);
+          set_eventsAry(response.data.data)
+          calculateTotalPrice(response.data.data)
         }
       } catch (errCallingApi) {
         console.log("errCallingApi", errCallingApi);
@@ -79,15 +79,13 @@ function calculateTotalPrice() {
           response.data.data &&
           response.data.data.length
         ) {
-          console.log("response.data.data", response.data.data);
+          // console.log("event_category response", response.data.data);
           setCategories(response.data.data);
         }
       } catch (errCallingApi) {
         console.log("errCallingApi", errCallingApi);
       }
     })();
-
-    console.log("totalPrice",totalPrice);
 
   }, []);
 
@@ -117,7 +115,7 @@ function calculateTotalPrice() {
               </div>
               <div className="e-btn">
                 <button onClick={() => setShow(true)} className="new-btn-creat">
-                  <i className="icon-plus" aria-hidden="true"></i>Add event
+                  <i className="icon-plus" aria-hidden="true"></i>Add
                 </button>
                 <Modal
                   title="My Modal"
@@ -132,7 +130,7 @@ function calculateTotalPrice() {
             <div className="event-wrapper">
               {eventsAry.length &&
                 eventsAry.map((item) => {
-                  if (item.category == selectedCat || selectedCat=="") {
+                  if (item.category == selectedCat || selectedCat == "") {
                     return (
                       <Link
                         to={`/event/EventView/` + item.eventId}
@@ -186,7 +184,7 @@ function calculateTotalPrice() {
                                     className="per_ev"
                                     style={{ "z-index": "5000" }}
                                   >
-                                    Edit Event
+                                    Edit 
                                   </Link>
                                 </div>
                                 <div className="material-switch m-titel">
@@ -241,7 +239,7 @@ function calculateTotalPrice() {
                     <li className="process-stap">
                         <input type="checkbox" id="cb1" hidden className="cb-btn" />
                         <span>01</span><br />
-                        <label className="selact-btn" for="cb1">Add Event</label>
+                        <label className="selact-btn" for="cb1">Add</label>
                     </li>
                     <li className="process-stap">
                         <input type="checkbox" id="cb2" hidden className="cb-btn" />

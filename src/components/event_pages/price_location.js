@@ -20,7 +20,7 @@ function PriceOfLocation() {
             </Link>
             <div className="e-btn">
               <Link to="/event" className="new-btn-creat">
-                <i className="icon-plus" aria-hidden="true"></i> Add event
+                <i className="icon-plus" aria-hidden="true"></i> Add
               </Link>
             </div>
           </div>
@@ -31,7 +31,7 @@ function PriceOfLocation() {
                 <span>01</span>
                 <br />
                 <label className="selact-btn" for="cb1">
-                  Add Event
+                  Add
                 </label>
               </li>
               <li className="process-stap">

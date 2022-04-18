@@ -93,7 +93,7 @@ function RedeemCoins() {
                     return <div className="coins-details">
                     <div className="coin-processing-icon">
                         <div className="icon-coin-data icd">
-                            <a href=""><img src={icon} alt="" /></a>
+                            <a  ><img src={icon} alt="" /></a>
                         </div>
                         <div className="coin-details-text">
                             <h6>{item.translation_type}</h6>

@@ -27,6 +27,8 @@ function PartnerCompany() {
   const [openMap, setOpenMap] = useState(false)
   const [eqId, setEqId] = useState("")
   const [submitCounter, setSubmitCounter] = useState(0)
+  const [isPricePerHr, setIsPricePerHr] = useState(true)
+	const [discount_isPer, setDiscount_isPer] = useState(false)
 
   const [formData, setFormData] = useState({
     User: userId,
@@ -58,6 +60,10 @@ function PartnerCompany() {
     instagram: null,
     vimeo: null,
     live: null,
+    photo:null,
+    video:null,
+    Company_photo:null,
+    Company_video:null
   })
 
 
@@ -70,8 +76,8 @@ function PartnerCompany() {
     if (localStorage.getItem("token") === null) { history.push("/Login"); }
     else {
       getCategory();
-      getPcId() 
       getEquipments();
+      getPartnerCompanyData();
     }
 
   }, []) 
@@ -92,7 +98,7 @@ function PartnerCompany() {
 
   function gstpickerHandler(e) {
     setFormField("com_gstfile",e.target.files[0])
-    // console.log(e.target.files[0]);
+    console.log(e.target.files[0]);
   }
 
   async function getEquipments() {
@@ -114,22 +120,38 @@ function PartnerCompany() {
 
   async function onSubmitHandler(e) {
     e.preventDefault()
+    let calc_price =0
+    if (discount_isPer) {
+			calc_price = formData.w_price -(formData.w_price * formData.w_discount/100)
+		}else{
+			calc_price = formData.w_price - formData.w_discount
+		}
+    console.log("calc_price",calc_price);
+    setFormField("w_price",calc_price)
     console.log(formData);
-    console.log(submitCounter);
 
-    const response = await axios.post(`${API_URL}/partnercompany`, formData, { headers: { "Content-Type": "application/json", Authorization: token } })
-    console.log(response);
-        if (response.data.isSuccess) {
-            alert(response.data.message)
-        }
-    setSubmitCounter(submitCounter+1)
+    // const response = await axios.post(`${API_URL}/partnercompany`, formData, { headers: { "Content-Type": "application/json", Authorization: token } })
+    // console.log(response);
+    //     if (response.data.isSuccess) {
+    //         alert(response.data.message)
+    //     }
+    // setSubmitCounter(submitCounter+1)
   }
 
-  async function getPcId() {
+  async function getPartnerCompanyData() {
     const response = await axios.get(`${API_URL}/partnercompany`, { headers: { "Content-Type": "application/json", Authorization: token } })
-    // console.log(response.data.data[0].parcomId);
-    if (response.data?.data[0]?.parcomId) setPcid(response.data?.data[0].parcomId);
-  }
+    const partnercompanyData = response.data?.data[0]
+    console.log("partnercompanyData",partnercompanyData);
+
+    if (partnercompanyData?.parcomId) setPcid(partnercompanyData.parcomId);
+    for (const key in partnercompanyData) {
+        const element = partnercompanyData[key];
+        if(element){
+           setFormField(key,element)
+        }
+      }
+   
+  } 
 
   function includeExcludeHandler(equipmentId) {
     if(eqId.indexOf(equipmentId)===-1){
@@ -167,7 +189,7 @@ function PartnerCompany() {
                 </div>
                 <div className="so-holdr">
                   <label for="">Full Name (Mr / Mrs / Ms)</label>
-                  <input onChange={(e) => setFormField("name", e.target.value)} type="text" />
+                  <input value={formData.name} onChange={(e) => setFormField("name", e.target.value)} type="text" />
                 </div>
               </div>
               <div className="pd-1 so-hodr">
@@ -181,7 +203,7 @@ function PartnerCompany() {
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input onChange={(e) => setFormField("mobile_no", e.target.value)} type="text" id="" name="" />
+                  <input value={formData.mobile_no} onChange={(e) => setFormField("mobile_no", e.target.value)} type="text" id="" name="" />
                 </div>
                 <div className="so-holdr">
                   <div className="mae-holder">
@@ -193,7 +215,7 @@ function PartnerCompany() {
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input onChange={(e) => setFormField("alt_mobile_no", e.target.value)} type="text" id="" name="" />
+                  <input value={formData.alt_mobile_no}  onChange={(e) => setFormField("alt_mobile_no", e.target.value)} type="text" id="" name="" />
                 </div>
                 <div className="so-holdr">
                   <div className="mae-holder">
@@ -205,7 +227,7 @@ function PartnerCompany() {
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input onChange={(e) => setFormField("email_id", e.target.value)} type="text" id="" name="" />
+                  <input value={formData.email_id} onChange={(e) => setFormField("email_id", e.target.value)} type="text" id="" name="" />
                 </div>
               </div>
             </div>
@@ -231,27 +253,18 @@ function PartnerCompany() {
               <div className="pd-holder">
                 <div className="prdi-1 ptd-1">
                   <label for="">Price</label>
-                  <input onChange={(e) => setFormField("w_price", e.target.value)} type="text" id="" name="" />
+                  <input value={formData.w_price} onChange={(e) => setFormField("w_price", e.target.value)} type="text" id="" name="" />
                   <div className="prdi-1_2">
-                    <a href="javascript:void(0)">Per / hr</a>
-                    <a href="javascript:void(0)" className="per_ev">
-                      Per / Day
-                    </a>
+                  <a onClick={()=>setIsPricePerHr(true)} className={`${isPricePerHr?"":"per_ev"}`} >Per / hr</a>
+										<a onClick={()=>setIsPricePerHr(false)} className={`${isPricePerHr?"per_ev":""}`}>Per / Day</a>
                   </div>
                 </div>
                 <div className="prdi-1 ptd-2">
                   <label for="">Discount</label>
-                  <input onChange={(e) => setFormField("w_discount", e.target.value)} type="text" id="" name="" />
+                  <input value={formData.w_discount} onChange={(e) => setFormField("w_discount", e.target.value)} type="text" id="" name="" />
                   <div className="prdi-1_2">
-                    <a href="javascript:void(0)">
-                      <i className="icon-Percentage"></i>
-                    </a>
-                    <a href="javascript:void(0)" className="per_ev">
-                      <i className="icon-Rs"></i>
-                    </a>
-                    <a href="javascript:void(0)" className="per_ev">
-                      Non
-                    </a>
+                   <a onClick={()=>setDiscount_isPer(true)}  className={` ${discount_isPer?"":"per_ev"}`}>%</a>
+										<a onClick={()=>setDiscount_isPer(false)}  className={` ${discount_isPer?"per_ev":""}`}><i className="icon-Rs"></i></a>
                   </div>
                 </div>
               </div>
@@ -269,6 +282,7 @@ function PartnerCompany() {
                     </div>
                     <div className="ie-text">
                       <textarea
+                      value={formData.travel_cost}
                         onChange={(e) => setFormField("travel_cost", e.target.value)}
                         name=""
                         id=""
@@ -292,6 +306,7 @@ function PartnerCompany() {
                     </div>
                     <div className="ie-text">
                       <textarea
+                      value={formData.accommodation}
                         onChange={(e) => setFormField("accommodation", e.target.value)}
                         name=""
                         id=""
@@ -315,6 +330,7 @@ function PartnerCompany() {
                     </div>
                     <div className="ie-text">
                       <textarea
+                      value={formData.food}
                         onChange={(e) => setFormField("food", e.target.value)}
                         name=""
                         id=""
@@ -363,8 +379,8 @@ function PartnerCompany() {
             </div>
 
             <div className="photo-video-holder psb-5">
-              <PhotoUpload title="Photos"  pcid={pcid} submitCounter={submitCounter} route="/pc_photo" formFieldname="photo_file"/>
-              <VideoUpload title={"Video"} pcid={pcid} submitCounter={submitCounter} route="/pc_video" formFieldname="video_file"/>
+              <PhotoUpload title="Photos"  pcid={pcid} submitCounter={submitCounter} route="/pc_photo" formFieldname="photo_file" uploadedPhoto={formData.photo}/>
+              <VideoUpload title={"Video"} pcid={pcid} submitCounter={submitCounter} route="/pc_video" formFieldname="video_file"  uploadedVideo={formData.video}/>
             </div>
             <div className="psb-6">
               <h3>Company Details</h3>
@@ -376,7 +392,7 @@ function PartnerCompany() {
                     </div>
                     <div className="mae-checkbox-holder">
                       <input
-                        onChange={(e) => setFormField("com_name", e.target.value)}
+                     
                         type="checkbox"
                         id=""
                         name=""
@@ -385,7 +401,8 @@ function PartnerCompany() {
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input type="text" id="" name="" />
+                  <input  value={formData.com_name}
+                        onChange={(e) => setFormField("com_name", e.target.value)} type="text" id="" name="" />
                 </div>
                 <div className="so-holdr">
                   <label for="">Company GST (Optional)</label>
@@ -405,7 +422,7 @@ function PartnerCompany() {
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input onChange={(e) => setFormField("com_contact", e.target.value)} type="text" id="" name="" />
+                  <input value={formData.com_contact} onChange={(e) => setFormField("com_contact", e.target.value)} type="text" id="" name="" />
                 </div>
                 <div className="so-holdr">
                   <div className="mae-holder">
@@ -417,13 +434,14 @@ function PartnerCompany() {
                       <label for="">Hidden</label>
                     </div>
                   </div>
-                  <input onChange={(e) => setFormField("com_email", e.target.value)} type="text" id="" name="" />
+                  <input  value={formData.com_email} onChange={(e) => setFormField("com_email", e.target.value)} type="text" id="" name="" />
                 </div>
               </div>
               <div className="pd-1 so-hodr">
                 <div className="so-holdr">
                   <label for="">Company Address</label>
                   <textarea
+                  value={formData.com_address}
                     onChange={(e) => setFormField("com_address", e.target.value)}
                     name=""
                     id=""
@@ -435,8 +453,8 @@ function PartnerCompany() {
                 </div>
               </div>
               {openMap && <GoogleMapPicker setFormField={setFormField} />}
-              <PhotoUpload title="Company Photos (max 10)"  pcid={pcid} submitCounter={submitCounter} route="/pc_photo" formFieldname={"c_photo_file"} />
-              <VideoUpload title={"Company Video (max 3)"}  pcid={pcid} submitCounter={submitCounter} route="/pc_video" formFieldname={"c_video_file"}/>
+              <PhotoUpload title="Company Photos (max 10)"  pcid={pcid} submitCounter={submitCounter} route="/pc_photo" formFieldname={"c_photo_file"} uploadedPhoto={formData.Company_photo} />
+              <VideoUpload title={"Company Video (max 3)"}  pcid={pcid} submitCounter={submitCounter} route="/pc_video" formFieldname={"c_video_file"} uploadedVideo={formData.Company_video}/>
             </div>
             <div className="social-media-main psb-7">
               <h3>Social Media</h3>
@@ -447,7 +465,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={fb} alt="" />
                       </div>
-                      <input onChange={(e) => setFormField("facebook", e.target.value)} type="text" placeholder="Enter URL" name="" />
+                      <input value={formData.facebook} onChange={(e) => setFormField("facebook", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                   <div className="col-md-6 col-12 px-0">
@@ -455,7 +473,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={youtub} alt="" />
                       </div>
-                      <input onChange={(e) => setFormField("youtube", e.target.value)} type="text" placeholder="Enter URL" name="" />
+                      <input value={formData.youtube} onChange={(e) => setFormField("youtube", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                   <div className="col-md-6 col-12 pl-0 mt-2 pr-2">
@@ -463,7 +481,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={twitter} alt="" />
                       </div>
-                      <input onChange={(e) => setFormField("twitter", e.target.value)} type="text" placeholder="Enter URL" name="" />
+                      <input value={formData.twitter} onChange={(e) => setFormField("twitter", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                   <div className="col-md-6 col-12 px-0 mt-2">
@@ -471,7 +489,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={printrest} alt="" />
                       </div>
-                      <input onChange={(e) => setFormField("pinterest", e.target.value)} type="text" placeholder="Enter URL" name="" />
+                      <input value={formData.pinterest} onChange={(e) => setFormField("pinterest", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                   <div className="col-md-6 col-12 pl-0 mt-2 pr-2">
@@ -479,7 +497,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={instagram} alt="" />
                       </div>
-                      <input onChange={(e) => setFormField("instagram", e.target.value)} type="text" placeholder="Enter URL" name="" />
+                      <input value={formData.instagram} onChange={(e) => setFormField("instagram", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                   <div className="col-md-6 col-12 px-0 mt-2">
@@ -487,7 +505,7 @@ function PartnerCompany() {
                       <div className="s-pleform-icon">
                         <img src={vimo} alt="" />
                       </div>
-                      <input onChange={(e) => setFormField("vimeo", e.target.value)} type="text" placeholder="Enter URL" name="" />
+                      <input value={formData.vimeo} onChange={(e) => setFormField("vimeo", e.target.value)} type="text" placeholder="Enter URL" name="" />
                     </label>
                   </div>
                 </div>

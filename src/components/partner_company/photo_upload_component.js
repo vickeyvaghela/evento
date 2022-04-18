@@ -6,18 +6,28 @@ import { API_URL } from "../../constants";
 var token = `Token ${localStorage.getItem("token")}`;
 
 
-const PhotoUpload=({pcid,submitCounter,route,title,formFieldname}) =>{
+const PhotoUpload=({pcid,submitCounter,route,title,formFieldname,uploadedPhoto}) =>{
     const [files, setFiles] = useState([])
     const [imgUrls, setImgUrls] = useState([])
-
+    const [uploadedPhotoUrls, setUploadedPhotoUrls] = useState([])
 
     useEffect(() => {
         if (submitCounter>0) {
             uploadMultipleImage()
         }
+       
+        getUploadedPhotos()
+
+    }, [submitCounter,uploadedPhoto])
     
-    }, [submitCounter])
-    
+    function getUploadedPhotos() {
+         
+        let temp = [] 
+        uploadedPhoto?.map(photoObj=>{
+            temp.push("http://eventopackage.com"+photoObj.photo_file)
+        })
+        setUploadedPhotoUrls(temp)
+    }
 
     function filePickerHandler(e) {
         // console.log(e.target.files.length);
@@ -71,6 +81,14 @@ const PhotoUpload=({pcid,submitCounter,route,title,formFieldname}) =>{
             <div className="ph-main">
                 <span>Uploaded Photo</span>
                 <div className="img-holder">
+                {uploadedPhotoUrls.map((item, index) =>
+                        <div key={index} className="photo-box p">
+                            <div className="images-selctor ">
+                                <img src={item} className="img-fluid" alt="" />
+                                <button disabled onClick={(e) => { e.preventDefault(); imageRemoveHandler(index) }} >Remove</button>
+                            </div>
+                        </div>
+                    )}
                     {imgUrls.map((item, index) =>
                         <div key={index} className="photo-box p">
                             <div className="images-selctor ">

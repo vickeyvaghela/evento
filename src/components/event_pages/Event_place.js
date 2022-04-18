@@ -21,7 +21,7 @@ function Event_place() {
             </Link>
             <div className="e-btn">
               <Link to="/event" className="new-btn-creat">
-                <i className="icon-plus" aria-hidden="true"></i> Add event
+                <i className="icon-plus" aria-hidden="true"></i> Add
               </Link>
             </div>
           </div>

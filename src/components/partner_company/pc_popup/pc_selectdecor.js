@@ -10,7 +10,7 @@ function PcSelectDecor() {
     <div className="write-reivew-popup_holder">
         <div className="w-r-holder sd-holder ro_hd">
             <h2>Signage & Decorations </h2>
-            <a href=""><i className="icon-close"></i></a> 
+            <a  ><i className="icon-close"></i></a> 
         </div>  
         <div className="w-r-form-holder">
             <form action="" method="POST">
@@ -45,7 +45,7 @@ function PcSelectDecor() {
                         <label for="Mascots" className="mtc">Drapes Decoration</label>
                     </div>
                 </div>
-                <a href="" className="artise-add-holder sd-select"><i className="icon-plus"></i>Add New</a>
+                <a   className="artise-add-holder sd-select"><i className="icon-plus"></i>Add New</a>
            </form>
         </div>    
     </div>  

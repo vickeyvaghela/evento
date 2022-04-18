@@ -19,6 +19,7 @@ import Modal from "./../comman/modal/Modal";
 import AddEquipment from "./pspopup/AddEquipment";
 import Switch from '@mui/material/Switch';
 import UploadImage from "./pspopup/UploadImage";
+import GoogleMapPicker from "../partner_company/pc_popup/pc_google_map";
 
 
 
@@ -77,6 +78,8 @@ function PersonalSkill() {
 	const [videoUpdate, setVideoUpdate] = useState([])
 	const [request, setRequest] = useState("")
 	const [isLoading, setIsLoading] = useState(true)
+	const [openMap, setOpenMap] = useState(false)
+	const [location, setLocation] = useState({let:"",long:""})
 	//formdata
 
 	const [pro_category, setPro_Category] = useState("")
@@ -85,8 +88,11 @@ function PersonalSkill() {
 	const [mobile_no, setMobile_no] = useState("")
 	const [alt_mobile_no, setAlt_mobile_no] = useState("")
 	const [email, setEmail] = useState("")
-	const [work_price, setWork_Price] = useState()
-	const [work_discount, setWorkDiscount] = useState("")
+	const [work_price, setWork_Price] = useState(0)
+	const [isPricePerHr, setIsPricePerHr] = useState(true)
+	const [work_discount, setWorkDiscount] = useState(0)
+	const [discount_isPer, setDiscount_isPer] = useState(false)
+	// const [calc_price, setCalc_price] = useState("")
 	const [travel_cost, setTravelCost] = useState("")
 	const [accommodation, setAccommodation] = useState()
 	const [food, setFood] = useState()
@@ -105,12 +111,12 @@ function PersonalSkill() {
 	const [vimeo, setVimeo] = useState("")
 	const [EquipmentArray, setEquipmentArray] = useState([])
 
-	useEffect(() => {
-	}, [])
 	const getCategoryMain = async () => {
 		const data = await axios.get(`${API_URL}/ps_category`, { headers: { "Content-Type": "application/json", Authorization: token } })
+		console.log('data',data);
 		if (data && data.data) {
 			setCategoryMain(data.data.data)
+			setPro_Category(data.data.data[0].Id)
 		}
 	}
 	const getPersonalSkill = async () => {
@@ -151,8 +157,8 @@ function PersonalSkill() {
 		setIsLoading(false)
 	}
 	const getSubCategory = async () => {
-
 		const data = await axios.get(`${API_URL}/ps_sub_category/${pro_category}`, { headers: { "Content-Type": "application/json", Authorization: token } })
+		console.log('data',data);
 		if (data && data.data && data.data.data.length > 0) {
 			setSubCategory(data.data.data)
 		}
@@ -247,7 +253,7 @@ function PersonalSkill() {
 	const onSubmit = async (e) => {
 		e.preventDefault()
 		const dataForm = new FormData()
-		if(typeof com_gstfile ==='object'){
+		if(typeof com_gstfile ==='object' && com_gstfile!==null){
 			console.log("coming here")
 			for (let i = 0; i < com_gstfile.length; i++) {
 				dataForm.append("com_gstfile", com_gstfile[i])
@@ -257,6 +263,12 @@ function PersonalSkill() {
 
 			dataForm.append("com_gstfile" , com_gstfile)
 		}
+		let calc_price=0
+		if (discount_isPer) {
+			calc_price = work_price -(work_price * work_discount/100)
+		}else{
+			calc_price = work_price - work_discount
+		}
 			dataForm.append("User", userId)
 			dataForm.append("pro_category", pro_category)
 			dataForm.append("profession", profession)
@@ -265,7 +277,9 @@ function PersonalSkill() {
 			dataForm.append("alt_mobile_no", alt_mobile_no)
 			dataForm.append("email", email)
 			dataForm.append("work_price", work_price)
+			dataForm.append("is_price_per_hr", isPricePerHr)
 			dataForm.append("work_discount", work_discount)
+			dataForm.append("price", calc_price)
 			dataForm.append("travel_cost", travel_cost === false ? "no" : travel_cost)
 			dataForm.append("accommodation", accommodation === false ? "no" : accommodation)
 			dataForm.append("food", food === false ? "no" : food)
@@ -283,6 +297,10 @@ function PersonalSkill() {
 			dataForm.append("instagram", instagram)
 			dataForm.append("vimeo", vimeo)
 			dataForm.append("equip_ids", EquipmentArray.toString())
+			dataForm.append("let", location.let)
+			dataForm.append("long", location.long)
+
+
 			if (request === "put") {
 				const data = await axios.put(`${API_URL}/personalskill`, dataForm, { headers: { "Content-Type": "application/json", Authorization: token } })
 				return
@@ -291,6 +309,13 @@ function PersonalSkill() {
 		
 
 	}
+
+	function setFormField(key,value) {
+		setLocation((prevState)=>{
+			return{...prevState,[key]:value}
+		})
+	}
+
 	useEffect(() => {
 		getImages()
 		getVideos()
@@ -300,7 +325,8 @@ function PersonalSkill() {
 
 	}, [equipmentPopUp])
 	useEffect(() => {
-		// getSubCategory()
+
+		console.log('pro_category',pro_category);
 		getSubCategory()
 	}, [pro_category])
 	useEffect(() => {
@@ -386,18 +412,17 @@ function PersonalSkill() {
 								<div className="prdi-1 ptd-1">
 									<label for="">Price</label>
 									<input type="text" id="" name="" defaultValue={personalSkills.work_price} onChange={(e) => { setWork_Price(e.target.value) }} />
-									<div className="prdi-1_2 pt">
-										<a href="">Per / hr</a>
-										<a href="" className="per_ev">Per / Day</a>
+									<div  className="prdi-1_2 pt">
+										<a onClick={()=>setIsPricePerHr(true)} className={`${isPricePerHr?"":"per_ev"}`} >Per / hr</a>
+										<a onClick={()=>setIsPricePerHr(false)} className={`${isPricePerHr?"per_ev":""}`}>Per / Day</a>
 									</div>
 								</div>
 								<div className="prdi-1 ptd-2">
 									<label for="">Discount</label>
-									<input type="text" id="" name="" defaultValue={personalSkills.work_discount} onChange={(e) => { setWorkDiscount(e.targetvalue) }} />
+									<input type="text" id="" name="" defaultValue={personalSkills.work_discount} onChange={(e) => { setWorkDiscount(e.target.value) }} />
 									<div className="prdi-1_2 pt">
-										<a href=""><i className="icon-Percentage"></i></a>
-										<a href="" className="per_ev"><i className="icon-Rs"></i></a>
-										<a href="" className="per_ev">Non</a>
+										<a onClick={()=>setDiscount_isPer(true)}  className={` ${discount_isPer?"":"per_ev"}`}>%</a>
+										<a onClick={()=>setDiscount_isPer(false)}  className={` ${discount_isPer?"per_ev":""}`}><i className="icon-Rs"></i></a>
 									</div>
 								</div>
 							</div>
@@ -482,6 +507,7 @@ function PersonalSkill() {
 								<div className="poster-m">
 									<div onClick={() => setImagePopUp(true)} className="images-selctor ">
 										<Modal title="My Modal" onClose={() => setImagePopUp(false)} show={imagePopup}>
+											{console.log(personalSkills.perskillId)}
 											<UploadImage id={personalSkills.perskillId} method="image" uploadImageList={uploadImageList} setUploadImage={setUploadImage} set_modalState={setImagePopUp} />
 										</Modal>
 									</div>
@@ -576,9 +602,10 @@ function PersonalSkill() {
 								<div className="so-holdr">
 									<label for="">Company Address</label>
 									<textarea defaultValue={personalSkills.com_address} onChange={(e) => { setComAddress(e.target.value) }} name="" id="" cols="30" rows="10" placeholder="Type here Address..."></textarea>
-									<button>Location from Google map</button>
+									<button onClick={()=>{setOpenMap(!openMap)}} >Location from Google map</button>
 								</div>
 							</div>
+							{openMap && <GoogleMapPicker setFormField={setFormField} />}
 							<div className="pd-1 so-hodr">
 								<div className="p-v-main">
 									<h3>Company Photos (Upload upto 10Photos max.)</h3>

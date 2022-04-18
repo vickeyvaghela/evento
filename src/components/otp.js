@@ -137,7 +137,7 @@ function Otp() {
             </div>
             <div className="botm-t">
               <p>
-                Now Get? <a href="">Re-Send</a>
+                Now Get? <a  >Re-Send</a>
               </p>
             </div>
           </div>

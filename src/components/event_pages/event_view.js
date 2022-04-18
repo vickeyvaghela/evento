@@ -86,11 +86,11 @@ function EventView() {
                         <div className="mini-header">
                             <div className="heading">
                                 <div className="review-star-holder">
-                                    <a href=""><i className="icon-Star"></i></a>
-                                    <a href=""><i className="icon-Star"></i></a>
-                                    <a href=""><i className="icon-Star"></i></a>
-                                    <a href=""><i className="icon-silver-Star"></i></a>
-                                    <a href=""><i className="icon-silver-Star"></i></a>
+                                    <a  ><i className="icon-Star"></i></a>
+                                    <a  ><i className="icon-Star"></i></a>
+                                    <a  ><i className="icon-Star"></i></a>
+                                    <a  ><i className="icon-silver-Star"></i></a>
+                                    <a  ><i className="icon-silver-Star"></i></a>
                                 </div>
                                 <h2>{allEventData.display_name}</h2>
                             </div>
@@ -98,10 +98,10 @@ function EventView() {
                                 <div className="a_C_I_S">
                                     <button className="avbtn">{`${allEventData.live ? 'Avaliable' : 'Not-Avaliable'}`}</button>
                                     <button>{allEventData.category}</button>
-                                    <a href="" className="circle"><i className="icon-share"></i></a>
+                                    <a   className="circle"><i className="icon-share"></i></a>
                                 </div>
                                 <div className="rdl">
-                                    <a href="">{allEventData.for_who}</a>
+                                    <a  >{allEventData.for_who}</a>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@ function EventView() {
 
                                         {(allEventData.image && allEventData.image.length) && allEventData.image.map((imageObj, i) => (
 
-                                            <div className="photo" key={imageObj.id}><img src={`${API_URL}${imageObj.image}`} className="img-fluid" alt={imageObj.image_details || ""} /></div>
+                                            <div className="photo" key={imageObj.id}><img src={`${"http://eventopackage.com"}${imageObj.image}`} className="img-fluid" alt={imageObj.image_details || ""} /></div>
                                         ))}
 
                                         {/* <div className="photo"><img src={food2} className="img-fluid" alt="img"/></div> */}
@@ -193,7 +193,7 @@ function EventView() {
                                         <div className="imap-holder">
                                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2822.7806761080233!2d-93.29138368446431!3d44.96844997909819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x52b32b6ee2c87c91%3A0xc20dff2748d2bd92!2sWalker+Art+Center!5e0!3m2!1sen!2sus!4v1514524647889" frameborder="0" allowfullscreen></iframe>
                                             <div className="mp-icon-holder">
-                                                <a href="" className="absolute"><img src="./img/oa-map.png" alt="" /></a>
+                                                <a   className="absolute"><img src="./img/oa-map.png" alt="" /></a>
                                             </div>
                                         </div>
                                     </div>
@@ -243,7 +243,7 @@ function EventView() {
                                         <div className="imap-holder">
                                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2822.7806761080233!2d-93.29138368446431!3d44.96844997909819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x52b32b6ee2c87c91%3A0xc20dff2748d2bd92!2sWalker+Art+Center!5e0!3m2!1sen!2sus!4v1514524647889" allowfullscreen></iframe>
                                             <div className="mp-icon-holder">
-                                                <a href="" className="absolute"><img src="./img/oa-map.png" alt="" /></a>
+                                                <a   className="absolute"><img src="./img/oa-map.png" alt="" /></a>
                                             </div>
                                         </div>
                                     </div>

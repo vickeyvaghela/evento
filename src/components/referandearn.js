@@ -80,7 +80,7 @@ function ReferAndEarn() {
                                     <div className="social-media-icon">
                                         <ul>
                                             <li>
-                                                <a href="">
+                                                <a  >
                                                     <img src={whatsapp} className="img-fluid" alt="" />
                                                 </a>
                                             </li>
@@ -118,7 +118,7 @@ function ReferAndEarn() {
                                     <h1  >{referCode}</h1>
                                 </div>
                                 <div className="code-copy">
-                                    <a href="" onClick={() => {
+                                    <a   onClick={() => {
                                         navigator.clipboard.writeText(referCode)
                                         alert("Code copied: "+ referCode)
                                     }} >Copy Code</a>
